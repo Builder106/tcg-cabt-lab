@@ -1,0 +1,40 @@
+[project]
+name = "tcg-cabt-lab"
+version = "0.1.0"
+description = "Study how resource-bounded Pokemon TCG agents generalize to unseen decks."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Olayinka Vaughan" }]
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/Builder106/tcg-cabt-lab"
+
+[project.scripts]
+tcg-cabt-lab = "tcg_cabt_lab.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = ["mypy>=1.15,<2", "ruff>=0.12,<1", "pytest>=8,<10", "pip-audit>=2.9,<3"]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+files = ["src", "tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["error"]

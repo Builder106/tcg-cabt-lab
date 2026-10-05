@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "status": "draft",
+  "question": "Does training against a diverse opponent pool improve a compact CABT policy's win rate on held-out deck families?",
+  "environment": {
+    "engine": "cabt",
+    "package_version": null,
+    "source_revision": null,
+    "card_catalog_sha256": null,
+    "information_mode": "agent-observation-only"
+  },
+  "split_unit": "deck-family",
+  "training_seeds": [11, 29, 47],
+  "training_variants": ["fixed-opponent-pool", "diverse-opponent-pool"],
+  "controls": ["model-architecture", "training-decks", "training-step-budget", "inference-budget"],
+  "evaluation": {
+    "primary_metric": "held-out win-rate difference",
+    "confidence_level": 0.95,
+    "pairing": "matched deck pair and seed with reversed player assignments",
+    "reporting": "per-matchup results and equally weighted deck-family aggregate",
+    "seeds": null,
+    "pairs_per_matchup": null,
+    "matchup_manifest": null,
+    "opponent_checkpoints": null,
+    "confidence_interval_method": null
+  },
+  "budgets": {
+    "training_steps": null,
+    "training_compute_seconds": null,
+    "inference_seconds_per_action": null,
+    "memory_bytes": null
+  }
+}

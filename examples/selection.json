@@ -1,0 +1,7 @@
+{
+  "select": {
+    "option": [{}, {}, {}],
+    "minCount": 1,
+    "maxCount": 2
+  }
+}
