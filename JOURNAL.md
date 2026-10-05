@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-10-05: Publish the research repository #milestone
+
+The public Builder106/tcg-cabt-lab repository has a signed research baseline that GitHub marks Verified. Main requires a pull request, CI, and secret scanning for subsequent changes. Squash merge and automatic topic-branch deletion are enabled. The first full-game CABT run remains the next research milestone.
+
 ## 2026-10-04: Scaffold verification passes #milestone
 
 The scaffold passed strict type checking, lint, formatting, 17 tests, source and wheel builds, installation from the wheel, and a hashed dependency audit on Linux ARM64. The installed CLI returned two distinct indices for the synthetic example. These checks establish package and selection-interface behavior; they do not establish CABT game legality or model performance.
