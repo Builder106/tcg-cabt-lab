@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-10-13: Replace the README Mermaid diagram #decision
+
+The current flow is a short linear scaffold, so the README now states it in prose. The former Mermaid block added no relationship that needed a diagram.
+
 ## 2026-10-05: Publish the research repository #milestone
 
 The public Builder106/tcg-cabt-lab repository has a signed research baseline that GitHub marks Verified. Main requires a pull request, CI, and secret scanning for subsequent changes. Squash merge and automatic topic-branch deletion are enabled. The first full-game CABT run remains the next research milestone.

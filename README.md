@@ -37,13 +37,7 @@ Keep the generator alive across decisions when integrating an agent. The CLI cre
 
 ## Current flow
 
-```mermaid
-flowchart LR
-    Request[Observation JSON file] --> CLI[Python CLI]
-    CLI --> Select[Validate selection bounds]
-    Select --> Sample[Seeded random selector]
-    Sample --> Action[JSON array of choice indices]
-```
+The CLI reads an observation JSON file, validates the requested selection bounds, uses a seeded random selector, and returns a JSON array of choice indices.
 
 ## Repository layout
 
