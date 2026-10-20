@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-10-20: Establish evaluation baselines and freeze study configuration #milestone
+
+Milestone 2 is complete. Implemented a transparent rule-based heuristic agent (`HeuristicAgent`) with damage ranking from the verified 1,755-attack catalog (SHA-256 `1b584ac7e19f85d565c2902d04831bf9b30e5107b51a4ab3bc956db2051a12ce`), and integrated CABT's greedy reference (`FirstAgent`). Formulated 6 elemental deck families and verified split disjointness across training, tuning, and held-out test tiers. Added matched-pair tournament runner with reversed player seats and explicit failure accounting (wins, losses, draws, timeouts, invalids). Executed 24-game baseline pilot benchmark measuring average action latency (~6ms) and frozen study parameters in `experiments/heldout-matchups.json`.
+
 ## 2026-10-20: Reproduce CABT and establish simulator boundary #milestone
 
 Milestone 1 is complete. Integrated `kaggle-environments==1.33.0` providing the CABT 1.0.0 simulation engine with native Linux ARM64 (`libcg-arm64.so`), Linux x86_64 (`libcg.so`), and macOS Darwin (`libcg.dylib`) platform binaries. Pinned the 1,431-card catalog at SHA-256 `7fd6c45fcdc2913a1fe19ddb67c01aa9b204718cb760be7582cf4fcc3513de9c`. Verified initial 60-card deck selection, optional choice bounds, special selection contexts, and invalid action penalization (INVALID status with opponent win). Enforced an observation-only agent interface by stripping simulator internal search state (`search_begin_input`) and masking opponent hidden cards. Built CLI commands for full battle simulation, catalog verification, and deck inspection with reproducible structured JSON logging.

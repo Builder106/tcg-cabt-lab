@@ -10,7 +10,7 @@ Completed. Installed versioned environment `kaggle-environments==1.33.0` (CABT 1
 
 ## 2. Establish evaluation
 
-Implement a transparent heuristic and reproduce an accessible stronger reference. Create deck-family manifests for training, tuning, and final test, with overlap checks. Run a pilot to choose matched game counts, inference limits, failure scoring, and confidence intervals. Completion requires a frozen study configuration and a replayable baseline tournament with no silently excluded failures.
+Completed. Implemented transparent rule-based heuristic (`HeuristicAgent`) prioritizing attacks by damage and board development, alongside CABT's `first_agent` (`FirstAgent`) and random baseline (`RandomAgent`). Created 6 canonical elemental deck families with strict overlap checks (`verify_split_disjointness`) separating training (`water-kyogre`, `grass-bulbasaur`, `lightning-pikachu`), tuning (`fire-ponyta`), and held-out final test (`psychic-mewtwo`, `colorless-snorlax`). Implemented round-robin tournament engine with matched pairs, reversed player positions, failure accounting, and Wilson score 95% confidence intervals. Executed baseline pilot tournament across 24 games and froze the study configuration in `experiments/heldout-matchups.json`.
 
 ## 3. Run one ML experiment
 

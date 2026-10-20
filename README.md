@@ -8,7 +8,7 @@ TCG CABT Lab is a research project about compact agents for the 60-card Pokemon 
 
 ## Project status
 
-The project integrates the CABT 1.0.0 simulation engine (`kaggle-environments==1.33.0`) with verified platform binaries on Linux ARM64, Linux x86_64, and macOS. The card catalog is pinned to 1,431 cards (SHA-256: `7fd6c45fcdc2913a1fe19ddb67c01aa9b204718cb760be7582cf4fcc3513de9c`). The Python CLI supports reproducible full-game battle simulations, catalog integrity verification, deck validation, and synthetic choice sampling with an enforced observation-only agent boundary. Model training, heuristic references, tournament evaluation, and the public demo are upcoming work.
+The project integrates the CABT 1.0.0 simulation engine (`kaggle-environments==1.33.0`) with verified platform binaries on Linux ARM64, Linux x86_64, and macOS. The card catalog (1,431 cards) and attack catalog (1,755 attacks) are pinned and checksum-verified. The evaluation framework provides 6 canonical elemental deck families with verified split disjointness across training, tuning, and held-out test splits, alongside reference agents (`RandomAgent`, `FirstAgent`, `HeuristicAgent`). The tournament runner executes matched pairs with reversed player seats, explicit failure accounting, and Wilson score 95% confidence intervals. The study configuration is frozen in [`experiments/heldout-matchups.json`](experiments/heldout-matchups.json).
 
 Read the [research plan](RESEARCH.md), [roadmap](ROADMAP.md), and [showcase brief](docs/showcase.md).
 
@@ -18,6 +18,22 @@ Use Python 3.12 and uv 0.12.5:
 
 ```sh
 uv sync --frozen --group dev
+```
+
+### Run a tournament
+
+Execute a paired tournament across agents and deck families, generating a leaderboard and matchup grid:
+
+```sh
+uv run tcg-cabt-lab tournament --pilot --out experiments/baseline-pilot-report.json
+```
+
+### Inspect deck family splits
+
+Verify disjointness across training, tuning, and held-out test splits:
+
+```sh
+uv run tcg-cabt-lab splits
 ```
 
 ### Run a simulated battle
