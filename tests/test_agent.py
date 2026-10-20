@@ -1,4 +1,9 @@
-from tcg_cabt_lab.agent import RandomAgent, sanitize_observation
+from tcg_cabt_lab.agent import (
+    FirstAgent,
+    HeuristicAgent,
+    RandomAgent,
+    sanitize_observation,
+)
 from tcg_cabt_lab.deck import REFERENCE_DECK
 
 
@@ -78,3 +83,59 @@ def test_random_agent_seed_reproducibility() -> None:
         "current": {"yourIndex": 0, "players": []},
     }
     assert agent1(obs) == agent2(obs)
+
+
+def test_first_agent_selects_deck_and_options() -> None:
+    agent = FirstAgent()
+    step0_obs: dict[str, object] = {"select": None}
+    assert agent(step0_obs) == list(REFERENCE_DECK)
+
+    obs = {
+        "select": {
+            "minCount": 1,
+            "maxCount": 2,
+            "option": [{"id": 0}, {"id": 1}, {"id": 2}],
+        }
+    }
+    assert agent(obs) == [0, 1]
+
+
+def test_heuristic_agent_prioritization() -> None:
+    agent = HeuristicAgent()
+    # Mock attacks lookup in agent for deterministic test
+    agent.attacks = {
+        100: {"attackId": 100, "name": "Weak Attack", "damage": 20},
+        200: {"attackId": 200, "name": "Strong Attack", "damage": 120},
+    }
+
+    obs = {
+        "select": {
+            "minCount": 1,
+            "maxCount": 1,
+            "option": [
+                {"type": 14},  # Pass (score 10)
+                {"type": 9, "inPlayArea": 4, "inPlayIndex": 0},  # Energy (score 4500)
+                {"type": 13, "attackId": 100},  # Weak Attack (score 10020)
+                {"type": 13, "attackId": 200},  # Strong Attack (score 10120)
+                {"type": 8},  # Play Pokemon (score 5000)
+            ],
+        }
+    }
+
+    # Should select index 3 (Strong Attack, damage 120)
+    action = agent(obs)
+    assert action == [3]
+
+    # When no attack is available, should prefer playing Pokemon (type 8)
+    obs_no_attack = {
+        "select": {
+            "minCount": 1,
+            "maxCount": 1,
+            "option": [
+                {"type": 14},  # Pass
+                {"type": 8},  # Play Pokemon
+                {"type": 7},  # Trainer
+            ],
+        }
+    }
+    assert agent(obs_no_attack) == [1]

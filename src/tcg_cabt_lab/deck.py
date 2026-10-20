@@ -111,6 +111,7 @@ def validate_deck(
 
     if catalog is not None:
         counts = Counter(normalized_deck)
+        name_counts: Counter[str] = Counter()
         has_basic_pokemon = False
 
         for cid, count in counts.items():
@@ -121,11 +122,14 @@ def validate_deck(
             is_basic_energy = card.get("energyType") == 1 or (
                 card.get("cardType") == 5 and card.get("name", "").startswith("Basic")
             )
-            if not is_basic_energy and count > MAX_COPIES_NON_BASIC_ENERGY:
-                raise ValueError(
-                    f"Deck has {count} copies of card {cid} ({card.get('name')}); "
-                    f"maximum permitted is {MAX_COPIES_NON_BASIC_ENERGY}"
-                )
+            card_name = card.get("name", f"Card-{cid}")
+            if not is_basic_energy:
+                name_counts[card_name] += count
+                if name_counts[card_name] > MAX_COPIES_NON_BASIC_ENERGY:
+                    raise ValueError(
+                        f"Deck has {name_counts[card_name]} copies of '{card_name}'; "
+                        f"maximum permitted is {MAX_COPIES_NON_BASIC_ENERGY}"
+                    )
 
             if card.get("basic") is True:
                 has_basic_pokemon = True

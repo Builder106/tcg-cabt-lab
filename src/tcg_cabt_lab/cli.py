@@ -16,6 +16,8 @@ from tcg_cabt_lab.catalog import (
     load_card_catalog,
 )
 from tcg_cabt_lab.deck import REFERENCE_DECK, format_deck_summary, validate_deck
+from tcg_cabt_lab.manifest import SPLIT_ASSIGNMENTS, verify_split_disjointness
+from tcg_cabt_lab.tournament import run_pilot_tournament, run_tournament
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -58,6 +60,31 @@ def _build_parser() -> argparse.ArgumentParser:
         nargs="?",
         default=None,
         help="path to JSON file containing card IDs (defaults to reference deck)",
+    )
+
+    # Subcommand: splits
+    splits = subcommands.add_parser("splits", help="inspect and verify deck family split manifests")
+    splits.add_argument(
+        "--export", type=Path, default=None, help="export verified splits to a JSON file"
+    )
+
+    # Subcommand: tournament
+    tournament = subcommands.add_parser(
+        "tournament", help="run evaluation tournament across agents and deck families"
+    )
+    tournament.add_argument(
+        "--pilot",
+        action="store_true",
+        help="run standard baseline pilot between heuristic, first, and random",
+    )
+    tournament.add_argument(
+        "--pairs",
+        type=int,
+        default=1,
+        help="pairs of matched games per matchup (default: 1)",
+    )
+    tournament.add_argument(
+        "--out", type=Path, default=None, help="output path for JSON tournament report"
     )
 
     return parser
@@ -149,6 +176,84 @@ def _cmd_deck(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_splits(args: argparse.Namespace) -> int:
+    try:
+        verified = verify_split_disjointness()
+    except Exception as error:
+        print(f"Split verification error: {error}", file=sys.stderr)
+        return 2
+
+    print("Deck Family Splits (Disjointness PASSED):")
+    for split_name, families in verified.items():
+        print(f"\n  [{split_name.upper()}] ({len(families)} families):")
+        for fam in families:
+            hash_abbr = fam["deck_sha256"][:16]
+            print(f"    - {fam['family']:<20} | {fam['archetype']:<10} | SHA-256: {hash_abbr}...")
+
+    if args.export is not None:
+        args.export.write_text(json.dumps(verified, indent=2), encoding="utf-8")
+        print(f"\nExported split manifests to {args.export}")
+
+    return 0
+
+
+def _cmd_tournament(args: argparse.Namespace) -> int:
+    try:
+        if args.pilot:
+            print("Running baseline pilot tournament (Random vs First vs Heuristic)...")
+            report = run_pilot_tournament()
+        else:
+            from tcg_cabt_lab.agent import FirstAgent, HeuristicAgent, RandomAgent
+
+            competitors = {
+                "heuristic": lambda deck=None: HeuristicAgent(deck=deck),
+                "first": lambda deck=None: FirstAgent(deck=deck),
+                "random": lambda deck=None: RandomAgent(seed=42, deck=deck),
+            }
+            # Use training split families
+            families = SPLIT_ASSIGNMENTS["training"]
+            print(
+                f"Running tournament across {len(families)} training families "
+                f"with {args.pairs} pairs/matchup..."
+            )
+            report = run_tournament(
+                competitors=competitors,
+                deck_family_names=families,
+                pairs_per_matchup=args.pairs,
+            )
+    except Exception as error:
+        print(f"Tournament error: {error}", file=sys.stderr)
+        return 2
+
+    leaderboard = report["leaderboard"]
+    print("\nTournament Leaderboard:")
+    hdr = f"{'Rank':<5} {'Agent':<12} {'Win Rate':<10} {'95% CI':<18} {'Points':<8} {'Games':<6}"
+    print(hdr)
+    print("-" * 65)
+    for rank, entry in enumerate(leaderboard, start=1):
+        ci = entry["confidence_interval_95"]
+        ci_str = f"[{ci[0]:.3f}, {ci[1]:.3f}]"
+        print(
+            f"{rank:<5} {entry['name']:<12} {entry['win_rate']:<10.3f} "
+            f"{ci_str:<18} {entry['points']:<8.1f} {entry['total_games']:<6}"
+        )
+
+    print("\nHead-to-Head Win Rate Grid:")
+    grid = report["matchup_grid"]
+    names = list(grid.keys())
+    header = f"{'':<12} " + " ".join(f"{n:>10}" for n in names)
+    print(header)
+    for r_name in names:
+        row = f"{r_name:<12} " + " ".join(f"{grid[r_name][c_name]:>10.3f}" for c_name in names)
+        print(row)
+
+    if args.out is not None:
+        args.out.write_text(json.dumps(report, indent=2), encoding="utf-8")
+        print(f"\nSaved tournament report to {args.out}")
+
+    return 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = _build_parser()
     args = parser.parse_args(argv)
@@ -161,5 +266,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _cmd_catalog(args)
     if args.command == "deck":
         return _cmd_deck(args)
+    if args.command == "splits":
+        return _cmd_splits(args)
+    if args.command == "tournament":
+        return _cmd_tournament(args)
 
     return 1

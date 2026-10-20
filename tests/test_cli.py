@@ -83,3 +83,23 @@ def test_cli_battle_simulation(tmp_path: Path, capsys: pytest.CaptureFixture[str
     data = json.loads(out_log.read_text(encoding="utf-8"))
     assert data["metadata"]["engine"] == "cabt"
     assert data["metadata"]["total_steps"] > 0
+
+
+def test_cli_splits_verification(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    out_splits = tmp_path / "splits.json"
+    assert main(["splits", "--export", str(out_splits)]) == 0
+    output = capsys.readouterr()
+    assert "Disjointness PASSED" in output.out
+    assert "[TRAINING]" in output.out
+    assert out_splits.exists()
+
+
+def test_cli_tournament_execution(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    out_report = tmp_path / "tournament_report.json"
+    assert main(["tournament", "--pairs", "1", "--out", str(out_report)]) == 0
+    output = capsys.readouterr()
+    assert "Tournament Leaderboard:" in output.out
+    assert "Head-to-Head Win Rate Grid:" in output.out
+    assert out_report.exists()
+    data = json.loads(out_report.read_text(encoding="utf-8"))
+    assert len(data["leaderboard"]) == 3
