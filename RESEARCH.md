@@ -4,7 +4,13 @@
 
 Does training against a diverse opponent pool improve a compact CABT policy's win rate on held-out deck families, under the same training and inference budgets?
 
-This is an experimental hypothesis. A measured improvement and a comparison with prior work are required before claiming a contribution. The project covers 60-card TCG in CABT. Pocket and competitive video-game battles use different rules and belong to separate projects.
+**Empirical Result (Milestone 3)**:
+The hypothesis is **not supported**. In a controlled study comparing a 2-layer option-scoring MLP policy (88 input features -> 32 hidden units -> 1 logit, 2,881 parameters) across 3 independent training seeds (11, 29, 47) and evaluated across 360 matched-pair games with reversed player assignments on frozen held-out test families (`psychic-mewtwo` and `colorless-snorlax`):
+- `fixed-opponent-pool` (trained against greedy `FirstAgent`): Mean win rate: 55.55% (std: 0.0375), pooled win rate: 55.56% (Wilson 95% CI: [48.26%, 62.62%]).
+- `diverse-opponent-pool` (trained against `HeuristicAgent`, `FirstAgent`, `RandomAgent`): Mean win rate: 51.67% (std: 0.0118), pooled win rate: 51.67% (Wilson 95% CI: [44.41%, 58.86%]).
+- **Delta (Diverse - Fixed)**: -3.88% (95% CI: [-14.18%, +6.42%]).
+
+Because zero is contained within the confidence interval and the point estimate is slightly negative, diverse opponent training did not improve held-out deck generalization under an equal sample budget. An ablation reveals that while the diverse-trained policy marginally improved win rate against the stronger `HeuristicAgent` (48.33% vs. 45.83%), it conceded win rate against greedy `FirstAgent` (53.33% vs. 58.33%) and `RandomAgent` (53.33% vs. 62.50%). Full report and checkpoint weights are stored in `experiments/ml-experiment-report.json` and `experiments/checkpoints/`.
 
 ## Environment and information boundary
 

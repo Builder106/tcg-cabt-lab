@@ -8,7 +8,9 @@ TCG CABT Lab is a research project about compact agents for the 60-card Pokemon 
 
 ## Project status
 
-The project integrates the CABT 1.0.0 simulation engine (`kaggle-environments==1.33.0`) with verified platform binaries on Linux ARM64, Linux x86_64, and macOS. The card catalog (1,431 cards) and attack catalog (1,755 attacks) are pinned and checksum-verified. The evaluation framework provides 6 canonical elemental deck families with verified split disjointness across training, tuning, and held-out test splits, alongside reference agents (`RandomAgent`, `FirstAgent`, `HeuristicAgent`). The tournament runner executes matched pairs with reversed player seats, explicit failure accounting, and Wilson score 95% confidence intervals. The study configuration is frozen in [`experiments/heldout-matchups.json`](experiments/heldout-matchups.json).
+The project integrates the CABT 1.0.0 simulation engine (`kaggle-environments==1.33.0`) with verified platform binaries on Linux ARM64, Linux x86_64, and macOS. The card catalog (1,431 cards) and attack catalog (1,755 attacks) are pinned and checksum-verified. The evaluation framework provides 6 canonical elemental deck families with verified split disjointness across training, tuning, and held-out test splits, alongside reference agents (`RandomAgent`, `FirstAgent`, `HeuristicAgent`).
+
+The first controlled ML study (Milestone 3) is complete. It evaluates an 88-dimensional compact option-scoring MLP policy ($88 \to 32 \to 1$, 2,881 parameters) with He-normal initialization and Adam optimization. Resource benchmarks confirm 0.0285 ms inference latency (<50 ms budget) and 1.8 KB footprint (<512 MiB budget). Checkpoints trained under `fixed-opponent-pool` vs. `diverse-opponent-pool` were evaluated across 360 matched-pair games with reversed seating on frozen held-out test families (`psychic-mewtwo`, `colorless-snorlax`). Pooled win rates were 55.56% (95% CI: [48.26%, 62.62%]) for fixed-opponent training and 51.67% (95% CI: [44.41%, 58.86%]) for diverse-opponent training (delta: -3.88%, 95% CI: [-14.18%, +6.42%]), confirming a valid negative result where diverse opponent training did not improve held-out deck generalization under equal sample budgets. Complete metrics and checkpoint weights are recorded in [`experiments/ml-experiment-report.json`](experiments/ml-experiment-report.json).
 
 Read the [research plan](RESEARCH.md), [roadmap](ROADMAP.md), and [showcase brief](docs/showcase.md).
 
@@ -18,6 +20,30 @@ Use Python 3.12 and uv 0.12.5:
 
 ```sh
 uv sync --frozen --group dev
+```
+
+### Run the controlled ML experiment
+
+Execute the full training suite and evaluate checkpoints on held-out deck families:
+
+```sh
+uv run tcg-cabt-lab experiment --checkpoints-dir experiments/checkpoints --report-out experiments/ml-experiment-report.json
+```
+
+### Profile representation and resource budgets
+
+Measure representation extraction latency, dimensionalities, and memory footprints:
+
+```sh
+uv run tcg-cabt-lab profile
+```
+
+### Train a policy checkpoint
+
+Train a compact policy against an opponent pool variant:
+
+```sh
+uv run tcg-cabt-lab train --variant fixed-opponent-pool --seed 11 --steps 400 --out ckpt.json
 ```
 
 ### Run a tournament
@@ -88,16 +114,16 @@ The CLI reads an observation JSON file, validates the requested selection bounds
 
 | Path | Contents |
 | --- | --- |
-| `src/tcg_cabt_lab/` | Random selector and CLI |
-| `tests/` | Choice invariants, malformed input, and CLI checks |
+| `src/tcg_cabt_lab/` | Feature representations, policy models, training, battle runner, tournament evaluation, and CLI |
+| `tests/` | Unit and integration tests for representation, policy, training, battle, deck, catalog, and CLI |
 | `examples/` | Synthetic choice request for the smoke test |
-| `experiments/` | Draft study settings, with unresolved fields marked as null |
-| `RESEARCH.md` | Question, controls, evaluation, data policy, and sources |
+| `experiments/` | Frozen study settings, checkpoints with weights provenance, baseline reports, and ML experiment results |
+| `RESEARCH.md` | Question, empirical findings, controls, evaluation, data policy, and sources |
 | `ROADMAP.md` | Milestones and completion criteria |
 | `docs/showcase.md` | Public tournament and match-viewer brief |
 | `JOURNAL.md` | Decisions behind the project |
 
-Runtime dependencies include the pinned CABT simulation environment. Datasets, deck CSVs, checkpoints, raw matches, and generated reports stay outside Git. Small synthetic fixtures are tracked explicitly.
+Runtime dependencies include the pinned CABT simulation environment and NumPy. Checkpoint JSON weights and experiment reports are tracked with full provenance.
 
 ## License
 
