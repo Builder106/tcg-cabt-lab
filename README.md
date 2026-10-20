@@ -8,20 +8,49 @@ TCG CABT Lab is a research project about compact agents for the 60-card Pokemon 
 
 ## Project status
 
-The scaffold includes a seeded random-choice selector, a Python CLI, tests, locked development tools, and CI. The selector follows the random sampling pattern in the [CABT documentation](https://matsuoinstitute.github.io/cabt/). Simulator integration, training, tournament evaluation, and the public demo are upcoming work. There are no measured gameplay results yet.
+The project integrates the CABT 1.0.0 simulation engine (`kaggle-environments==1.33.0`) with verified platform binaries on Linux ARM64, Linux x86_64, and macOS. The card catalog is pinned to 1,431 cards (SHA-256: `7fd6c45fcdc2913a1fe19ddb67c01aa9b204718cb760be7582cf4fcc3513de9c`). The Python CLI supports reproducible full-game battle simulations, catalog integrity verification, deck validation, and synthetic choice sampling with an enforced observation-only agent boundary. Model training, heuristic references, tournament evaluation, and the public demo are upcoming work.
 
 Read the [research plan](RESEARCH.md), [roadmap](ROADMAP.md), and [showcase brief](docs/showcase.md).
 
-## Try the scaffold
+## Usage
 
 Use Python 3.12 and uv 0.12.5:
 
 ```sh
 uv sync --frozen --group dev
-uv run tcg-cabt-lab sample examples/selection.json --seed 11
 ```
 
-The example is a synthetic choice request with three empty option records. The command prints a JSON array containing two distinct indices. It checks selection counts and input shape without launching CABT or evaluating card effects. Initial deck selection is unsupported. This is a local smoke test, not a Kaggle submission entrypoint.
+### Run a simulated battle
+
+Simulate a full game between two random agents with reproducible seeds and export the structured game log:
+
+```sh
+uv run tcg-cabt-lab battle --seed-p0 11 --seed-p1 22 --bo 1 --out battle.json
+```
+
+### Inspect the card catalog
+
+Verify the 1,431 cards in the pinned CABT catalog:
+
+```sh
+uv run tcg-cabt-lab catalog
+```
+
+### Validate a deck
+
+Validate a 60-card deck and display its composition:
+
+```sh
+uv run tcg-cabt-lab deck
+```
+
+### Smoke test synthetic selection
+
+Sample choice indices from a standalone observation JSON without starting the simulator:
+
+```sh
+uv run tcg-cabt-lab sample examples/selection.json --seed 11
+```
 
 The sampler can also be imported with a caller-owned random generator:
 
@@ -52,7 +81,7 @@ The CLI reads an observation JSON file, validates the requested selection bounds
 | `docs/showcase.md` | Public tournament and match-viewer brief |
 | `JOURNAL.md` | Decisions behind the project |
 
-Runtime dependencies are empty. Add the simulator and learning stack with their implementation milestones. Datasets, deck CSVs, checkpoints, raw matches, and generated reports stay outside Git. Small synthetic fixtures are tracked explicitly.
+Runtime dependencies include the pinned CABT simulation environment. Datasets, deck CSVs, checkpoints, raw matches, and generated reports stay outside Git. Small synthetic fixtures are tracked explicitly.
 
 ## License
 

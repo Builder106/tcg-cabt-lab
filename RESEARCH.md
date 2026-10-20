@@ -8,7 +8,7 @@ This is an experimental hypothesis. A measured improvement and a comparison with
 
 ## Environment and information boundary
 
-Use a pinned CABT distribution and record its package version, source revision when available, and card-catalog hash. The current scaffold only consumes the documented `select.option`, `minCount`, and `maxCount` fields. It has not run a CABT battle.
+Use a pinned CABT distribution and record its package version, source revision when available, and card-catalog hash. The project integrates `kaggle-environments==1.33.0` with the 1,431-card catalog pinned at SHA-256 `7fd6c45fcdc2913a1fe19ddb67c01aa9b204718cb760be7582cf4fcc3513de9c`. Environment simulation runs on native Linux ARM64, Linux x86_64, and macOS binaries. Note that while agent decision policies accept deterministic seeds, the engine's internal state transitions (deck shuffles, coin flips, prize cards) are initialized via `std::random_device`.
 
 Agent inputs must contain only the observations available at decision time. Do not expose hidden opponent cards, future events, or evaluator-only state to a learned policy. Keep spectator views and training inputs separate. Verify deck selection and special choice contexts against the engine before evaluating full games.
 

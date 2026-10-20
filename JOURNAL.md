@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-10-20: Reproduce CABT and establish simulator boundary #milestone
+
+Milestone 1 is complete. Integrated `kaggle-environments==1.33.0` providing the CABT 1.0.0 simulation engine with native Linux ARM64 (`libcg-arm64.so`), Linux x86_64 (`libcg.so`), and macOS Darwin (`libcg.dylib`) platform binaries. Pinned the 1,431-card catalog at SHA-256 `7fd6c45fcdc2913a1fe19ddb67c01aa9b204718cb760be7582cf4fcc3513de9c`. Verified initial 60-card deck selection, optional choice bounds, special selection contexts, and invalid action penalization (INVALID status with opponent win). Enforced an observation-only agent interface by stripping simulator internal search state (`search_begin_input`) and masking opponent hidden cards. Built CLI commands for full battle simulation, catalog verification, and deck inspection with reproducible structured JSON logging.
+
 ## 2026-10-13: Replace the README Mermaid diagram #decision
 
 The current flow is a short linear scaffold, so the README now states it in prose. The former Mermaid block added no relationship that needed a diagram.

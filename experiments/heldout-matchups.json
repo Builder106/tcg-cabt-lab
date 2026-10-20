@@ -4,9 +4,9 @@
   "question": "Does training against a diverse opponent pool improve a compact CABT policy's win rate on held-out deck families?",
   "environment": {
     "engine": "cabt",
-    "package_version": null,
-    "source_revision": null,
-    "card_catalog_sha256": null,
+    "package_version": "1.33.0",
+    "source_revision": "kaggle-environments@v1.33.0",
+    "card_catalog_sha256": "7fd6c45fcdc2913a1fe19ddb67c01aa9b204718cb760be7582cf4fcc3513de9c",
     "information_mode": "agent-observation-only"
   },
   "split_unit": "deck-family",

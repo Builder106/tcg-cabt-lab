@@ -6,7 +6,7 @@ Deliver a typed Python package, seeded random-choice selector, synthetic example
 
 ## 1. Reproduce CABT
 
-Install a versioned environment, check its platform support and distribution terms, obtain a permitted valid deck, and run a complete random-agent battle. Record the engine version and card catalog. Check initial deck selection, optional choices, special selection contexts, end-of-game behavior, and invalid-action reporting. Completion requires reproducible full-game logs and an observation-only agent boundary.
+Completed. Installed versioned environment `kaggle-environments==1.33.0` (CABT 1.0.0 engine) and verified platform binaries on Linux ARM64 (`libcg-arm64.so`), Linux x86_64, and macOS. Pinned the complete 1,431-card catalog (SHA-256: `7fd6c45fcdc2913a1fe19ddb67c01aa9b204718cb760be7582cf4fcc3513de9c`). Verified initial 60-card deck submission, optional choices, in-game selection contexts, invalid-action penalization, and terminal game outcomes. Enforced an observation-only agent boundary by sanitizing internal engine search states (`search_begin_input`) and opponent hidden cards, and implemented full-game battle execution with reproducible JSON logging.
 
 ## 2. Establish evaluation
 
