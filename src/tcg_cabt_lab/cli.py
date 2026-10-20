@@ -16,8 +16,16 @@ from tcg_cabt_lab.catalog import (
     load_card_catalog,
 )
 from tcg_cabt_lab.deck import REFERENCE_DECK, format_deck_summary, validate_deck
+from tcg_cabt_lab.experiment import (
+    DEFAULT_TRAINING_SEEDS,
+    run_controlled_experiment,
+    run_training_suite,
+)
+from tcg_cabt_lab.features import measure_representation_profile
 from tcg_cabt_lab.manifest import SPLIT_ASSIGNMENTS, verify_split_disjointness
+from tcg_cabt_lab.policy import create_checkpoint, save_checkpoint
 from tcg_cabt_lab.tournament import run_pilot_tournament, run_tournament
+from tcg_cabt_lab.training import TRAINING_FAMILIES, train_policy
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -85,6 +93,63 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     tournament.add_argument(
         "--out", type=Path, default=None, help="output path for JSON tournament report"
+    )
+
+    # Subcommand: profile
+    profile = subcommands.add_parser(
+        "profile", help="measure compact representation sizes, memory, and inference latency"
+    )
+    profile.add_argument(
+        "--trials", type=int, default=200, help="number of benchmark trials (default: 200)"
+    )
+
+    # Subcommand: train
+    train = subcommands.add_parser("train", help="train a compact neural policy checkpoint")
+    train.add_argument(
+        "--variant",
+        type=str,
+        default="fixed-opponent-pool",
+        choices=["fixed-opponent-pool", "diverse-opponent-pool"],
+        help="opponent pool variant",
+    )
+    train.add_argument("--seed", type=int, default=11, help="training seed (default: 11)")
+    train.add_argument(
+        "--steps", type=int, default=400, help="training gradient steps (default: 400)"
+    )
+    train.add_argument(
+        "--samples", type=int, default=2000, help="decision samples to collect (default: 2000)"
+    )
+    train.add_argument(
+        "--out", type=Path, required=True, help="output path for JSON checkpoint file"
+    )
+
+    # Subcommand: experiment
+    experiment = subcommands.add_parser(
+        "experiment", help="run controlled ML experiment comparing fixed vs diverse opponent pools"
+    )
+    experiment.add_argument(
+        "--checkpoints-dir",
+        type=Path,
+        default=Path("experiments/checkpoints"),
+        help="directory to save/load checkpoints",
+    )
+    experiment.add_argument(
+        "--report-out",
+        type=Path,
+        default=Path("experiments/ml-experiment-report.json"),
+        help="output path for JSON experiment report",
+    )
+    experiment.add_argument(
+        "--train-steps",
+        type=int,
+        default=400,
+        help="training steps per checkpoint (default: 400)",
+    )
+    experiment.add_argument(
+        "--samples-per-run",
+        type=int,
+        default=2000,
+        help="decision samples per checkpoint (default: 2000)",
     )
 
     return parser
@@ -254,6 +319,83 @@ def _cmd_tournament(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_profile(args: argparse.Namespace) -> int:
+    prof = measure_representation_profile(num_trials=args.trials)
+    print("Representation Profile & Budget Verification:")
+    print(f"  - State dimension: {prof['state_dimension']}")
+    print(f"  - Option dimension: {prof['option_dimension']}")
+    print(f"  - Total candidate feature dimension: {prof['total_feature_dimension']}")
+    print(f"  - Memory footprint (5 options): {prof['matrix_bytes']} bytes (limit: 512 MiB)")
+    print(f"  - Mean latency: {prof['mean_latency_ms']:.4f} ms (budget: 50.0 ms)")
+    print(f"  - P95 latency: {prof['p95_latency_ms']:.4f} ms")
+    print(f"  - Within resource budget: {'PASSED' if prof['within_budget'] else 'FAILED'}")
+    return 0 if prof["within_budget"] else 1
+
+
+def _cmd_train(args: argparse.Namespace) -> int:
+    print(f"Training CompactPolicy [{args.variant}] (seed={args.seed}, steps={args.steps})...")
+    policy, meta = train_policy(
+        variant=args.variant,
+        seed=args.seed,
+        training_steps=args.steps,
+        target_samples=args.samples,
+        training_families=TRAINING_FAMILIES,
+    )
+    ckpt = create_checkpoint(
+        policy=policy,
+        variant=args.variant,
+        seed=args.seed,
+        training_steps=args.steps,
+        training_deck_families=TRAINING_FAMILIES,
+        extra_metadata=meta,
+    )
+    save_checkpoint(ckpt, args.out)
+    print(f"Training completed in {meta['training_duration_seconds']}s")
+    print(
+        f"  - Samples: {meta['total_samples']} "
+        f"(train: {meta['train_samples']}, val: {meta['val_samples']})"
+    )
+    print(f"  - Val Loss: {meta['initial_val_loss']} -> {meta['final_val_loss']}")
+    print(
+        f"  - Val Acc: {meta['initial_val_acc'] * 100:.1f}% -> {meta['final_val_acc'] * 100:.1f}%"
+    )
+    print(f"  - Weights SHA-256: {ckpt['weights_sha256']}")
+    print(f"  - Saved checkpoint to: {args.out}")
+    return 0
+
+
+def _cmd_experiment(args: argparse.Namespace) -> int:
+    print("Executing Milestone 3 Controlled ML Experiment...")
+    print(f"Step 1: Training checkpoints in {args.checkpoints_dir}...")
+    run_training_suite(
+        output_dir=args.checkpoints_dir,
+        training_seeds=DEFAULT_TRAINING_SEEDS,
+        training_steps=args.train_steps,
+        target_samples=args.samples_per_run,
+    )
+    print("Step 2: Evaluating checkpoints on held-out deck families...")
+    report = run_controlled_experiment(
+        checkpoints_dir=args.checkpoints_dir,
+        output_report_path=args.report_out,
+        training_seeds=DEFAULT_TRAINING_SEEDS,
+    )
+    ablation = report["ablation_results"]
+    summary = ablation["summary_by_variant"]
+    print("\nExperiment Summary across 3 independent training seeds:")
+    for var, s in summary.items():
+        ci = s["pooled_wilson_ci_95"]
+        print(
+            f"  - {var:<24}: Mean Win Rate = {s['mean_win_rate'] * 100:.2f}% "
+            f"(Pooled: {s['pooled_win_rate'] * 100:.2f}% [{ci[0] * 100:.2f}%, {ci[1] * 100:.2f}%])"
+        )
+    delta_pct = ablation["win_rate_delta_diverse_vs_fixed"] * 100
+    print(f"\nWin Rate Delta (Diverse - Fixed): {delta_pct:+.2f}%")
+    ci_delta = ablation["delta_confidence_interval_95"]
+    print(f"95% CI on Delta: [{ci_delta[0] * 100:+.2f}%, {ci_delta[1] * 100:+.2f}%]")
+    print(f"Saved complete experiment report to: {args.report_out}")
+    return 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = _build_parser()
     args = parser.parse_args(argv)
@@ -270,5 +412,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _cmd_splits(args)
     if args.command == "tournament":
         return _cmd_tournament(args)
+    if args.command == "profile":
+        return _cmd_profile(args)
+    if args.command == "train":
+        return _cmd_train(args)
+    if args.command == "experiment":
+        return _cmd_experiment(args)
 
     return 1

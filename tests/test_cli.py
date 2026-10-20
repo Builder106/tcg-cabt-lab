@@ -103,3 +103,36 @@ def test_cli_tournament_execution(tmp_path: Path, capsys: pytest.CaptureFixture[
     assert out_report.exists()
     data = json.loads(out_report.read_text(encoding="utf-8"))
     assert len(data["leaderboard"]) == 3
+
+
+def test_cli_profile_command(capsys: pytest.CaptureFixture[str]) -> None:
+    assert main(["profile", "--trials", "20"]) == 0
+    output = capsys.readouterr()
+    assert "Representation Profile & Budget Verification:" in output.out
+    assert "Total candidate feature dimension: 88" in output.out
+    assert "Within resource budget: PASSED" in output.out
+
+
+def test_cli_train_command(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    out_ckpt = tmp_path / "ckpt.json"
+    assert (
+        main(
+            [
+                "train",
+                "--variant",
+                "fixed-opponent-pool",
+                "--seed",
+                "11",
+                "--steps",
+                "10",
+                "--samples",
+                "30",
+                "--out",
+                str(out_ckpt),
+            ]
+        )
+        == 0
+    )
+    output = capsys.readouterr()
+    assert "Training completed in" in output.out
+    assert out_ckpt.exists()
