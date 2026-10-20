@@ -32,4 +32,3 @@ def test_card_catalog_by_id_indexing() -> None:
     assert card721["cardId"] == 721
     assert card721["name"] == "Kyogre"
     assert card721["basic"] is True
-

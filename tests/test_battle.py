@@ -63,4 +63,3 @@ def test_invalid_action_handling() -> None:
     p0_status = log["players"][0]["final_status"]
     assert p0_status == "INVALID"
     assert log["outcome"]["winner"] == 1
-
