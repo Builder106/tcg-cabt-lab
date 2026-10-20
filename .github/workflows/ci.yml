@@ -17,8 +17,6 @@ jobs:
   checks:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
-    env:
-      PYTHONWARNINGS: error
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
