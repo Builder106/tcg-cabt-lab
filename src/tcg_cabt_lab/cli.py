@@ -1,4 +1,4 @@
-"""Sample a CABT choice request without starting a simulator."""
+"""TCG CABT Lab command-line interface."""
 
 import argparse
 import json
@@ -8,16 +8,62 @@ from pathlib import Path
 from random import Random
 
 from tcg_cabt_lab.baseline import choose_random_action
+from tcg_cabt_lab.battle import run_battle
+from tcg_cabt_lab.catalog import (
+    EXPECTED_CARD_COUNT,
+    EXPECTED_CATALOG_SHA256,
+    get_catalog_sha256,
+    load_card_catalog,
+)
+from tcg_cabt_lab.deck import REFERENCE_DECK, format_deck_summary, validate_deck
 
 
-def main(argv: Sequence[str] | None = None) -> int:
+def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subcommands = parser.add_subparsers(dest="command", required=True)
-    sample = subcommands.add_parser("sample", help="sample indices from an observation JSON file")
-    sample.add_argument("observation", type=Path)
-    sample.add_argument("--seed", type=int, default=11)
-    args = parser.parse_args(argv)
 
+    # Subcommand: sample
+    sample = subcommands.add_parser("sample", help="sample indices from an observation JSON file")
+    sample.add_argument("observation", type=Path, help="path to observation JSON file")
+    sample.add_argument("--seed", type=int, default=11, help="random seed (default: 11)")
+
+    # Subcommand: battle
+    battle = subcommands.add_parser("battle", help="simulate a complete CABT battle between agents")
+    battle.add_argument("--seed-p0", type=int, default=11, help="seed for player 0 (default: 11)")
+    battle.add_argument("--seed-p1", type=int, default=22, help="seed for player 1 (default: 22)")
+    battle.add_argument(
+        "--bo", type=int, default=1, choices=[1, 3], help="best of N matches (default: 1)"
+    )
+    battle.add_argument(
+        "--deck-p0", type=Path, default=None, help="JSON file containing 60 card IDs for player 0"
+    )
+    battle.add_argument(
+        "--deck-p1", type=Path, default=None, help="JSON file containing 60 card IDs for player 1"
+    )
+    battle.add_argument("--out", type=Path, default=None, help="output path for full JSON game log")
+
+    # Subcommand: catalog
+    catalog = subcommands.add_parser(
+        "catalog", help="inspect and verify the pinned engine card catalog"
+    )
+    catalog.add_argument(
+        "--export", type=Path, default=None, help="export full card catalog to a JSON file"
+    )
+
+    # Subcommand: deck
+    deck = subcommands.add_parser("deck", help="validate and inspect a 60-card deck")
+    deck.add_argument(
+        "deck_file",
+        type=Path,
+        nargs="?",
+        default=None,
+        help="path to JSON file containing card IDs (defaults to reference deck)",
+    )
+
+    return parser
+
+
+def _cmd_sample(args: argparse.Namespace) -> int:
     try:
         observation: object = json.loads(args.observation.read_text(encoding="utf-8"))
         action = choose_random_action(observation, Random(args.seed))
@@ -27,3 +73,93 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     print(json.dumps(action))
     return 0
+
+
+def _cmd_battle(args: argparse.Namespace) -> int:
+    try:
+        deck_p0 = None
+        if args.deck_p0 is not None:
+            deck_p0 = json.loads(args.deck_p0.read_text(encoding="utf-8"))
+
+        deck_p1 = None
+        if args.deck_p1 is not None:
+            deck_p1 = json.loads(args.deck_p1.read_text(encoding="utf-8"))
+
+        log = run_battle(
+            deck_p0=deck_p0,
+            deck_p1=deck_p1,
+            seed_p0=args.seed_p0,
+            seed_p1=args.seed_p1,
+            best_of=args.bo,
+        )
+    except Exception as error:
+        print(f"Battle simulation error: {error}", file=sys.stderr)
+        return 2
+
+    metadata = log["metadata"]
+    outcome = log["outcome"]
+    print(
+        f"Battle completed in {metadata['total_steps']} steps: "
+        f"Winner=Player {outcome['winner']}, "
+        f"Rewards={outcome['rewards']}, "
+        f"Statuses={outcome['statuses']}"
+    )
+
+    if args.out is not None:
+        args.out.write_text(json.dumps(log, indent=2), encoding="utf-8")
+        print(f"Saved battle log to {args.out}")
+
+    return 0
+
+
+def _cmd_catalog(args: argparse.Namespace) -> int:
+    try:
+        cards = load_card_catalog()
+        catalog_sha = get_catalog_sha256()
+    except Exception as error:
+        print(f"Catalog error: {error}", file=sys.stderr)
+        return 2
+
+    verified = catalog_sha == EXPECTED_CATALOG_SHA256 and len(cards) == EXPECTED_CARD_COUNT
+    print(f"Total cards: {len(cards)} (expected: {EXPECTED_CARD_COUNT})")
+    print(f"SHA-256: {catalog_sha}")
+    print(f"Verification: {'PASSED' if verified else 'FAILED'}")
+
+    if args.export is not None:
+        args.export.write_text(json.dumps(cards, indent=2), encoding="utf-8")
+        print(f"Exported card catalog to {args.export}")
+
+    return 0 if verified else 1
+
+
+def _cmd_deck(args: argparse.Namespace) -> int:
+    try:
+        if args.deck_file is not None:
+            raw_deck = json.loads(args.deck_file.read_text(encoding="utf-8"))
+        else:
+            raw_deck = list(REFERENCE_DECK)
+
+        valid_deck = validate_deck(raw_deck)
+        summary = format_deck_summary(valid_deck)
+        print(summary)
+    except Exception as error:
+        print(f"Deck error: {error}", file=sys.stderr)
+        return 2
+
+    return 0
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = _build_parser()
+    args = parser.parse_args(argv)
+
+    if args.command == "sample":
+        return _cmd_sample(args)
+    if args.command == "battle":
+        return _cmd_battle(args)
+    if args.command == "catalog":
+        return _cmd_catalog(args)
+    if args.command == "deck":
+        return _cmd_deck(args)
+
+    return 1

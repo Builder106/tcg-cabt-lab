@@ -3,6 +3,7 @@ from random import Random
 import pytest
 
 from tcg_cabt_lab.baseline import choose_random_action
+from tcg_cabt_lab.deck import REFERENCE_DECK
 
 
 def test_selected_indices_respect_bounds_and_are_distinct() -> None:
@@ -51,3 +52,16 @@ def test_seed_reproduces_action_without_mutating_observation() -> None:
 def test_malformed_requests_fail_without_producing_actions(observation: object) -> None:
     with pytest.raises(ValueError):
         choose_random_action(observation, Random(11))
+
+
+def test_deck_selection_when_explicitly_allowed() -> None:
+    obs = {"select": None}
+    action = choose_random_action(obs, Random(11), allow_deck_selection=True)
+    assert action == list(REFERENCE_DECK)
+    assert len(action) == 60
+
+    custom_deck = list(range(1, 61))
+    action_custom = choose_random_action(
+        obs, Random(11), allow_deck_selection=True, default_deck=custom_deck
+    )
+    assert action_custom == custom_deck
