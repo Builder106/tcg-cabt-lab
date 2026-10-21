@@ -179,6 +179,8 @@ class PolicyAgent:
         self.provenance = copy.deepcopy(ckpt_dict.get("provenance", {}))
         self.weights_hash = str(ckpt_dict.get("weights_sha256", ""))
         self.deck = validate_deck(deck) if deck is not None else list(REFERENCE_DECK)
+        # Raw option scores from the latest decision; not win probabilities
+        self.last_scores: list[float] | None = None
 
         try:
             self.attacks = get_attack_by_id()
@@ -190,6 +192,7 @@ class PolicyAgent:
         observation: Mapping[str, Any],
         configuration: Mapping[str, Any] | None = None,
     ) -> list[int]:
+        self.last_scores = None
         clean_obs = sanitize_observation(observation)
         sel = clean_obs.get("select")
         if sel is None:
@@ -210,6 +213,7 @@ class PolicyAgent:
 
         # Forward pass: (N,)
         scores = self.policy.forward(cand_matrix)
+        self.last_scores = [round(float(v), 4) for v in scores]
 
         # Select top max_count candidate indices
         sorted_indices = np.argsort(-scores)

@@ -13,12 +13,31 @@ KAGGLE_ENVIRONMENTS_VERSION = "1.33.0"
 CABT_SPEC_VERSION = "1.0.0"
 
 
-def _normalize_agent(agent: Callable[..., list[int]]) -> Callable[..., list[int]]:
+def _normalize_agent(
+    agent: Callable[..., list[int]],
+    seat: int = 0,
+    decisions: list[dict[str, Any]] | None = None,
+) -> Callable[..., list[int]]:
     def wrapped(observation: Mapping[str, Any], configuration: Any = None) -> list[int]:
         try:
-            return agent(observation, configuration)
+            action = agent(observation, configuration)
         except TypeError:
-            return agent(observation)
+            action = agent(observation)
+
+        # Deck submission has no selection; only in-game choices are decisions
+        current = observation.get("current")
+        if decisions is not None and observation.get("select") is not None and current:
+            scores = getattr(agent, "last_scores", None)
+            decisions.append(
+                {
+                    "seat": seat,
+                    "turn": current.get("turn"),
+                    "option_count": len(observation["select"].get("option") or []),
+                    "action": list(action),
+                    "scores": list(scores) if scores is not None else None,
+                }
+            )
+        return action
 
     return wrapped
 
@@ -31,6 +50,7 @@ def run_battle(
     seed_p0: int = 11,
     seed_p1: int = 22,
     best_of: int = 1,
+    record_replay: bool = False,
 ) -> dict[str, Any]:
     """Run a complete CABT battle between two agents.
 
@@ -42,6 +62,8 @@ def run_battle(
         seed_p0: Seed for player 0's default RandomAgent.
         seed_p1: Seed for player 1's default RandomAgent.
         best_of: Best-of match configuration (1 for single battle, 3 for BO3).
+        record_replay: Also return the engine's spectator frames and each agent
+            decision (action and any option scores) under the "replay" key.
 
     Returns:
         Structured dictionary containing run metadata, player configurations,
@@ -53,8 +75,9 @@ def run_battle(
     raw_p0 = agent_p0 if agent_p0 is not None else RandomAgent(seed=seed_p0, deck=valid_deck_p0)
     raw_p1 = agent_p1 if agent_p1 is not None else RandomAgent(seed=seed_p1, deck=valid_deck_p1)
 
-    p0 = _normalize_agent(raw_p0)
-    p1 = _normalize_agent(raw_p1)
+    decisions: list[dict[str, Any]] | None = [] if record_replay else None
+    p0 = _normalize_agent(raw_p0, 0, decisions)
+    p1 = _normalize_agent(raw_p1, 1, decisions)
 
     env = make("cabt", configuration={"bo": best_of})
     raw_steps = env.run([p0, p1])
@@ -97,7 +120,7 @@ def run_battle(
 
     catalog_hash = get_catalog_sha256()
 
-    return {
+    log: dict[str, Any] = {
         "metadata": {
             "engine": "cabt",
             "spec_version": CABT_SPEC_VERSION,
@@ -130,3 +153,10 @@ def run_battle(
         },
         "steps": recorded_steps,
     }
+    if record_replay:
+        # Spectator frames include both hands, deck order, and Prize identities
+        log["replay"] = {
+            "frames": env.steps[0][0].get("visualize") or [],
+            "decisions": decisions,
+        }
+    return log
