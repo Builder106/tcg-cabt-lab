@@ -151,6 +151,17 @@ def _build_parser() -> argparse.ArgumentParser:
         default=2000,
         help="decision samples per checkpoint (default: 2000)",
     )
+    experiment.add_argument(
+        "--skip-training",
+        action="store_true",
+        help="evaluate the existing checkpoints instead of training new ones",
+    )
+    experiment.add_argument(
+        "--replays",
+        type=Path,
+        default=None,
+        help="directory for one compact gzipped replay per evaluated game",
+    )
 
     return parser
 
@@ -366,18 +377,22 @@ def _cmd_train(args: argparse.Namespace) -> int:
 
 def _cmd_experiment(args: argparse.Namespace) -> int:
     print("Executing Milestone 3 Controlled ML Experiment...")
-    print(f"Step 1: Training checkpoints in {args.checkpoints_dir}...")
-    run_training_suite(
-        output_dir=args.checkpoints_dir,
-        training_seeds=DEFAULT_TRAINING_SEEDS,
-        training_steps=args.train_steps,
-        target_samples=args.samples_per_run,
-    )
+    if args.skip_training:
+        print(f"Step 1: Reusing existing checkpoints in {args.checkpoints_dir}")
+    else:
+        print(f"Step 1: Training checkpoints in {args.checkpoints_dir}...")
+        run_training_suite(
+            output_dir=args.checkpoints_dir,
+            training_seeds=DEFAULT_TRAINING_SEEDS,
+            training_steps=args.train_steps,
+            target_samples=args.samples_per_run,
+        )
     print("Step 2: Evaluating checkpoints on held-out deck families...")
     report = run_controlled_experiment(
         checkpoints_dir=args.checkpoints_dir,
         output_report_path=args.report_out,
         training_seeds=DEFAULT_TRAINING_SEEDS,
+        replay_dir=args.replays,
     )
     ablation = report["ablation_results"]
     summary = ablation["summary_by_variant"]
@@ -392,6 +407,8 @@ def _cmd_experiment(args: argparse.Namespace) -> int:
     print(f"\nWin Rate Delta (Diverse - Fixed): {delta_pct:+.2f}%")
     ci_delta = ablation["delta_confidence_interval_95"]
     print(f"95% CI on Delta: [{ci_delta[0] * 100:+.2f}%, {ci_delta[1] * 100:+.2f}%]")
+    if args.replays is not None:
+        print(f"Saved {len(report.get('games', []))} game replays to: {args.replays}")
     print(f"Saved complete experiment report to: {args.report_out}")
     return 0
 
