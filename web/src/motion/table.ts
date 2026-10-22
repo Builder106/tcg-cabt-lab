@@ -2,7 +2,7 @@
 // movement through a pile.
 import { gsap } from 'gsap';
 import { Flip } from 'gsap/Flip';
-import { ease, onPage, prefersReducedMotion } from '../engine';
+import { ease, isTouch, onPage, prefersReducedMotion } from '../engine';
 import { setSwap } from '../engine/astro';
 import { nav } from './state';
 
@@ -56,10 +56,9 @@ function deal(intro: gsap.core.Timeline) {
   if (!tiles.length) return;
   const ox = innerWidth * 0.5;
   const oy = innerHeight + 80;
-  // Read every position first, then write: one layout pass for all 360 cards
-  const rects = tiles.map((t) => t.getBoundingClientRect());
-  const visible = tiles.filter((_, i) => rects[i]!.top < innerHeight + 200);
-  const from = visible.map((t) => { const r = rects[tiles.indexOf(t)]!; return { x: ox - (r.left + r.width / 2), y: oy - (r.top + r.height / 2) }; });
+  // Animate a sample of the visible cards; the full table remains available immediately.
+  const visible = tiles.slice(0, 24).filter((t) => t.getBoundingClientRect().top < innerHeight + 200);
+  const from = visible.map((t) => { const r = t.getBoundingClientRect(); return { x: ox - (r.left + r.width / 2), y: oy - (r.top + r.height / 2) }; });
   const hand = gsap.utils.toArray<HTMLElement>('.hand__slot');
   if (hand.length) {
     intro.add(gsap.from(hand, { y: () => innerHeight * 0.6, rotation: () => gsap.utils.random(-30, 30), duration: 1.1, ease: ease.out, stagger: 0.08, clearProps: 'transform' }), 0);
@@ -111,7 +110,7 @@ function roving(root: HTMLElement) {
 /** The hand along the bottom edge breathes a little at rest and leans toward the pointer. */
 function sway() {
   const hand = document.querySelector<HTMLElement>('.hand__fan');
-  if (!hand || prefersReducedMotion()) return () => {};
+  if (!hand || prefersReducedMotion() || isTouch()) return () => {};
   let visible = true;
   let lean = 0, target = 0;
   const seen = new IntersectionObserver(([e]) => { visible = !!e?.isIntersecting; });
@@ -136,7 +135,7 @@ onPage(({ intro, first }) => {
   if (!table) return;
   nav.lastTable = location.pathname;
   const offs = gsap.utils.toArray<HTMLElement>('.pile__cards').map(roving);
-  if (first && !resorting && !prefersReducedMotion()) deal(intro);
+  if (first && !resorting && !prefersReducedMotion() && !isTouch()) deal(intro);
   document.documentElement.classList.remove('deal-pending');
   const offHand = sway();
   return () => { offs.forEach((f) => f()); offHand(); };
