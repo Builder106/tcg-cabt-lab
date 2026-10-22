@@ -1,7 +1,7 @@
 // Each sort is a Trainer card. In the hand it shows its name and one rules line; played on the
 // table it carries the finding. Numbers come from the piles; fixed facts from site.ts.
 import { facts } from './site';
-import { pct, signed } from '../lib/labels';
+import { pct } from '../lib/labels';
 import type { Pile, Sort, SortKey } from '../lib/sorts';
 
 export type SortCopy = {
