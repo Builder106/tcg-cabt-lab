@@ -1,8 +1,9 @@
-# Gitleaks settings: the default rules, plus one narrow exception.
+# Gitleaks settings: the default rules, plus one narrow exception. CI runs gitleaks 8.24, which
+# reads the single [allowlist] table; it ignores this rule written as [[allowlists]].
 [extend]
 useDefault = true
 
-[[allowlists]]
+[allowlist]
 description = "aria-keyshortcuts names keyboard keys, such as Shift+ArrowLeft, not credentials"
 regexTarget = "line"
 regexes = ['''aria-keyshortcuts="[A-Za-z+]+"''']
