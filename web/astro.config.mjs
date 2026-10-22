@@ -1,10 +1,10 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// Placeholder production URL: canonical links, OG tags and the sitemap read it. Set the real
-// domain before deploying.
+// Production URL: canonical links, OG tags and the sitemap read it. Also in src/data/site.ts
+// and public/robots.txt.
 export default defineConfig({
-  site: 'https://tcg-cabt-lab.example',
+  site: 'https://tcg-cabt-lab.vercel.app',
   trailingSlash: 'always',
   integrations: [sitemap()],
   prefetch: { prefetchAll: false, defaultStrategy: 'hover' },
