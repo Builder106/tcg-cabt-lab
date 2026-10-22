@@ -1,5 +1,17 @@
 # Journal
 
+## 2026-10-22: Build the showcase as a card table #milestone
+
+The showcase is a static Astro site in `web/`. It reads `experiments/` at build time and emits one page and one compressed replay per game, so it needs no server or inference endpoint. The 360 games appear as cards on a table, and a hand of Trainer cards re-sorts them; the played card states the finding for that sort in plain language. Each replay steps through every decision with the board animated between steps.
+
+## 2026-10-22: Original artwork only #decision
+
+Research into the Kaggle competition rules and the Pokémon Company's legal and press terms found no permission to show official card art, logos, or card backs on a public site. Every image is therefore original: card faces, sort art, Pokémon art motifs, and icons were drawn in Glaxnimate, and the card renders were made in Blender. Card and attack names appear as text from the engine catalog, and the footer states that the project is not affiliated with the Pokémon Company.
+
+## 2026-10-22: Keep the replay's information boundary #decision
+
+Replays store the full spectator record, so the viewer rebuilds the policy's view from it: own hand, public board, and counts. The opponent's hand, its options, its draws and searches, and every Prize card stay face down in that view, and the board animation compares only what the current view shows. Policy scores are labelled as preferences, not win chances. No move is called a mistake, because that would need counterfactual rollouts the study did not run.
+
 ## 2026-10-21: Report the logged re-run #decision
 
 The milestone 3 numbers now come from a re-run that logs every game: fixed pool 58.33%, diverse pool 57.78%, delta -0.55 points (95% CI: [-10.74, +9.64]). The earlier run was not logged, so its games cannot be shown or checked; its numbers (-3.88 points) stay in the record as an earlier run that reached the same conclusion.

@@ -10,7 +10,18 @@ TCG CABT Lab is a research project about compact agents for the 60-card Pokemon 
 
 The project integrates the CABT 1.0.0 simulation engine (`kaggle-environments==1.33.0`) with verified platform binaries on Linux ARM64, Linux x86_64, and macOS. The card catalog (1,431 cards) and attack catalog (1,755 attacks) are pinned and checksum-verified. The evaluation framework provides 6 canonical elemental deck families with verified split disjointness across training, tuning, and held-out test splits, alongside reference agents (`RandomAgent`, `FirstAgent`, `HeuristicAgent`).
 
-The first controlled ML study (Milestone 3) is complete. It evaluates an 88-dimensional compact option-scoring MLP policy ($88 \to 32 \to 1$, 2,881 parameters) with He-normal initialization and Adam optimization. Resource benchmarks confirm 0.0285 ms inference latency (<50 ms budget) and 1.8 KB footprint (<512 MiB budget). Checkpoints trained under `fixed-opponent-pool` vs. `diverse-opponent-pool` were evaluated across 360 matched-pair games with reversed seating on frozen held-out test families (`psychic-mewtwo`, `colorless-snorlax`). In the logged re-run, pooled win rates were 58.33% (95% CI: [51.03%, 65.29%]) for fixed-opponent training and 57.78% (95% CI: [50.47%, 64.76%]) for diverse-opponent training (delta: -0.55 points, 95% CI: [-10.74, +9.64]). Diverse opponent training did not measurably improve play on held-out decks under an equal sample budget; an earlier, unlogged run reached the same conclusion. Complete metrics and checkpoint weights are recorded in [`experiments/ml-experiment-report.json`](experiments/ml-experiment-report.json).
+The first controlled ML study (Milestone 3) is complete. It evaluates an 88-dimensional compact option-scoring MLP policy ($88 \to 32 \to 1$, 2,881 parameters) with He-normal initialization and Adam optimization. Resource benchmarks confirm 0.0285 ms inference latency (<50 ms budget) and 1.8 KB footprint (<512 MiB budget). Checkpoints trained under `fixed-opponent-pool` vs. `diverse-opponent-pool` were evaluated across 360 matched-pair games with reversed seating on frozen held-out test families (`psychic-mewtwo`, `colorless-snorlax`). In the logged re-run, pooled win rates were 58.33% (95% CI: [51.03%, 65.29%]) for fixed-opponent training and 57.78% (95% CI: [50.47%, 64.76%]) for diverse-opponent training (delta: -0.55 points, 95% CI: [-10.74, +9.64]). Diverse opponent training did not measurably improve play on held-out decks under an equal sample budget; an earlier, unlogged run reached the same conclusion.
+
+The public showcase (Milestone 4) lives in [`web/`](web/). It lays the 360 held-out games out as cards on a table, lets readers re-sort them by training pool, deck, opponent, seat, ending or checkpoint, and replays any game decision by decision, from the AI's view or as a spectator. It is a static Astro site built from `experiments/` at build time:
+
+```sh
+cd web
+npm ci
+npm run build
+npm run preview
+```
+
+All artwork on the site is original (drawn in Glaxnimate and rendered in Blender); see [`web/design/README.md`](web/design/README.md). Complete metrics and checkpoint weights are recorded in [`experiments/ml-experiment-report.json`](experiments/ml-experiment-report.json).
 
 Read the [research plan](RESEARCH.md), [roadmap](ROADMAP.md), and [showcase brief](docs/showcase.md).
 

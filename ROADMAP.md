@@ -18,7 +18,7 @@ Completed. Engineered an 88-dimensional compact representation (72-dim normalize
 
 ## 4. Build the public showcase
 
-Build the tournament page, matchup grid, and match viewer described in [docs/showcase.md](docs/showcase.md). Start with stored, evaluated matches so the demo does not require a training service or expensive inference endpoint. Completion requires real run provenance, understandable decision displays, representative failures, usable keyboard controls, and a visual review before publication.
+Built, not yet deployed. The static site in `web/` lays the 360 stored held-out games out as cards on a table that readers re-sort by training pool, deck, opponent, seat, ending, checkpoint, or the full matchup grid, and replays any game decision by decision. The replay keeps the information boundary: the AI's view shows only what the policy could see, and the spectator view marks every hidden card. Policy scores are shown as preferences, never as win chances, and no move is labelled a mistake. Keyboard stepping, turn jumps, deep links to any decision, and reduced-motion fallbacks are in place, and all artwork is original. Remaining before publication: a production domain, an independent visual and accessibility review of the final build, and deployment.
 
 ## 5. Competition packaging
 
