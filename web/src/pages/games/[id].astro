@@ -114,7 +114,7 @@ for (const { f, i } of mine) {
       <summary class="ribbon ribbon--summary">The AI’s decisions ({mine.length} of the game’s {n})</summary>
       <ol class="panel__body">
         {logRows.map((r) => (
-          <li><a class="inline" href={`?d=${r.i}`}>Turn {r.turn}</a>: {r.prompt === 'Choose an action' ? '' : `${promptText(r.prompt)}: `}<Fragment set:html={r.label} />{r.times > 1 ? ` (${r.times} times)` : ''}</li>
+          <li><a class="inline" href={`?d=${r.i}`}>Turn {r.turn}, decision {r.i + 1}</a>: {r.prompt === 'Choose an action' ? '' : `${promptText(r.prompt)}: `}<Fragment set:html={r.label} />{r.times > 1 ? ` (${r.times} times)` : ''}</li>
         ))}
       </ol>
     </details>
