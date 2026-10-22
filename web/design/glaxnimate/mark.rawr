@@ -1,0 +1,614 @@
+{
+    "assets": {
+        "__type__": "Assets",
+        "colors": {
+            "__type__": "NamedColorList",
+            "name": "",
+            "uuid": "95721bf2-4b28-45ad-bb78-ede866f443ce",
+            "values": [
+            ]
+        },
+        "compositions": {
+            "__type__": "CompositionList",
+            "name": "",
+            "uuid": "fa3797c8-3029-4ee6-bf7a-ec1292917587",
+            "values": [
+                {
+                    "__type__": "Composition",
+                    "animation": {
+                        "__type__": "AnimationContainer",
+                        "first_frame": 0,
+                        "last_frame": 180
+                    },
+                    "fps": 60,
+                    "group_color": "#00000000",
+                    "height": 64,
+                    "locked": false,
+                    "name": "",
+                    "shapes": [
+                        {
+                            "__type__": "Layer",
+                            "animation": {
+                                "__type__": "AnimationContainer",
+                                "first_frame": 0,
+                                "last_frame": 180
+                            },
+                            "blend_mode": "Normal",
+                            "group_color": "#00000000",
+                            "locked": false,
+                            "mask": {
+                                "__type__": "MaskSettings",
+                                "inverted": false,
+                                "mask": "NoMask"
+                            },
+                            "name": "Layer",
+                            "opacity": {
+                                "value": 1
+                            },
+                            "parent": null,
+                            "render": true,
+                            "shapes": [
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "mark-badge",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#15171c"
+                                            },
+                                            "fill_rule": "NonZero",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "ac068784-4b82-4ca9-98cb-3b23cf09d57e",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#ffffff"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "RoundJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "65ae1488-19b7-4150-8140-b8832c525b1b",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 4
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": true,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": true,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 61,
+                                                                "y": 32
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 61,
+                                                                "y": 32
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 61,
+                                                                "y": 32
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 46.5,
+                                                                "y": 57.1
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 46.5,
+                                                                "y": 57.1
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 46.5,
+                                                                "y": 57.1
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 17.5,
+                                                                "y": 57.1
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 17.5,
+                                                                "y": 57.1
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 17.5,
+                                                                "y": 57.1
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 3,
+                                                                "y": 32
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 3,
+                                                                "y": 32
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 3,
+                                                                "y": 32
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 17.5,
+                                                                "y": 6.9
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 17.5,
+                                                                "y": 6.9
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 17.5,
+                                                                "y": 6.9
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 46.5,
+                                                                "y": 6.9
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 46.5,
+                                                                "y": 6.9
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 46.5,
+                                                                "y": 6.9
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "fdc2b0fe-ee11-4dfa-bee6-9024908decca",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": 0
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "3aed2365-8667-4f6f-8637-97e7a9b7c7da",
+                                    "visible": true
+                                },
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "mark-card-blue",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#2d7be5"
+                                            },
+                                            "fill_rule": "NonZero",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "ad58df14-05bc-404e-b4bd-92a4678690b8",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#ffffff"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "MiterJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "3ffb0910-564b-48c8-a8f7-2f411f54b38b",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 2.5999999046325684
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Rect",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "position": {
+                                                "value": {
+                                                    "x": 23.5,
+                                                    "y": 32
+                                                }
+                                            },
+                                            "reversed": false,
+                                            "rounded": {
+                                                "value": 2.5999999046325684
+                                            },
+                                            "size": {
+                                                "value": {
+                                                    "height": 25,
+                                                    "width": 18
+                                                }
+                                            },
+                                            "uuid": "66f1d8bd-df0c-4a6b-98a2-6fad67b03a19",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 23.5,
+                                                "y": 32
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 23.5,
+                                                "y": 32
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": -13
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "1d7847ff-6333-4632-881f-bcd378b289ca",
+                                    "visible": true
+                                },
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "mark-card-gold",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#f6c445"
+                                            },
+                                            "fill_rule": "NonZero",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "8ad8cb03-03f6-4f9d-afb1-fa60193fba9c",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#ffffff"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "MiterJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "a338556c-e1b5-45c1-b33b-110e84f29f8b",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 2.5999999046325684
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Rect",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "position": {
+                                                "value": {
+                                                    "x": 39,
+                                                    "y": 30
+                                                }
+                                            },
+                                            "reversed": false,
+                                            "rounded": {
+                                                "value": 2.5999999046325684
+                                            },
+                                            "size": {
+                                                "value": {
+                                                    "height": 25,
+                                                    "width": 18
+                                                }
+                                            },
+                                            "uuid": "49ed9369-deac-4cee-9dd3-d16b02b0dc90",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 39,
+                                                "y": 30
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 39,
+                                                "y": 30
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": 11
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "de9dc440-e8fd-45e9-b113-63780be7b0b8",
+                                    "visible": true
+                                },
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "mark-card-gold-band",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#15171c"
+                                            },
+                                            "fill_rule": "NonZero",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "6f580b60-18fe-4d86-a332-93733bfc713c",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#00000000"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "MiterJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "ebdc738a-d7e9-46b5-a38e-940932d5ed88",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 1
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Rect",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "position": {
+                                                "value": {
+                                                    "x": 39,
+                                                    "y": 23
+                                                }
+                                            },
+                                            "reversed": false,
+                                            "rounded": {
+                                                "value": 1
+                                            },
+                                            "size": {
+                                                "value": {
+                                                    "height": 4,
+                                                    "width": 12
+                                                }
+                                            },
+                                            "uuid": "12db3c03-451c-4362-8936-f61a09b91c13",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 39,
+                                                "y": 30
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 39,
+                                                "y": 30
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": 11
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "f72fc58a-d04a-480f-95ce-8ebe04789077",
+                                    "visible": true
+                                }
+                            ],
+                            "transform": {
+                                "__type__": "Transform",
+                                "anchor_point": {
+                                    "value": {
+                                        "x": 0,
+                                        "y": 0
+                                    }
+                                },
+                                "auto_orient": false,
+                                "position": {
+                                    "value": {
+                                        "x": 0,
+                                        "y": 0
+                                    }
+                                },
+                                "rotation": {
+                                    "value": 0
+                                },
+                                "scale": {
+                                    "value": {
+                                        "x": 1,
+                                        "y": 1
+                                    }
+                                }
+                            },
+                            "uuid": "03193f69-1212-41b9-8ce3-10657a66f795",
+                            "visible": true
+                        }
+                    ],
+                    "uuid": "f600591b-2d31-44ec-91de-824958c433dd",
+                    "visible": true,
+                    "width": 64
+                }
+            ]
+        },
+        "fonts": {
+            "__type__": "FontList",
+            "name": "",
+            "uuid": "114ee7e9-4123-44c2-bfd5-f44dbf17f8ea",
+            "values": [
+            ]
+        },
+        "gradient_colors": {
+            "__type__": "GradientColorsList",
+            "name": "",
+            "uuid": "0c652f70-633e-44d6-abde-29b6a33b1b67",
+            "values": [
+            ]
+        },
+        "gradients": {
+            "__type__": "GradientList",
+            "name": "",
+            "uuid": "47b174b8-49e7-419a-b169-a0f24f2030f7",
+            "values": [
+            ]
+        },
+        "images": {
+            "__type__": "BitmapList",
+            "name": "",
+            "uuid": "0dbf4244-dd72-4c6a-a0ab-b93545c2f2fb",
+            "values": [
+            ]
+        },
+        "name": "",
+        "uuid": "a82e9b40-26e6-427e-82f6-8961c555a545"
+    },
+    "format": {
+        "format_version": 9,
+        "generator": "Glaxnimate",
+        "generator_version": "0.6.70+-git-"
+    },
+    "info": {
+        "author": "",
+        "description": "",
+        "keywords": [
+        ]
+    },
+    "metadata": {
+    }
+}

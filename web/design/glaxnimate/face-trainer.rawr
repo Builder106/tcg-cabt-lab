@@ -1,0 +1,2988 @@
+{
+    "assets": {
+        "__type__": "Assets",
+        "colors": {
+            "__type__": "NamedColorList",
+            "name": "",
+            "uuid": "8ee55d3e-b8d5-4428-a367-a92dd5973127",
+            "values": [
+            ]
+        },
+        "compositions": {
+            "__type__": "CompositionList",
+            "name": "",
+            "uuid": "4732109f-030a-405b-a476-139a2d44d49d",
+            "values": [
+                {
+                    "__type__": "Composition",
+                    "animation": {
+                        "__type__": "AnimationContainer",
+                        "first_frame": 0,
+                        "last_frame": 180
+                    },
+                    "fps": 60,
+                    "group_color": "#00000000",
+                    "height": 880,
+                    "locked": false,
+                    "name": "",
+                    "shapes": [
+                        {
+                            "__type__": "Layer",
+                            "animation": {
+                                "__type__": "AnimationContainer",
+                                "first_frame": 0,
+                                "last_frame": 180
+                            },
+                            "blend_mode": "Normal",
+                            "group_color": "#00000000",
+                            "locked": false,
+                            "mask": {
+                                "__type__": "MaskSettings",
+                                "inverted": false,
+                                "mask": "NoMask"
+                            },
+                            "name": "Layer",
+                            "opacity": {
+                                "value": 1
+                            },
+                            "parent": null,
+                            "render": true,
+                            "shapes": [
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "art-ground",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#262e40"
+                                            },
+                                            "fill_rule": "NonZero",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "3d1632c8-b607-4272-9823-2f71019ab16d",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#00000000"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "MiterJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "7e28a9ae-0a50-40d1-bda5-c7be520c0231",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 1
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Rect",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "position": {
+                                                "value": {
+                                                    "x": 315,
+                                                    "y": 314
+                                                }
+                                            },
+                                            "reversed": false,
+                                            "rounded": {
+                                                "value": 0
+                                            },
+                                            "size": {
+                                                "value": {
+                                                    "height": 332,
+                                                    "width": 542
+                                                }
+                                            },
+                                            "uuid": "b93de88a-7d77-4830-af07-e34a01ef5c50",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": 0
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "db6f5fbb-4393-406a-aab8-22de45907db2",
+                                    "visible": true
+                                },
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "art-stripes",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#00000000"
+                                            },
+                                            "fill_rule": "NonZero",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "c0330dd4-57be-491b-818f-8827ac543957",
+                                            "visible": false
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#3a4560"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "MiterJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "6dfccc89-8ef5-4afa-ac9e-31f14bb30d1d",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 10
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": -290,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": -290,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": -290,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 40,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 40,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 40,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "eccd7fa1-d2ca-4404-8f18-31aac587a7a5",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": -262,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": -262,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": -262,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 68,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 68,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 68,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "38796460-e880-4c0b-b8c4-ec4f754e51c9",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": -234,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": -234,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": -234,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 96,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 96,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 96,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "ba97c390-e1f1-437b-acdc-9ceb3be77a80",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": -206,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": -206,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": -206,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 124,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 124,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 124,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "6403a43e-1413-4b89-82bc-61a15c609343",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": -178,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": -178,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": -178,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 152,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 152,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 152,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "7897f1a6-3bdd-4718-83dd-57967acfe2e3",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": -150,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": -150,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": -150,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 180,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 180,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 180,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "2ad87d53-dcd0-44b5-9e16-6eddadeda19e",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": -122,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": -122,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": -122,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 208,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 208,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 208,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "f6d1989f-22dd-430b-bf7f-e5f219617b14",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": -94,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": -94,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": -94,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 236,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 236,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 236,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "7a21ac27-c4d2-4bac-82b9-59dba2fe7fb6",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": -66,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": -66,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": -66,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 264,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 264,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 264,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "ed31f8df-bdba-4bd8-8d1c-8ca9b07a5346",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": -38,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": -38,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": -38,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 292,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 292,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 292,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "1a474277-887f-42d3-92ea-e5d81af66659",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": -10,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": -10,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": -10,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 320,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 320,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 320,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "a50ff173-d287-4cc1-9703-b96362134905",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 18,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 18,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 18,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 348,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 348,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 348,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "52880f34-203b-4289-82bf-af883b78c94f",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 46,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 46,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 46,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 376,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 376,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 376,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "11df12e0-fa28-46f3-b9f8-91006746a248",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 74,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 74,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 74,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 404,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 404,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 404,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "4504f349-45fe-4efc-be9b-62d9d6a7c170",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 102,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 102,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 102,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 432,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 432,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 432,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "98fe5a1c-0d57-4d8d-a46a-9819119294f6",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 130,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 130,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 130,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 460,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 460,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 460,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "ab93c564-9f57-4eaa-bdb0-7397febd4892",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 158,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 158,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 158,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 488,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 488,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 488,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "c40bfea7-591e-487d-b475-bbae44f975ef",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 186,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 186,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 186,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 516,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 516,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 516,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "db5ca04b-baa6-47d5-b777-d13d26e334bf",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 214,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 214,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 214,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 544,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 544,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 544,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "6280d257-aa19-435b-b7f4-f1cf066e177d",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 242,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 242,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 242,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 572,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 572,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 572,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "b2e80760-6e8a-45aa-b069-61cae3f63454",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 270,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 270,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 270,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 600,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 600,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 600,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "abcd24ec-abb5-45f8-abc1-d7b0af607167",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 298,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 298,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 298,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 628,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 628,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 628,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "f0e50857-6aa3-44c6-bc5e-7a705d5e0cfe",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 326,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 326,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 326,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 656,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 656,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 656,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "86d8eafe-c94e-4742-a053-ed97ba3958fd",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 354,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 354,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 354,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 684,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 684,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 684,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "3cbb1a1b-5e96-4338-a9a0-2ac028ea7308",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 382,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 382,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 382,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 712,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 712,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 712,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "d953ffda-fa9c-40cc-810c-3c90ce7d8005",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 410,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 410,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 410,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 740,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 740,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 740,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "55003afa-3750-4372-baec-a94aac4f1518",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 438,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 438,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 438,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 768,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 768,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 768,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "0e0043f9-7d8e-43b8-8158-c0b0e579caf0",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 466,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 466,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 466,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 796,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 796,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 796,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "70d5057b-f298-499b-b994-8dfbeb0e77ab",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 494,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 494,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 494,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 824,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 824,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 824,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "99d2b0d7-1e74-4f7c-9fe2-0da998b0b5a4",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 522,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 522,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 522,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 852,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 852,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 852,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "13455f26-6c9b-41b2-8ad3-2f4512df8b20",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 550,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 550,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 550,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 880,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 880,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 880,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "2fe7dda3-0064-4ff8-915e-9377ce6acb18",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": false,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": false,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 578,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 578,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 578,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 908,
+                                                                "y": 478
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 908,
+                                                                "y": 478
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 908,
+                                                                "y": 478
+                                                            },
+                                                            "type": 0
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "164f3798-34c9-41aa-9d1b-fa505d163648",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": 0
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "326b9ed4-371f-494f-9470-e5f8c0bc8e25",
+                                    "visible": true
+                                },
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "face-field",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#eceff4"
+                                            },
+                                            "fill_rule": "EvenOdd",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "ef4b0d72-167a-439f-b177-5e1de10f9eb8",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#00000000"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "MiterJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "45c1e588-9167-4243-b1dd-d3817d942091",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 1
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": true,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": true,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 35,
+                                                                "y": 0
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 35,
+                                                                "y": 0
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 35,
+                                                                "y": 0
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 595,
+                                                                "y": 0
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 595,
+                                                                "y": 0
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 614.2004319624202,
+                                                                "y": 1.1756873772512227e-15
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 630,
+                                                                "y": 35
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 630,
+                                                                "y": 15.799568037579782
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 630,
+                                                                "y": 35
+                                                            },
+                                                            "type": 2
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 630,
+                                                                "y": 845
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 630,
+                                                                "y": 845
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 630,
+                                                                "y": 864.2004319624202
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 595,
+                                                                "y": 880
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 614.2004319624202,
+                                                                "y": 880
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 595,
+                                                                "y": 880
+                                                            },
+                                                            "type": 2
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 35,
+                                                                "y": 880
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 35,
+                                                                "y": 880
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 15.799568037579782,
+                                                                "y": 880
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 0,
+                                                                "y": 845
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 2.3513747545024454e-15,
+                                                                "y": 864.2004319624202
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 0,
+                                                                "y": 845
+                                                            },
+                                                            "type": 2
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 0,
+                                                                "y": 35
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 0,
+                                                                "y": 35
+                                                            },
+                                                            "tan_out": {
+                                                                "x": -2.3513747545024454e-15,
+                                                                "y": 15.799568037579789
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 34.99999999999999,
+                                                                "y": 0
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 15.799568037579775,
+                                                                "y": 3.527062131753668e-15
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 54.20043196242021,
+                                                                "y": -3.527062131753668e-15
+                                                            },
+                                                            "type": 2
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "04ed3fc9-e3f3-4c34-96c2-906c1295579d",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Path",
+                                            "closed": true,
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "reversed": false,
+                                            "shape": {
+                                                "value": {
+                                                    "closed": true,
+                                                    "points": [
+                                                        {
+                                                            "pos": {
+                                                                "x": 56,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 56,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 56,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 574,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 574,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 580.5830052442584,
+                                                                "y": 148
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 586,
+                                                                "y": 160
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 586,
+                                                                "y": 153.41699475574163
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 586,
+                                                                "y": 160
+                                                            },
+                                                            "type": 2
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 586,
+                                                                "y": 468
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 586,
+                                                                "y": 468
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 586,
+                                                                "y": 474.58300524425835
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 574,
+                                                                "y": 480
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 580.5830052442584,
+                                                                "y": 480
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 574,
+                                                                "y": 480
+                                                            },
+                                                            "type": 2
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 56,
+                                                                "y": 480
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 56,
+                                                                "y": 480
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 49.41699475574164,
+                                                                "y": 480
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 44,
+                                                                "y": 468
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 44,
+                                                                "y": 474.58300524425835
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 44,
+                                                                "y": 468
+                                                            },
+                                                            "type": 2
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 44,
+                                                                "y": 160
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 44,
+                                                                "y": 160
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 44,
+                                                                "y": 153.41699475574163
+                                                            },
+                                                            "type": 0
+                                                        },
+                                                        {
+                                                            "pos": {
+                                                                "x": 56,
+                                                                "y": 148
+                                                            },
+                                                            "tan_in": {
+                                                                "x": 49.41699475574164,
+                                                                "y": 148
+                                                            },
+                                                            "tan_out": {
+                                                                "x": 62.58300524425836,
+                                                                "y": 148
+                                                            },
+                                                            "type": 2
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "uuid": "95365119-caeb-4e52-a29a-164c01188963",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": 0
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "48e7c116-4c6e-4da3-9885-bc019bfd7e72",
+                                    "visible": true
+                                },
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "face-border",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#00000000"
+                                            },
+                                            "fill_rule": "NonZero",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "dbf9715e-c92d-473b-b8d7-dfc2cc33babb",
+                                            "visible": false
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#e8ecf2"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "MiterJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "32f2bbf3-d057-47e0-bb27-9096f6bdb1e7",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 18
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Rect",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "position": {
+                                                "value": {
+                                                    "x": 315,
+                                                    "y": 440
+                                                }
+                                            },
+                                            "reversed": false,
+                                            "rounded": {
+                                                "value": 26
+                                            },
+                                            "size": {
+                                                "value": {
+                                                    "height": 862,
+                                                    "width": 612
+                                                }
+                                            },
+                                            "uuid": "4747c060-1591-41df-8351-e069c2967ce9",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": 0
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "9b4fda1f-2f96-489b-98a1-bfb20600431f",
+                                    "visible": true
+                                },
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "name-band",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#2f3b55"
+                                            },
+                                            "fill_rule": "NonZero",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "dd8c26ea-e53d-4ff7-aba3-a104c013c730",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#00000000"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "MiterJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "c5eb42e0-cb67-41a5-94ed-bd92ad89665e",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 1
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Rect",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "position": {
+                                                "value": {
+                                                    "x": 315,
+                                                    "y": 74
+                                                }
+                                            },
+                                            "reversed": false,
+                                            "rounded": {
+                                                "value": 22
+                                            },
+                                            "size": {
+                                                "value": {
+                                                    "height": 112,
+                                                    "width": 594
+                                                }
+                                            },
+                                            "uuid": "b4331a9f-6ec9-4efd-b675-7bbc80a151c5",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": 0
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "8e81acda-7e1f-472b-9d3c-185cb7ec87ac",
+                                    "visible": true
+                                },
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "name-band-base",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#2f3b55"
+                                            },
+                                            "fill_rule": "NonZero",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "b9997f99-bf13-4cfa-b053-a7b63e92920e",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#00000000"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "MiterJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "ee078bc4-6820-4082-bf8c-e9ef4c02f759",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 1
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Rect",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "position": {
+                                                "value": {
+                                                    "x": 315,
+                                                    "y": 111
+                                                }
+                                            },
+                                            "reversed": false,
+                                            "rounded": {
+                                                "value": 0
+                                            },
+                                            "size": {
+                                                "value": {
+                                                    "height": 38,
+                                                    "width": 594
+                                                }
+                                            },
+                                            "uuid": "155ee435-3b9a-455f-a946-07e783a00b53",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": 0
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "84d61e6b-88e7-4eb4-8859-2109f89b9629",
+                                    "visible": true
+                                },
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "art-border",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#00000000"
+                                            },
+                                            "fill_rule": "NonZero",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "8f7d95be-fbed-4775-9538-6e599cf41bfb",
+                                            "visible": false
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#ffffff"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "MiterJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "ec3e9fe6-edfd-4ef2-a619-98f0eb32ff66",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 6
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Rect",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "position": {
+                                                "value": {
+                                                    "x": 315,
+                                                    "y": 314
+                                                }
+                                            },
+                                            "reversed": false,
+                                            "rounded": {
+                                                "value": 12
+                                            },
+                                            "size": {
+                                                "value": {
+                                                    "height": 332,
+                                                    "width": 542
+                                                }
+                                            },
+                                            "uuid": "34d4f15d-47be-4be3-a3a2-45f90e064862",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": 0
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "a4ab281b-7384-49f9-81e0-8f938dd78dfd",
+                                    "visible": true
+                                },
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "rule-1",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#c4cad6"
+                                            },
+                                            "fill_rule": "NonZero",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "1ff52755-a78f-42d3-bd76-9d84e1e153c0",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#00000000"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "MiterJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "a12a4e68-f487-430e-b6ca-7c9bc7885ef5",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 1
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Rect",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "position": {
+                                                "value": {
+                                                    "x": 315,
+                                                    "y": 629
+                                                }
+                                            },
+                                            "reversed": false,
+                                            "rounded": {
+                                                "value": 0
+                                            },
+                                            "size": {
+                                                "value": {
+                                                    "height": 2,
+                                                    "width": 542
+                                                }
+                                            },
+                                            "uuid": "f485a722-5112-4aad-bb78-16a57fd5e605",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": 0
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "362ba82f-d515-43e5-b2c2-3a8889b00d7a",
+                                    "visible": true
+                                },
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "rule-2",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#c4cad6"
+                                            },
+                                            "fill_rule": "NonZero",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "8ab3cbf9-f2d4-45e1-9138-2753524b2f2c",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#00000000"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "MiterJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "512dbbb7-96c5-413c-a1f1-a089a3332be3",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 1
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Rect",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "position": {
+                                                "value": {
+                                                    "x": 315,
+                                                    "y": 745
+                                                }
+                                            },
+                                            "reversed": false,
+                                            "rounded": {
+                                                "value": 0
+                                            },
+                                            "size": {
+                                                "value": {
+                                                    "height": 2,
+                                                    "width": 542
+                                                }
+                                            },
+                                            "uuid": "1fedf0cf-0efc-449e-b291-8855dfd6188d",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": 0
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "af84dcdb-6ac2-409c-9984-645e1bb092a9",
+                                    "visible": true
+                                },
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "foot-band",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#d9dee7"
+                                            },
+                                            "fill_rule": "NonZero",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "b547f34f-4fd1-48c2-a787-13d2953dca3a",
+                                            "visible": true
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#00000000"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "MiterJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "4c58c978-0ad0-4e4e-ba87-14deb46e994b",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 1
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Rect",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "position": {
+                                                "value": {
+                                                    "x": 315,
+                                                    "y": 833
+                                                }
+                                            },
+                                            "reversed": false,
+                                            "rounded": {
+                                                "value": 22
+                                            },
+                                            "size": {
+                                                "value": {
+                                                    "height": 58,
+                                                    "width": 594
+                                                }
+                                            },
+                                            "uuid": "7f61b663-f84b-4523-90b2-a423911bfd30",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": 0
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "a980a7b1-fd12-4085-b5bd-73aedb4364ac",
+                                    "visible": true
+                                },
+                                {
+                                    "__type__": "Group",
+                                    "blend_mode": "Normal",
+                                    "group_color": "#00000000",
+                                    "locked": false,
+                                    "name": "set-mark",
+                                    "opacity": {
+                                        "value": 1
+                                    },
+                                    "shapes": [
+                                        {
+                                            "__type__": "Fill",
+                                            "color": {
+                                                "value": "#00000000"
+                                            },
+                                            "fill_rule": "NonZero",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "236caefe-85cc-4002-ad7a-f7899cd8303b",
+                                            "visible": false
+                                        },
+                                        {
+                                            "__type__": "Stroke",
+                                            "cap": "ButtCap",
+                                            "color": {
+                                                "value": "#2f3b55"
+                                            },
+                                            "group_color": "#00000000",
+                                            "join": "MiterJoin",
+                                            "locked": false,
+                                            "miter_limit": 4,
+                                            "name": "",
+                                            "opacity": {
+                                                "value": 1
+                                            },
+                                            "use": null,
+                                            "uuid": "05006b32-2ef0-4b5e-bf20-f1fd7dcd9fa9",
+                                            "visible": true,
+                                            "width": {
+                                                "value": 3
+                                            }
+                                        },
+                                        {
+                                            "__type__": "Ellipse",
+                                            "group_color": "#00000000",
+                                            "locked": false,
+                                            "name": "",
+                                            "position": {
+                                                "value": {
+                                                    "x": 574,
+                                                    "y": 833
+                                                }
+                                            },
+                                            "reversed": false,
+                                            "size": {
+                                                "value": {
+                                                    "height": 24,
+                                                    "width": 24
+                                                }
+                                            },
+                                            "uuid": "ea5b8d4f-1725-4de2-be05-438219793259",
+                                            "visible": true
+                                        }
+                                    ],
+                                    "transform": {
+                                        "__type__": "Transform",
+                                        "anchor_point": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "auto_orient": false,
+                                        "position": {
+                                            "value": {
+                                                "x": 0,
+                                                "y": 0
+                                            }
+                                        },
+                                        "rotation": {
+                                            "value": 0
+                                        },
+                                        "scale": {
+                                            "value": {
+                                                "x": 1,
+                                                "y": 1
+                                            }
+                                        }
+                                    },
+                                    "uuid": "62818bea-4c11-4bf7-8f80-d17e21b2c019",
+                                    "visible": true
+                                }
+                            ],
+                            "transform": {
+                                "__type__": "Transform",
+                                "anchor_point": {
+                                    "value": {
+                                        "x": 0,
+                                        "y": 0
+                                    }
+                                },
+                                "auto_orient": false,
+                                "position": {
+                                    "value": {
+                                        "x": 0,
+                                        "y": 0
+                                    }
+                                },
+                                "rotation": {
+                                    "value": 0
+                                },
+                                "scale": {
+                                    "value": {
+                                        "x": 1,
+                                        "y": 1
+                                    }
+                                }
+                            },
+                            "uuid": "11654d4f-db24-4bec-9b25-7ade84805a83",
+                            "visible": true
+                        }
+                    ],
+                    "uuid": "9da5f693-8759-46cc-9400-444e964706a4",
+                    "visible": true,
+                    "width": 630
+                }
+            ]
+        },
+        "fonts": {
+            "__type__": "FontList",
+            "name": "",
+            "uuid": "528c09c2-4629-46a6-976f-47969112d7e2",
+            "values": [
+            ]
+        },
+        "gradient_colors": {
+            "__type__": "GradientColorsList",
+            "name": "",
+            "uuid": "46710ac0-2b33-4bd8-bb9b-9edc81a53a4d",
+            "values": [
+            ]
+        },
+        "gradients": {
+            "__type__": "GradientList",
+            "name": "",
+            "uuid": "94fee326-c170-4b9b-8f39-61fe39a29bb5",
+            "values": [
+            ]
+        },
+        "images": {
+            "__type__": "BitmapList",
+            "name": "",
+            "uuid": "9a8755ae-7a01-4f03-b5f7-f4dbe0d248a7",
+            "values": [
+            ]
+        },
+        "name": "",
+        "uuid": "3146ee58-527c-4fbe-8b80-14ce5b3a1ab7"
+    },
+    "format": {
+        "format_version": 9,
+        "generator": "Glaxnimate",
+        "generator_version": "0.6.70+-git-"
+    },
+    "info": {
+        "author": "",
+        "description": "",
+        "keywords": [
+        ]
+    },
+    "metadata": {
+    }
+}
