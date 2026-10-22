@@ -12,7 +12,7 @@ The project integrates the CABT 1.0.0 simulation engine (`kaggle-environments==1
 
 The first controlled ML study (Milestone 3) is complete. It evaluates an 88-dimensional compact option-scoring MLP policy ($88 \to 32 \to 1$, 2,881 parameters) with He-normal initialization and Adam optimization. Resource benchmarks confirm 0.0285 ms inference latency (<50 ms budget) and 1.8 KB footprint (<512 MiB budget). Checkpoints trained under `fixed-opponent-pool` vs. `diverse-opponent-pool` were evaluated across 360 matched-pair games with reversed seating on frozen held-out test families (`psychic-mewtwo`, `colorless-snorlax`). In the logged re-run, pooled win rates were 58.33% (95% CI: [51.03%, 65.29%]) for fixed-opponent training and 57.78% (95% CI: [50.47%, 64.76%]) for diverse-opponent training (delta: -0.55 points, 95% CI: [-10.74, +9.64]). Diverse opponent training did not measurably improve play on held-out decks under an equal sample budget; an earlier, unlogged run reached the same conclusion.
 
-The public showcase (Milestone 4) lives in [`web/`](web/). It lays the 360 held-out games out as cards on a table, lets readers re-sort them by training pool, deck, opponent, seat, ending or checkpoint, and replays any game decision by decision, from the AI's view or as a spectator. It is a static Astro site built from `experiments/` at build time:
+The public showcase (Milestone 4) is live at <https://tcg-cabt-lab.vercel.app> and lives in [`web/`](web/). It lays the 360 held-out games out as cards on a table, lets readers re-sort them by training pool, deck, opponent, seat, ending or checkpoint, and replays any game decision by decision, from the AI's view or as a spectator. It is a static Astro site built from `experiments/` at build time:
 
 ```sh
 cd web
@@ -20,6 +20,15 @@ npm ci
 npm run build
 npm run preview
 ```
+
+The site is deployed as prebuilt static files with the Vercel CLI, because the build reads `experiments/` from outside `web/`. Copy `web/vercel.json` into the build output, then deploy that folder from a directory linked to the `tcg-cabt-lab` project:
+
+```sh
+cp vercel.json dist/
+vercel deploy dist --prod
+```
+
+Pushing to `main` does not deploy the site.
 
 All artwork on the site is original (drawn in Glaxnimate and rendered in Blender); see [`web/design/README.md`](web/design/README.md). Complete metrics and checkpoint weights are recorded in [`experiments/ml-experiment-report.json`](experiments/ml-experiment-report.json).
 

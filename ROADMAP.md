@@ -18,7 +18,7 @@ Completed. Engineered an 88-dimensional compact representation (72-dim normalize
 
 ## 4. Build the public showcase
 
-Built, not yet deployed. The static site in `web/` lays the 360 stored held-out games out as cards on a table that readers re-sort by training pool, deck, opponent, seat, ending, checkpoint, or the full matchup grid, and replays any game decision by decision. The replay keeps the information boundary: the AI's view shows only what the policy could see, and the spectator view marks every hidden card. Policy scores are shown as preferences, never as win chances, and no move is labelled a mistake. Keyboard stepping, turn jumps, deep links to any decision, and reduced-motion fallbacks are in place, and all artwork is original. Remaining before publication: a production domain, an independent visual and accessibility review of the final build, and deployment.
+Deployed at <https://tcg-cabt-lab.vercel.app> on 22 October 2026. The static site in `web/` lays the 360 stored held-out games out as cards on a table that readers re-sort by training pool, deck, opponent, seat, ending, checkpoint, or the full matchup grid, and replays any game decision by decision. The replay keeps the information boundary: the AI's view shows only what the policy could see, and the spectator view marks every hidden card. Policy scores are shown as preferences, never as win chances, and no move is labelled a mistake. Keyboard stepping, turn jumps, deep links to any decision, and reduced-motion fallbacks are in place, and all artwork is original. Remaining: an independent visual and accessibility review of the deployed build, and a CI job that builds `web/`.
 
 ## 5. Competition packaging
 

@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-10-22: Deploy the showcase as prebuilt static files #decision
+
+The showcase is live at https://tcg-cabt-lab.vercel.app, a project in the SankofaForge Vercel team. The build reads `experiments/` from outside `web/`, so a Vercel build of `web/` alone could not find the games. The site is built locally and the static output is deployed with the Vercel CLI, using `web/vercel.json` for trailing-slash redirects and long caching of hashed assets. Pushing to `main` does not deploy; each release is a CLI deploy.
+
 ## 2026-10-22: Build the showcase as a card table #milestone
 
 The showcase is a static Astro site in `web/`. It reads `experiments/` at build time and emits one page and one compressed replay per game, so it needs no server or inference endpoint. The 360 games appear as cards on a table, and a hand of Trainer cards re-sorts them; the played card states the finding for that sort in plain language. Each replay steps through every decision with the board animated between steps.
