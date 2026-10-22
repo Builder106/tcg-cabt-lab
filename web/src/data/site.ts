@@ -1,11 +1,9 @@
 // Site-wide copy and the study facts that are not computed from the games table.
-// Assumption: the production domain is not chosen yet; `url` is a placeholder (also in
-// astro.config.mjs) to replace before deploying.
 
 export const site = {
   name: 'CABT Lab',
   fullName: 'TCG CABT Lab',
-  url: 'https://tcg-cabt-lab.example',
+  url: 'https://tcg-cabt-lab.vercel.app',
   repo: 'https://github.com/Builder106/tcg-cabt-lab',
   description:
     'A tiny AI learned the Pokémon card game by copying a bot, was trained two ways, then played 360 games with decks it had never seen. Sort the games yourself and replay any of them move by move.',
