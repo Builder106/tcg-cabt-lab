@@ -1,0 +1,40 @@
+---
+// Five games to start with, picked by rule from the data so the picks stay honest.
+import { checkpointName, familyName, opponentName, outcomeSentence } from '../lib/labels';
+import { getGames, getReplay } from '../lib/study';
+import type { Game } from '../lib/types';
+
+const games = getGames();
+const usedAttack = (g: Game, name: string) => {
+  const r = getReplay(g.game_id);
+  return r.frames.some((f) => f.events.some((e) => e.type === 'Attack' && e.player === g.policy_seat && r.attacks[String(e.attack)]?.name === name));
+};
+const byTurns = (a: Game, b: Game) => a.turns - b.turns;
+const picks: { g: Game; tag: string; why: string }[] = [];
+const add = (g: Game | undefined, tag: string, why: string) => { if (g && !picks.some((p) => p.g.game_id === g.game_id)) picks.push({ g, tag, why }); };
+
+add(games.filter((g) => g.family === 'psychic-mewtwo' && g.result === 'win' && g.end_reason === 'prizes').sort(byTurns).find((g) => usedAttack(g, 'Erasure Ball')),
+  'Mewtwo attacks', 'Mewtwo gets to attack. Its Erasure Ball needs four Team Rocket’s Pokémon in play first.');
+add(games.filter((g) => g.end_reason === 'deck-out' && g.result === 'loss').sort(byTurns).at(-1),
+  'Longest deck-out', 'The longest loss by running out of cards.');
+add(games.find((g) => g.result === 'draw'), 'A draw', 'One of only two draws in all 360 games.');
+add(games.filter((g) => g.family === 'colorless-snorlax' && g.result === 'win' && g.end_reason === 'prizes').sort(byTurns)[0],
+  'Prize race won', 'A Snorlax game won the classic way: every Prize card taken.');
+add(games.filter((g) => g.result === 'loss').sort(byTurns)[0], 'Over fast', 'The AI’s quickest loss of all 360 games.');
+---
+<section class="featured panel" aria-labelledby="featured-title">
+  <h2 class="ribbon" id="featured-title">Pulled from the piles</h2>
+  <ul class="featured__list panel__body">
+    {picks.map(({ g, tag, why }) => (
+      <li>
+        <a class="deal" href={`/games/${g.game_id}/`} data-flip-id={`feat-${g.game_id}`}>
+          <span class="deal__card" data-deck={g.family === 'psychic-mewtwo' ? 'psychic' : 'water'} aria-hidden="true"></span>
+          <span class="deal__tag">{tag}</span>
+          <span class="deal__what">{outcomeSentence(g)}</span>
+          <span class="deal__why">{why}</span>
+          <span class="sr-only">{checkpointName(g)}, {familyName[g.family]}, {opponentName[g.opponent]}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>

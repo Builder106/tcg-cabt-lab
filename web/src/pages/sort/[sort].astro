@@ -1,0 +1,9 @@
+---
+import TablePage from '../../components/TablePage.astro';
+import { SORT_ORDER, type SortKey } from '../../lib/sorts';
+export function getStaticPaths() {
+  return SORT_ORDER.filter((k) => k !== 'training').map((sort) => ({ params: { sort } }));
+}
+const { sort } = Astro.params as { sort: SortKey };
+---
+<TablePage sortKey={sort} />

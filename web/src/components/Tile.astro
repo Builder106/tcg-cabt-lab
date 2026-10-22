@@ -1,0 +1,12 @@
+---
+import { checkpointName, endingShort, familyName, opponentName, resultVerb, seatName } from '../lib/labels';
+import type { Game } from '../lib/types';
+interface Props { game: Game }
+const { game: g } = Astro.props;
+// Each card rests at its own small angle, the way slips lie on a table
+let h = 0;
+for (const ch of g.game_id) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+const angle = ((h % 240) / 100 - 1.2).toFixed(2);
+const label = `${checkpointName(g)}, ${familyName[g.family]} against the ${opponentName[g.opponent].toLowerCase()}, pair ${g.eval_seed}, ${seatName(g.policy_seat)} seat: ${resultVerb[g.result]}, ${endingShort[g.end_reason]}, turn ${g.turns}`;
+---
+<a class={`tile is-${g.result}`} data-deck={g.family === 'psychic-mewtwo' ? 'psychic' : 'water'} href={`/games/${g.game_id}/`} data-flip-id={g.game_id} aria-label={label} style={`--r:${angle}deg`}><span class="tile__card"></span></a>

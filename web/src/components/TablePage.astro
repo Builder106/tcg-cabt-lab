@@ -1,0 +1,51 @@
+---
+// A table page as a battle board: the sort in play sits in the center slot, the piles face off in
+// colored zones, the score column runs down the right edge, and the hand waits along the bottom.
+import Base from '../layouts/Base.astro';
+import Featured from './Featured.astro';
+import Hand from './Hand.astro';
+import Legend from './Legend.astro';
+import MatchupGrid from './MatchupGrid.astro';
+import Pile from './Pile.astro';
+import PlayedCard from './PlayedCard.astro';
+import Score from './Score.astro';
+import { sortCopy } from '../data/sorts-copy';
+import { getGames, getReport } from '../lib/study';
+import { buildSort, type SortKey } from '../lib/sorts';
+interface Props { sortKey: SortKey }
+const { sortKey } = Astro.props;
+const report = getReport();
+const sort = buildSort(sortKey, getGames());
+// The delta is recomputed from the piles: the report stores it rounded to four places
+const pools = buildSort('training', getGames()).piles;
+const delta = pools[1]!.rate - pools[0]!.rate;
+const copy = sortCopy(sort, delta, report.ablation_results.delta_confidence_interval_95);
+const home = sortKey === 'training';
+const n = sort.piles.length;
+// Two piles face off like two players: the second sits on the red side at the top
+const SIDES = ['blue', 'red', 'gold', 'cyan', 'violet', 'green'];
+const sides = sort.piles.map((_, i) => SIDES[i % SIDES.length]!);
+const order = n === 2 ? [1, 0] : sort.piles.map((_, i) => i);
+---
+<Base title={home ? undefined : copy.title} description={copy.description} current="table" screen="board">
+  <div class={`table table--${sort.key} table--n${n}`} data-table data-sort={sort.key}>
+    <div class="table__slot">
+      <span class="slot-tab" aria-hidden="true">In play</span>
+      <PlayedCard copy={copy} sortKey={sort.key} />
+      <Legend />
+    </div>
+    {sort.key === 'matchup'
+      ? <MatchupGrid piles={sort.piles} />
+      : <div class={`arena arena--${n}`}>
+          {order.map((i, pos) => (
+            <>
+              {n === 2 && pos === 1 && <div class="arena__line" aria-hidden="true"><span></span><span></span></div>}
+              <Pile pile={sort.piles[i]!} index={i} cols={sort.cols} side={sides[i]!} />
+            </>
+          ))}
+        </div>}
+    {sort.key !== 'matchup' && <Score piles={order.map((i) => sort.piles[i]!)} sides={order.map((i) => sides[i]!)} />}
+  </div>
+  <Hand current={sort.key} />
+  {home && <Featured />}
+</Base>

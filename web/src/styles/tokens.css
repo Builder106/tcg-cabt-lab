@@ -1,0 +1,92 @@
+/* Design tokens. The look follows a digital card-game client: light hex app chrome with a red
+   bar, and dark hex battle boards with red and blue sides. All artwork is original. */
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/archivo-100_900-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Exo 2';
+  src: url('/fonts/exo-2-600_900-italic.woff2') format('woff2');
+  font-weight: 600 900;
+  font-style: italic;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Metric-matched fallbacks keep layout still while the fonts load */
+@font-face { font-family: 'Archivo Fallback'; src: local('Arial'); size-adjust: 101%; ascent-override: 87%; descent-override: 21%; }
+@font-face { font-family: 'Exo Fallback'; src: local('Arial Italic'), local('Arial'); font-style: italic; size-adjust: 98%; ascent-override: 90%; descent-override: 24%; }
+
+:root {
+  /* App chrome */
+  --c-chrome: #ECEEF2;
+  --c-white: #FFFFFF;
+  --c-row: #F2F4F7;
+  --c-ink: #15171C;
+  --c-ink-muted: #565C67; /* 6.6:1 on white */
+  --c-rule: #DDE1E7;
+
+  /* The red bar and ribbons */
+  --c-red: #D3222A;
+  --c-red-deep: #A8121A;
+  --c-gold: #F6C445;
+  --c-gold-deep: #C98A12;
+  --c-cyan: #3AD6F7;
+
+  /* Battle board */
+  --c-board: #1B1E23;
+  --c-board-text: #F2F4F7;
+  --c-board-muted: #AEB5C2; /* 8.4:1 on the board */
+  --c-side-blue: #2D7BE5;
+  --c-side-red: #E0343F;
+
+  /* Card stock and types */
+  --c-card: #F4F6F9;
+  --c-back: #0B1020;
+  --c-psychic: #6E44D6;
+  --c-water: #1F78D1;
+  --c-counter: #F2683C;
+  --c-accent: var(--c-gold); /* the studied policy's choices */
+  --c-spec: #FF7FB4; /* spectator-only information */
+
+  /* Type */
+  --f-body: 'Archivo', 'Archivo Fallback', ui-sans-serif, system-ui, sans-serif;
+  --f-game: 'Exo 2', 'Exo Fallback', 'Archivo', ui-sans-serif, sans-serif;
+  --f-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --t-xl: clamp(2rem, 1.2rem + 3vw, 3.75rem);
+  --t-l: clamp(1.4rem, 1.1rem + 1.2vw, 2.1rem);
+  --t-m: clamp(1.0625rem, 1rem + 0.35vw, 1.3rem);
+  --t-body: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem);
+  --t-s: 0.875rem;
+  --t-xs: 0.8125rem;
+
+  /* Space */
+  --u: clamp(0.5rem, 0.35rem + 0.6vw, 1rem);
+  --gutter: clamp(0.75rem, 0.5rem + 1.2vw, 1.75rem);
+  --edge: clamp(1rem, 0.6rem + 1.6vw, 2rem);
+  --bar-h: 3.5rem;
+
+  /* Shape */
+  --card-r: 0.055;
+  --r-panel: 0.6rem;
+
+  /* Motion */
+  --e-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --e-soft: cubic-bezier(0.215, 0.61, 0.355, 1);
+
+  /* Layers */
+  --z-lamp: 1;
+  --z-content: 2;
+  --z-bar: 60;
+  --z-curtain: 90;
+  --z-loader: 100;
+
+  --c-table: var(--c-chrome);
+  --c-chalk: var(--c-board-text);
+  --c-muted: var(--c-board-muted);
+}

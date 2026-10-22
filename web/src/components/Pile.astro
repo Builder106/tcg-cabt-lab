@@ -1,0 +1,26 @@
+---
+// One pile of games, laid in a zone on the board. Zone color follows the side it sits on.
+import Tile from './Tile.astro';
+import { pct } from '../lib/labels';
+import type { Pile } from '../lib/sorts';
+interface Props { pile: Pile; index: number; cols: { wide: number; phone: number }; side: string }
+const { pile, index, cols, side } = Astro.props;
+const [lo, hi] = pile.ci;
+const n = pile.games.length;
+// Deck piles carry their type glyph
+const deck = pile.key.endsWith('psychic-mewtwo') ? 'psychic' : pile.key.endsWith('colorless-snorlax') ? 'colorless' : null;
+---
+<section class={`zone-pile side-${side}`} aria-labelledby={`pile-${index}`} style={`--cols:${cols.wide};--cols-phone:${cols.phone}`}>
+  <h2 class="zone-pile__label" id={`pile-${index}`}>
+    {deck && <svg class="glyph zone-pile__glyph" viewBox="0 0 24 24" aria-hidden="true"><use href={`#g-${deck}`} /></svg>}
+    {pile.label}
+  </h2>
+  <ul class="pile__cards" aria-label={`${n} games, wins first`}>
+    {pile.games.map((g) => <li><Tile game={g} /></li>)}
+  </ul>
+  <p class="zone-pile__meta">
+    {`Of ${n} games: ${pile.wins} won, ${pile.losses} lost${pile.draws ? `, ${pile.draws} drawn` : ''}. `}
+    <span class="nowrap">{`With luck, the true rate is likely ${pct(lo)} to ${pct(hi)}.`}</span>
+  </p>
+  <span class="count-tab" aria-hidden="true">{n}</span>
+</section>

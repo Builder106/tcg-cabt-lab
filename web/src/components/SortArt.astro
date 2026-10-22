@@ -1,0 +1,15 @@
+---
+// A sort card's art window: the Glaxnimate drawing inlined so motion/art.ts can animate it by
+// id. Decorative; the card's name and rules carry the meaning. Sorts without art keep the
+// printed stripes of the card face.
+import type { SortKey } from '../lib/sorts';
+interface Props { sortKey: SortKey }
+const { sortKey } = Astro.props;
+const files = import.meta.glob<string>('../../design/glaxnimate/sort-*.svg', { query: '?raw', import: 'default', eager: true });
+const raw = files[`../../design/glaxnimate/sort-${sortKey}.svg`];
+// The title would show as a tooltip; the size comes from CSS
+const svg = raw
+  ?.replace(/<title[^>]*>.*?<\/title>/, '')
+  .replace(/ width="\d+" height="\d+"/, ' preserveAspectRatio="xMidYMid slice" focusable="false"');
+---
+{svg && <span class="sort-art" data-art={sortKey} aria-hidden="true" set:html={svg} />}

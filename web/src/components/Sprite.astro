@@ -1,0 +1,28 @@
+---
+// Symbols drawn in Glaxnimate (web/design/glaxnimate/*.svg). Pen colors from the sources are
+// kept for the Energy glyphs (they carry the type); UI icons use currentColor.
+const monArt = Object.entries(import.meta.glob<string>('../../design/glaxnimate/mon-art-*.svg', { query: '?raw', import: 'default', eager: true }))
+  .map(([path, raw]) => {
+    const id = path.match(/mon-art-\d+/)![0];
+    // Pokemon card art: the window's ground comes from CSS by type, the motif draws in currentColor
+    return raw.replace(/<svg[^>]*>/, `<symbol id="${id}" viewBox="0 0 542 332">`).replace('</svg>', '</symbol>')
+      .replace(/<title[^>]*>.*?<\/title>/, '').replace(/<rect id="mon-art-\d+-ground"[^>]*\/>/, '').replaceAll('#FFFFFF', 'currentColor');
+  }).join('');
+---
+<svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0">
+  <symbol id="g-psychic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#8E5CF0" /><circle cx="12" cy="12" r="6.2" fill="none" stroke="#FFFFFF" stroke-width="2" /><path d="M12 9.2L14.8 12L12 14.8L9.2 12Z" fill="#FFFFFF" /></symbol>
+  <symbol id="g-water" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#2E86E6" /><path fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" d="M6 9.2C7.5 7.9 9 7.9 10.5 9.2S13.5 10.5 15 9.2 16.5 7.9 18 9.2M6 13C7.5 11.7 9 11.7 10.5 13S13.5 14.3 15 13 16.5 11.7 18 13M8 16.8C9.2 15.7 10.6 15.7 12 16.8S14.8 17.9 16 16.8" /></symbol>
+  <symbol id="g-colorless" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#9AA3B5" /><path d="M12 6.2L17 9.1V14.9L12 17.8L7 14.9V9.1Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" /></symbol>
+  <symbol id="g-asleep" viewBox="0 0 24 24"><path d="M13.5 3.5A8.5 8.5 0 1 0 20.5 15.2A7 7 0 0 1 13.5 3.5Z" fill="#C9D3F0" /><path d="M15 4.5H20L15 10H20" fill="none" stroke="#C9D3F0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></symbol>
+  <symbol id="t-coin-heads" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#F2B531" /><circle cx="12" cy="12" r="9" fill="none" stroke="#B57F0E" stroke-width="1.2" /><rect x="7.6" y="8.2" width="4" height="5.8" rx="0.6" fill="none" stroke="#6B4A06" stroke-width="1.1" transform="rotate(-5 9.6 11.1)" /><rect x="12.6" y="8.2" width="4" height="5.8" rx="0.6" fill="#6B4A06" transform="rotate(4 14.6 11.1)" /></symbol>
+  <symbol id="t-coin-tails" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#C9CED9" /><circle cx="12" cy="12" r="9" fill="none" stroke="#7D8699" stroke-width="1.2" /><circle cx="12" cy="12" r="4.6" fill="none" stroke="#4B5468" stroke-width="1.6" /></symbol>
+  <symbol id="t-counter" viewBox="0 0 24 24"><path d="M7 1.5H17L22.5 7V17L17 22.5H7L1.5 17V7Z" fill="#F2683C" stroke="#A8391A" stroke-width="1.2" stroke-linejoin="round" /><path d="M7.6 3.4H16.4L20.6 7.6" fill="none" stroke="#FFB59C" stroke-width="1.2" stroke-linecap="round" /></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path d="M15 5.5L8.5 12L15 18.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M9 5.5L15.5 12L9 18.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></symbol>
+  <symbol id="i-turn-prev" viewBox="0 0 24 24"><path d="M12 5.5L5.5 12L12 18.5M18.5 5.5L12 12L18.5 18.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></symbol>
+  <symbol id="i-turn-next" viewBox="0 0 24 24"><path d="M5.5 5.5L12 12L5.5 18.5M12 5.5L18.5 12L12 18.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5L18.5 12L8 18.5Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8.5 6V18M15.5 6V18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" /></symbol>
+  <Fragment set:html={monArt} />
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5.5M11 6L5 12L11 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></symbol>
+</svg>
