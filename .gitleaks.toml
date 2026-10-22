@@ -1,0 +1,8 @@
+# Gitleaks settings: the default rules, plus one narrow exception.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "aria-keyshortcuts names keyboard keys, such as Shift+ArrowLeft, not credentials"
+regexTarget = "line"
+regexes = ['''aria-keyshortcuts="[A-Za-z+]+"''']
