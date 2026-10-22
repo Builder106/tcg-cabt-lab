@@ -215,7 +215,7 @@ a.tile:active .tile__card { translate: 0 -0.1rem; }
 .mgrid__deck { padding: 0 0 0.4rem; font: italic 800 1.05rem/1.2 var(--f-game); text-transform: uppercase; }
 .mgrid__opp { padding: 0 0.6rem 0.7rem 0; color: var(--c-board-muted); font-weight: 500; border-bottom: 2px solid rgb(255 255 255 / 0.12); }
 .mgrid__row { padding: 0.75rem 1rem 0.75rem 0; vertical-align: middle !important; min-width: 7rem; }
-.mgrid__cell { --tw: 1.05rem; --tg: 0.18rem; padding: 0.8rem 0.6rem 0.8rem 0; border-bottom: 1px solid rgb(255 255 255 / 0.1); vertical-align: bottom; }
+.mgrid__cell { --tw: 1.3rem; --tg: 0.25rem; padding: 0.8rem 0.6rem 0.8rem 0; border-bottom: 1px solid rgb(255 255 255 / 0.1); vertical-align: bottom; }
 .mgrid__score { color: var(--c-board-muted); margin-bottom: 0.4rem; white-space: nowrap; }
 .mgrid__score b { color: var(--c-board-text); font: italic 850 1.2rem/1 var(--f-game); }
 .mgrid__cell .pile__cards { width: calc(5 * (var(--tw) + var(--tg))); }
@@ -505,12 +505,16 @@ body[data-deck='water'] .side--policy { --tint: var(--c-water); }
 .controls__where { display: grid; justify-items: end; gap: 0.25rem; min-width: 8.5rem; font-size: var(--t-xs); white-space: nowrap; color: var(--c-board-muted); }
 .where__turn b { font: italic 850 1.3rem/1 var(--f-game); color: var(--c-white); margin-right: 0.15rem; }
 .where__who { padding: 0.1rem 0.45rem; border-radius: 0.25rem; font: italic 800 0.75rem/1.3 var(--f-game); text-transform: uppercase; color: var(--c-white); background: rgb(255 255 255 / 0.14); }
-.where__who.is-ai { background: var(--c-side-blue); }
-.where__who.is-opp { background: var(--c-side-red); }
+/* A shade darker than the side colours, so the white label passes AA (5.2:1 and 5.5:1) */
+.where__who.is-ai { background: #1F6ACF; }
+.where__who.is-opp { background: #C9252F; }
 .controls__speed { display: inline-flex; justify-self: start; padding: 0.2rem; border-radius: 0.45rem; background: #1B1E24; border: 1px solid rgb(255 255 255 / 0.1); }
 .speed { min-width: 2.75rem; min-height: 2.25rem; border-radius: 0.3rem; color: var(--c-board-muted); font: italic 800 0.875rem/1 var(--f-game); transition: background-color 0.2s, color 0.2s; }
 .speed[aria-pressed='true'] { background: var(--c-white); color: var(--c-ink); }
-@media (hover: hover) { .speed[aria-pressed='false']:hover { color: var(--c-white); } }
+@media (hover: hover) {
+  .speed[aria-pressed='false']:hover { color: var(--c-white); background: rgb(255 255 255 / 0.08); }
+  .speed[aria-pressed='true']:hover { box-shadow: inset 0 -3px 0 var(--c-gold); }
+}
 .controls__foot { display: none; grid-column: 2 / -1; display: none; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.4rem 1.25rem; font-size: var(--t-xs); color: var(--c-board-muted); }
 .controls__legend { display: flex; align-items: center; gap: 0.4rem; margin: 0.45rem 0.5rem 0; font-size: var(--t-xs); color: var(--c-board-muted); }
 .rail-key { display: inline-block; width: 0.9rem; height: 0.45rem; border-radius: 1px; }
@@ -538,6 +542,8 @@ body[data-deck='water'] .side--policy { --tint: var(--c-water); }
 .games th, .games td { text-align: left; padding: 0.45rem 1rem 0.45rem 0.6rem; border-bottom: 1px solid var(--c-rule); white-space: nowrap; }
 .games thead th { color: var(--c-ink-muted); font-weight: 600; background: var(--c-row); }
 .games tbody th { font-weight: 500; }
+/* Links in dense lists keep a 24 px target (WCAG 2.2, 2.5.8) */
+.games tbody th a, .log a.inline { display: inline-flex; align-items: center; min-height: 1.5rem; }
 .games .num { text-align: right; }
 .games tr.is-win td:nth-child(3) { color: #1F7A3E; font-weight: 700; }
 .games tr.is-loss td:nth-child(3) { color: var(--c-red-deep); }
@@ -601,7 +607,7 @@ body[data-screen='board'] .hand ~ .colophon, body[data-screen='board'] .featured
   .score, .arena, .grid-wrap { grid-column: 1; grid-row: auto; }
   .score { gap: 0.4rem; }
   .arena--3, .arena--4, .arena--6 { grid-template-columns: minmax(0, 1fr); }
-  .zone-pile, .arena--3 .zone-pile, .arena--4 .zone-pile, .arena--6 .zone-pile { --tw: 1.5rem; --tg: 0.25rem; --cols: var(--cols-phone); }
+  .zone-pile, .arena--2 .zone-pile, .arena--3 .zone-pile, .arena--4 .zone-pile, .arena--6 .zone-pile { --tw: 1.5rem; --tg: 0.25rem; --cols: var(--cols-phone); }
   .arena--6 .zone-pile { --cols: 10; --tw: 1.5rem; }
   .hand { --hand-h: 5.25rem; overflow: hidden; }
   .hand__fan {
