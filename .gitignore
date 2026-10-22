@@ -34,3 +34,12 @@ assets/demos/*.mp4
 assets/demos/*.webm
 static/demos/*.mp4
 static/demos/*.webm
+
+# Showcase build output
+web/node_modules/
+web/dist/
+web/.astro/
+web/.shots/
+
+# Blender backups
+*.blend1
