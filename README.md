@@ -21,14 +21,7 @@ npm run build
 npm run preview
 ```
 
-The site is deployed as prebuilt static files with the Vercel CLI, because the build reads `experiments/` from outside `web/`. Copy `web/vercel.json` into the build output, then deploy that folder from a directory linked to the `tcg-cabt-lab` project:
-
-```sh
-cp vercel.json dist/
-vercel deploy dist --prod
-```
-
-Pushing to `main` does not deploy the site.
+Vercel deploys the site from GitHub: pushes to `main` go to production and pull requests get a preview. [`web/README.md`](web/README.md) covers the build and deploy settings.
 
 All artwork on the site is original (drawn in Glaxnimate and rendered in Blender); see [`web/design/README.md`](web/design/README.md). Complete metrics and checkpoint weights are recorded in [`experiments/ml-experiment-report.json`](experiments/ml-experiment-report.json).
 
