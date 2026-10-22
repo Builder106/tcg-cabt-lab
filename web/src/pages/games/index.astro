@@ -1,0 +1,41 @@
+---
+import Base from '../../layouts/Base.astro';
+import { checkpointName, endingShort, familyName, opponentName, seatName } from '../../lib/labels';
+import { getGames } from '../../lib/study';
+const games = getGames();
+const groups = [...new Set(games.map((g) => checkpointName(g)))].map((name) => ({ name, games: games.filter((g) => checkpointName(g) === name) }));
+const result = { win: 'Won', loss: 'Lost', draw: 'Draw' } as const;
+---
+<Base title="All 360 games" description="All 360 games in one plain list: which AI played, the deck, the opponent, the seat, the result, how it ended and how long it took. Each links to its replay." current="games">
+  <div class="list panel">
+    <h1 class="ribbon">All 360 games</h1>
+    <div class="panel__body">
+    <p class="list__intro">The same games as the table, as a plain list. Each row opens its replay. Grouped by AI, 60 games each.</p>
+    <nav class="list__jump" aria-label="The six AIs">
+      <ul>{groups.map((g, i) => <li><a class="inline" href={`#cp-${i}`}>{g.name}</a></li>)}</ul>
+    </nav>
+    {groups.map((grp, i) => (
+      <section class="list__group" aria-labelledby={`cp-${i}`}>
+        <h2 id={`cp-${i}`}>{grp.name}</h2>
+        <div class="list__scroll" tabindex="0" role="region" aria-label={`${grp.name} games`}>
+          <table class="games">
+            <thead><tr><th scope="col">Game</th><th scope="col">Seat</th><th scope="col">Result</th><th scope="col">Ending</th><th scope="col" class="num">Turns</th><th scope="col" class="num">Decisions</th></tr></thead>
+            <tbody>
+              {grp.games.map((g) => (
+                <tr class={`is-${g.result}`}>
+                  <th scope="row"><a class="inline" href={`/games/${g.game_id}/`}>{familyName[g.family]}, {opponentName[g.opponent]}, pair {g.eval_seed}, game {g.game_in_pair}</a></th>
+                  <td>{seatName(g.policy_seat)}</td>
+                  <td>{result[g.result]}</td>
+                  <td>{endingShort[g.end_reason]}</td>
+                  <td class="num">{g.turns}</td>
+                  <td class="num">{g.decisions}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    ))}
+    </div>
+  </div>
+</Base>

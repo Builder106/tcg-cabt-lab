@@ -1,5 +1,21 @@
 # Journal
 
+## 2026-10-22: Build the showcase as a card table #milestone
+
+The showcase is a static Astro site in `web/`. It reads `experiments/` at build time and emits one page and one compressed replay per game, so it needs no server or inference endpoint. The 360 games appear as cards on a table, and a hand of Trainer cards re-sorts them; the played card states the finding for that sort in plain language. Each replay steps through every decision with the board animated between steps.
+
+## 2026-10-22: Original artwork only #decision
+
+Research into the Kaggle competition rules and the Pokémon Company's legal and press terms found no permission to show official card art, logos, or card backs on a public site. Every image is therefore original: card faces, sort art, Pokémon art motifs, and icons were drawn in Glaxnimate, and the card renders were made in Blender. Card and attack names appear as text from the engine catalog, and the footer states that the project is not affiliated with the Pokémon Company.
+
+## 2026-10-22: Keep the replay's information boundary #decision
+
+Replays store the full spectator record, so the viewer rebuilds the policy's view from it: own hand, public board, and counts. The opponent's hand, its options, its draws and searches, and every Prize card stay face down in that view, and the board animation compares only what the current view shows. Policy scores are labelled as preferences, not win chances. No move is called a mistake, because that would need counterfactual rollouts the study did not run.
+
+## 2026-10-21: Report the logged re-run #decision
+
+The milestone 3 numbers now come from a re-run that logs every game: fixed pool 58.33%, diverse pool 57.78%, delta -0.55 points (95% CI: [-10.74, +9.64]). The earlier run was not logged, so its games cannot be shown or checked; its numbers (-3.88 points) stay in the record as an earlier run that reached the same conclusion.
+
 ## 2026-10-20: Execute controlled ML experiment on held-out deck families #milestone
 
 Milestone 3 is complete. Implemented an 88-dimensional compact numerical representation (72-dim game state, 16-dim option vector with attack damage from the 1,755-attack catalog, benching, energy attachment, trainer flags, targeting, and relative ordering). Empirically verified resource budgets: 0.0285 ms inference latency (<50 ms budget) and 1.8 KB footprint (<512 MiB budget). Established a behavioral cloning baseline using a 2-layer option-scoring MLP (88 -> 32 -> 1, 2,881 parameters) with Adam optimization, verifying validation loss reduction and >85% top-1 action prediction accuracy. Executed the controlled experiment comparing `fixed-opponent-pool` (FirstAgent) vs. `diverse-opponent-pool` (Heuristic, First, Random) across 3 independent training seeds (11, 29, 47) under identical training decks (water-kyogre, grass-bulbasaur, lightning-pikachu) and step budgets. Evaluated 6 checkpoints across 360 matched-pair games with reversed player assignments on frozen held-out test families (psychic-mewtwo, colorless-snorlax). Observed a pooled held-out win rate of 55.56% (95% CI: [48.26%, 62.62%]) for fixed-opponent training and 51.67% (95% CI: [44.41%, 58.86%]) for diverse-opponent training, yielding a delta of -3.88% (95% CI: [-14.18%, +6.42%]). Recorded complete checkpoint provenance and ablation metrics in `experiments/ml-experiment-report.json`. Negative result confirmed: diverse opponent training did not yield a statistically significant improvement over fixed-opponent training on held-out deck families under equal sample budgets.

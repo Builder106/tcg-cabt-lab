@@ -1,0 +1,27 @@
+---
+// The app bar: red, italic uppercase tabs, and the study's counts as pills on the right.
+import Mark from './Mark.astro';
+interface Props { current?: 'table' | 'games' | 'method' | null }
+const { current = null } = Astro.props;
+const tabs = [
+  { key: 'table', href: '/', label: 'Table' },
+  { key: 'games', href: '/games/', label: 'All 360 games' },
+  { key: 'method', href: '/method/', label: 'How it was run' },
+] as const;
+---
+<header class="bar">
+  <a class="bar__home" href="/" aria-label="CABT Lab, the table">
+    <Mark class="bar__mark" />
+    <span aria-hidden="true">CABT Lab</span>
+  </a>
+  <nav class="bar__tabs" aria-label="Site">
+    {tabs.map((t) => (
+      <a class="tab" href={t.href} aria-current={current === t.key ? 'page' : undefined}><span>{t.label}</span></a>
+    ))}
+  </nav>
+  <ul class="bar__stats" aria-label="The study in numbers">
+    <li class="stat"><svg class="stat__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#t-coin-heads" /></svg><b>360</b> games</li>
+    <li class="stat"><svg class="stat__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#g-psychic" /></svg><b>2</b> decks</li>
+    <li class="stat"><svg class="stat__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#t-counter" /></svg><b>6</b> AI players</li>
+  </ul>
+</header>

@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Card not found" description="This page is not in the deck. Go back to the table of 360 games.">
+  <div class="lost">
+    <img class="lost__img" src="/img/lone-1600.webp" srcset="/img/lone-960.webp 960w, /img/lone-1600.webp 1600w" sizes="100vw" width="1600" height="1000" alt="A single face-down card alone on an empty play mat." />
+    <div class="lost__text panel">
+      <h1 class="ribbon">This card is not in the deck.</h1>
+      <div class="panel__body">
+      <p>There are 360 games on the table, and this address is not one of them.</p>
+      <p class="lost__links"><a class="button" href="/"><span>Back to the table</span></a> <a class="inline" href="/games/">Find a game in the list</a></p>
+      </div>
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,86 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import { site } from '../data/site';
+import Curtain from '../components/Curtain.astro';
+import Header from '../components/Header.astro';
+import Sprite from '../components/Sprite.astro';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/site.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  current?: 'table' | 'games' | 'method' | null;
+  /** The deck a game page belongs to tints its board: Psychic violet for Mewtwo, Water blue for Snorlax. */
+  deck?: 'psychic' | 'water';
+  /** 'board' pages are dark hex battle boards; the rest are light app chrome. */
+  screen?: 'board' | 'chrome';
+  jsonLd?: Record<string, unknown>;
+}
+const { title, description = site.description, image = '/og.png', current = null, deck, screen = 'chrome', jsonLd } = Astro.props;
+const fullTitle = title ? `${title} | ${site.fullName}` : `${site.fullName}: 360 games, sorted`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+const ogImage = new URL(image, Astro.site ?? site.url).href;
+const ld = jsonLd ?? {
+  '@context': 'https://schema.org',
+  '@type': 'Dataset',
+  name: `${site.fullName} test games`,
+  description: site.description,
+  url: site.url,
+  isBasedOn: site.repo,
+};
+---
+<!doctype html>
+<html lang="en" transition:animate="none">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#B5141C" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.fullName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    <link rel="preload" href="/fonts/archivo-100_900-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/exo-2-600_900-italic.woff2" as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion', 'deal-pending');
+    </script>
+    <ClientRouter fallback="swap" />
+  </head>
+  <body data-deck={deck} data-screen={screen}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div id="lamp" transition:persist="lamp" aria-hidden="true"><div class="lamp__pool"></div></div>
+    <Curtain />
+    <Sprite />
+    <Header current={current} />
+    <main id="main" tabindex="-1">
+      <slot />
+      <footer class="colophon">
+        <p>A research project on the Pokémon Trading Card Game, played in the CABT engine. Pokémon and card names are trademarks of Nintendo, Creatures Inc. and GAME FREAK inc., used here only to name what was played. This project is not affiliated with or endorsed by The Pokémon Company. The cards, mats and marks on this site are original artwork.</p>
+        <p><a class="inline" href={site.repo}>Source and data on GitHub</a></p>
+      </footer>
+    </main>
+    <script>
+      import { start } from '../engine/astro';
+      import { setupMotion } from '../motion/setup';
+      start(setupMotion);
+    </script>
+  </body>
+</html>

@@ -52,11 +52,14 @@ def run_paired_match(
     seed_a: int,
     seed_b: int,
     best_of: int = 1,
+    record_replay: bool = False,
 ) -> dict[str, Any]:
     """Run two matched games between two agents with reversed player assignments.
 
     Game 1: Player 0 = Agent A (Deck A), Player 1 = Agent B (Deck B)
     Game 2: Player 0 = Agent B (Deck B), Player 1 = Agent A (Deck A)
+
+    With record_replay, each game record also carries its full battle log.
     """
     # Game 1: Normal assignments
     t0 = time.perf_counter()
@@ -70,6 +73,7 @@ def run_paired_match(
         seed_p0=seed_a,
         seed_p1=seed_b,
         best_of=best_of,
+        record_replay=record_replay,
     )
     duration_g1 = time.perf_counter() - t0
 
@@ -85,6 +89,7 @@ def run_paired_match(
         seed_p0=seed_b,
         seed_p1=seed_a,
         best_of=best_of,
+        record_replay=record_replay,
     )
     duration_g2 = time.perf_counter() - t1
 
@@ -110,27 +115,32 @@ def run_paired_match(
     elif w_g2 == "draw":
         score_a += 0.5
 
+    games: list[dict[str, Any]] = [
+        {
+            "game": 1,
+            "agent_p0": "A",
+            "agent_p1": "B",
+            "winner": "A" if w_g1 == 0 else ("B" if w_g1 == 1 else "draw"),
+            "statuses": {"A": st_a_g1, "B": st_b_g1},
+            "total_steps": log_g1["metadata"]["total_steps"],
+            "duration_seconds": round(duration_g1, 4),
+        },
+        {
+            "game": 2,
+            "agent_p0": "B",
+            "agent_p1": "A",
+            "winner": "B" if w_g2 == 0 else ("A" if w_g2 == 1 else "draw"),
+            "statuses": {"A": st_a_g2, "B": st_b_g2},
+            "total_steps": log_g2["metadata"]["total_steps"],
+            "duration_seconds": round(duration_g2, 4),
+        },
+    ]
+    if record_replay:
+        games[0]["log"] = log_g1
+        games[1]["log"] = log_g2
+
     return {
-        "games": [
-            {
-                "game": 1,
-                "agent_p0": "A",
-                "agent_p1": "B",
-                "winner": "A" if w_g1 == 0 else ("B" if w_g1 == 1 else "draw"),
-                "statuses": {"A": st_a_g1, "B": st_b_g1},
-                "total_steps": log_g1["metadata"]["total_steps"],
-                "duration_seconds": round(duration_g1, 4),
-            },
-            {
-                "game": 2,
-                "agent_p0": "B",
-                "agent_p1": "A",
-                "winner": "B" if w_g2 == 0 else ("A" if w_g2 == 1 else "draw"),
-                "statuses": {"A": st_a_g2, "B": st_b_g2},
-                "total_steps": log_g2["metadata"]["total_steps"],
-                "duration_seconds": round(duration_g2, 4),
-            },
-        ],
+        "games": games,
         "score_a": score_a,
         "score_b": 2.0 - score_a,
     }

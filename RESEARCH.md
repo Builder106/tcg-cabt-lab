@@ -6,11 +6,13 @@ Does training against a diverse opponent pool improve a compact CABT policy's wi
 
 **Empirical Result (Milestone 3)**:
 The hypothesis is **not supported**. In a controlled study comparing a 2-layer option-scoring MLP policy (88 input features -> 32 hidden units -> 1 logit, 2,881 parameters) across 3 independent training seeds (11, 29, 47) and evaluated across 360 matched-pair games with reversed player assignments on frozen held-out test families (`psychic-mewtwo` and `colorless-snorlax`):
-- `fixed-opponent-pool` (trained against greedy `FirstAgent`): Mean win rate: 55.55% (std: 0.0375), pooled win rate: 55.56% (Wilson 95% CI: [48.26%, 62.62%]).
-- `diverse-opponent-pool` (trained against `HeuristicAgent`, `FirstAgent`, `RandomAgent`): Mean win rate: 51.67% (std: 0.0118), pooled win rate: 51.67% (Wilson 95% CI: [44.41%, 58.86%]).
-- **Delta (Diverse - Fixed)**: -3.88% (95% CI: [-14.18%, +6.42%]).
+- `fixed-opponent-pool` (trained against greedy `FirstAgent`): mean win rate 58.33% (std 0.036), pooled 58.33% (Wilson 95% CI: [51.03%, 65.29%]).
+- `diverse-opponent-pool` (trained against `HeuristicAgent`, `FirstAgent`, `RandomAgent`): mean win rate 57.78% (std 0.087), pooled 57.78% (Wilson 95% CI: [50.47%, 64.76%]).
+- **Delta (Diverse - Fixed)**: -0.55 points (95% CI: [-10.74, +9.64]).
 
-Because zero is contained within the confidence interval and the point estimate is slightly negative, diverse opponent training did not improve held-out deck generalization under an equal sample budget. An ablation reveals that while the diverse-trained policy marginally improved win rate against the stronger `HeuristicAgent` (48.33% vs. 45.83%), it conceded win rate against greedy `FirstAgent` (53.33% vs. 58.33%) and `RandomAgent` (53.33% vs. 62.50%). Full report and checkpoint weights are stored in `experiments/ml-experiment-report.json` and `experiments/checkpoints/`.
+Zero sits well inside the interval, so diverse opponent training did not measurably change held-out performance under an equal sample budget. The deck mattered more than the training pool: pooled over both pools, Snorlax games scored 63.3% and Mewtwo games 52.8%. Split by deck, the pools swap places (Mewtwo: diverse 60.0%, fixed 45.6%; Snorlax: fixed 71.1%, diverse 55.6%), which a single average hides. Against the `HeuristicAgent` both pools came out lowest (fixed 53.3%, diverse 45.8%). The spread between training seeds (50.8% to 70.0%) is wider than the gap between pools.
+
+These figures come from the logged re-run of 21 October 2026, which stores every game and its replay. An earlier run of the same configuration, which was not logged, reported -3.88 points (95% CI: [-14.18, +6.42]); both runs find no effect. Training stopped at 400 of the 100,000 planned gradient steps. The full report is `experiments/ml-experiment-report.json`.
 
 ## Environment and information boundary
 

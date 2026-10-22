@@ -1,0 +1,23 @@
+---
+// The sort in play, face up in the center slot: the art window carries the result, the rules
+// area explains it, and the footer names the run it comes from.
+import { facts } from '../data/site';
+import type { SortCopy } from '../data/sorts-copy';
+import SortArt from './SortArt.astro';
+import type { SortKey } from '../lib/sorts';
+interface Props { copy: SortCopy; sortKey: SortKey }
+const { copy, sortKey } = Astro.props;
+---
+<article class="played" aria-labelledby="played-headline">
+  <div class="played__card card" data-flip-id={`sort-${sortKey}`}>
+    <span class="card__kind" aria-hidden="true">Trainer</span>
+    <span class="played__name"><span class="sr-only">Sorted by </span>{copy.name}</span>
+    <SortArt sortKey={sortKey} />
+    <div class="played__art">
+      <h1 class="played__headline" id="played-headline">{copy.headline}</h1>
+      <p class="played__lede">{copy.lede}</p>
+    </div>
+    <div class="played__rules">{copy.notes.map((n) => <p>{n}</p>)}</div>
+    <p class="played__foot">Logged run of {facts.recordDate}</p>
+  </div>
+</article>

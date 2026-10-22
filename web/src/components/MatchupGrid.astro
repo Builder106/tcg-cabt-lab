@@ -1,0 +1,36 @@
+---
+import Tile from './Tile.astro';
+import { familyName, opponentShort } from '../lib/labels';
+import type { Pile } from '../lib/sorts';
+import type { Family, Opponent } from '../lib/types';
+interface Props { piles: Pile[] }
+const { piles } = Astro.props;
+const FAMILIES: Family[] = ['psychic-mewtwo', 'colorless-snorlax'];
+const OPPONENTS: Opponent[] = ['heuristic', 'first', 'random'];
+const rows = [0, 1, 2, 3, 4, 5].map((r) => piles.slice(r * 6, r * 6 + 6));
+const rowName = (p: Pile) => p.label.split(',')[0]!;
+---
+<div class="grid-wrap" tabindex="0" role="region" aria-label="Matchup grid, scrolls sideways on small screens">
+  <table class="mgrid">
+    <caption class="sr-only">Points scored by each AI in each deck and opponent matchup, ten games per cell</caption>
+    <thead>
+      <tr><td></td>{FAMILIES.map((f) => <th scope="colgroup" colspan="3" class="mgrid__deck">{familyName[f]}</th>)}</tr>
+      <tr><td></td>{FAMILIES.flatMap(() => OPPONENTS.map((o) => <th scope="col" class="mgrid__opp">{opponentShort[o]}</th>))}</tr>
+    </thead>
+    <tbody>
+      {rows.map((cells) => (
+        <tr>
+          <th scope="row" class="mgrid__row">{rowName(cells[0]!)}</th>
+          {cells.map((p) => (
+            <td class="mgrid__cell" style="--cols:5;--cols-phone:5">
+              <p class="mgrid__score"><b>{p.points % 1 ? p.points.toFixed(1) : p.points}</b> of {p.games.length} points</p>
+              <ul class="pile__cards" aria-label={`${p.label}: ${p.points} points of ${p.games.length}`}>
+                {p.games.map((g) => <li><Tile game={g} /></li>)}
+              </ul>
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

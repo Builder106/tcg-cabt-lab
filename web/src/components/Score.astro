@@ -1,0 +1,14 @@
+---
+// The score column on the right edge of the board, one tab per pile, in the pile's side color.
+import type { Pile } from '../lib/sorts';
+interface Props { piles: Pile[]; sides: string[] }
+const { piles, sides } = Astro.props;
+---
+<ol class="score" aria-label="Score by pile">
+  {piles.map((p, i) => (
+    <li class={`score__tab side-${sides[i]}`}>
+      <span class="score__name">{p.label}</span>
+      <span class="score__num">{(p.rate * 100).toFixed(1)}<small>%</small></span>
+    </li>
+  ))}
+</ol>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tcg-cabt-lab.example/sitemap-index.xml

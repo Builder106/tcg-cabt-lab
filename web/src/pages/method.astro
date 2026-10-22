@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import { facts, site } from '../data/site';
+import { getReport } from '../lib/study';
+const r = getReport();
+const env = r.environment;
+---
+<Base title="How the study was run" description="How the tiny AI was trained, how the 360 test games were set up and scored, and what the replays can and cannot tell you." current="method">
+  <article class="method">
+    <figure class="method__figure">
+      <img src="/img/hero-1600.webp" srcset="/img/hero-960.webp 960w, /img/hero-1600.webp 1600w" sizes="(min-width: 64rem) 58vw, 100vw" width="1600" height="1000" alt="Two piles of 180 cards on a dark blue play mat, a few cards dealt loose in front, under a single lamp." fetchpriority="high" data-critical />
+      <figcaption>The study as a table: two piles of 180 games, one per training pool. Rendered in Blender.</figcaption>
+    </figure>
+    <div class="method__text panel">
+      <h1 class="ribbon">How the study was run</h1>
+      <div class="panel__body">
+      <p class="method__lede">{site.question}</p>
+      <ol class="steps">
+        <li><h2>A very small AI</h2><p>At every decision the AI looks at each move it is allowed to make, gives it a score and plays the highest. It is a tiny neural network with {facts.parameters.toLocaleString('en-US')} adjustable numbers: 88 inputs describe the game and one possible move, they pass through 32 hidden units, and one score comes out.</p></li>
+        <li><h2>It learned by copying</h2><p>Nobody taught it strategy. Each AI studied 2,000 decisions made by a rule-based bot, its teacher: it trained on 1,600 and was quizzed on the other 400. Four AIs matched the bot on all 400 and two matched 399. Training stopped after {facts.usedSteps} learning steps, far short of the {facts.plannedSteps.toLocaleString('en-US')} planned.</p></li>
+        <li><h2>Two training styles</h2><p>The only difference between the styles is who the teacher was playing while its decisions were recorded. For the one-opponent AIs it always played a bot that takes the first option on offer. For the three-opponent AIs it played the rule-based bot, the first-choice bot or a random bot. Both styles used the same three practice decks (Kyogre, Bulbasaur and Pikachu), and each style was trained three times from a different random start (seeds 11, 29 and 47).</p></li>
+        <li><h2>Tested on new decks</h2><p>The test used two decks no AI had trained on: Mewtwo and Snorlax. In every game both players used the same deck. Each of the six AIs played each deck against three opponents, five times, and each of those games twice with the seats swapped: 6 × 2 × 3 × 5 × 2 = 360 games.</p></li>
+        <li><h2>Scoring</h2><p>A win is worth one point, a draw half a point, a loss nothing. A score is the share of possible points a pile earned. Each score comes with a likely range (a 95% Wilson interval): with this many games, the true score most plausibly sits inside it. A player who tries an illegal move loses on the spot; none did in these 360 games.</p></li>
+        <li><h2>Luck you can’t replay</h2><p>The game engine shuffles with true randomness (std::random_device), so no game can be played again card for card. The replays saved here are the only record. An earlier run of the same six AIs, which wasn’t saved, landed on different numbers; both runs found no real difference between the styles.</p></li>
+        <li><h2>What the replays show</h2><p>Each replay saves every decision with everything on the table, including both hands and the Prize cards. The AI’s view rebuilds what the AI itself could see: its own hand, the board and card counts. The scores next to each option show how strongly the AI preferred it. They are not chances of winning.</p></li>
+        <li><h2>What they don’t show</h2><p>Nobody played out the other options to see what would have happened. Without that, there is no way to call a move a mistake, so this site never does.</p></li>
+      </ol>
+      <dl class="prov prov--method">
+        <div><dt>Engine</dt><dd>kaggle-environments 1.33.0, CABT 1.0.0</dd></div>
+        <div class="prov__wide"><dt>Card catalog SHA-256</dt><dd><code>{env.card_catalog_sha256}</code></dd></div>
+        <div class="prov__wide"><dt>Attack catalog SHA-256</dt><dd><code>{env.attack_catalog_sha256}</code></dd></div>
+        <div><dt>Run of record</dt><dd>{facts.recordDate}</dd></div>
+        <div><dt>Data</dt><dd><a class="inline" href={`${site.repo}/blob/main/experiments/ml-experiment-report.json`}>experiments/ml-experiment-report.json</a></dd></div>
+        <div><dt>Code</dt><dd><a class="inline" href={site.repo}>Builder106/tcg-cabt-lab</a></dd></div>
+      </dl>
+      <p class="method__art">Card names come from the engine’s card catalog as text. The cards, card back, mat and marks on this site are original artwork made in Blender and Glaxnimate; no official card images are used.</p>
+      </div>
+    </div>
+  </article>
+</Base>

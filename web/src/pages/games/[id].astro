@@ -1,0 +1,122 @@
+---
+import Base from '../../layouts/Base.astro';
+import { boardHTML, decisionHTML, nameHTML, promptText, startFrame, turnOwners, whereHTML } from '../../lib/board';
+import { checkpointName, endingName, familyName, opponentName, outcomeSentence, seatName } from '../../lib/labels';
+import { getGames, getReplay } from '../../lib/study';
+import type { Game } from '../../lib/types';
+
+export function getStaticPaths() {
+  const games = getGames();
+  return games.map((g, i) => ({ params: { id: g.game_id }, props: { game: g, index: i, prev: games[i - 1], next: games[i + 1] } }));
+}
+interface Props { game: Game; index: number; prev?: Game; next?: Game }
+const { game: g, index, prev, next } = Astro.props;
+const replay = getReplay(g.game_id);
+const k = startFrame(replay);
+const ctx = { replay, view: 'agent' as const, seat: g.policy_seat };
+const pairId = g.game_id.replace(/-g(\d)$/, (_, n: string) => `-g${n === '1' ? 2 : 1}`);
+const n = replay.frames.length;
+const mine = replay.frames.map((f, i) => ({ f, i })).filter(({ f }) => f.actor === g.policy_seat && f.options.length);
+const turnStarts = replay.frames.reduce<{ turn: number; i: number }[]>((acc, f, i) => {
+  if (!acc.length || acc[acc.length - 1]!.turn !== f.turn) acc.push({ turn: f.turn, i });
+  return acc;
+}, []);
+// The turn rail under the timeline: one segment per turn, as long as its decisions, in its owner's color
+const owners = turnOwners(replay);
+const turns = turnStarts.map((t, j) => {
+  const owner = owners.get(t.turn);
+  return { ...t, len: (turnStarts[j + 1]?.i ?? n) - t.i, owner: owner === undefined ? 'setup' : owner === g.policy_seat ? 'ai' : 'opp' };
+});
+const turnLabel = (i: number) => { const t = replay.frames[i]!.turn; return t === 0 ? 'setup' : `turn ${t}`; };
+// Consecutive identical decisions in the log are merged ("3 times")
+const logRows: { i: number; turn: number; prompt: string; label: string; times: number }[] = [];
+for (const { f, i } of mine) {
+  const label = f.chosen.map((c) => nameHTML(f.options[c] ?? '')).join(', ');
+  const last = logRows[logRows.length - 1];
+  if (last && last.turn === f.turn && last.prompt === f.prompt && last.label === label) last.times++;
+  else logRows.push({ i, turn: f.turn, prompt: f.prompt, label, times: 1 });
+}
+---
+<Base deck={g.family === 'psychic-mewtwo' ? 'psychic' : 'water'} screen="board" title={`${checkpointName(g)} vs ${opponentName[g.opponent].toLowerCase()}, ${familyName[g.family]}`} description={`${outcomeSentence(g)} Step through all ${n} decisions of this game, as the AI saw it or with every card face up.`}>
+  <article class="game" data-game={g.game_id}>
+    <h1 class="sr-only">AI vs {opponentName[g.opponent].toLowerCase()}, {familyName[g.family]}: {outcomeSentence(g)}</h1>
+
+    <section class="viewer" data-viewer data-id={g.game_id} data-seat={g.policy_seat} data-start={k} data-frames={n} aria-label="Match replay">
+      <div class="viewer__stage">
+        <div class="persp persp--board" role="group" aria-label="Perspective">
+          <button type="button" class="persp__btn" data-view="agent" aria-pressed="true">AI’s view</button>
+          <button type="button" class="persp__btn" data-view="spectator" aria-pressed="false">Spectator view</button>
+        </div>
+      <div class="board" data-board data-view="agent" set:html={boardHTML(ctx, replay.frames[k]!)} />
+      </div>
+      <div class="controls" data-controls>
+        <div class="controls__buttons">
+          <button type="button" class="ctl" data-step="turn-prev" aria-label="Previous turn" title="Previous turn (Shift+←)" aria-keyshortcuts="Shift+ArrowLeft"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-turn-prev" /></svg></button>
+          <button type="button" class="ctl" data-step="prev" aria-label="Previous decision" title="Previous decision (←)" aria-keyshortcuts="ArrowLeft"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-prev" /></svg></button>
+          <button type="button" class="ctl ctl--play" data-play aria-label="Play" title="Play (P)" aria-keyshortcuts="P"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-play" /></svg></button>
+          <button type="button" class="ctl" data-step="next" aria-label="Next decision" title="Next decision (→)" aria-keyshortcuts="ArrowRight"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-next" /></svg></button>
+          <button type="button" class="ctl" data-step="turn-next" aria-label="Next turn" title="Next turn (Shift+→)" aria-keyshortcuts="Shift+ArrowRight"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-turn-next" /></svg></button>
+        </div>
+        <div class="timeline">
+          <label class="track" style={`--p:${((k / Math.max(1, n - 1)) * 100).toFixed(2)}%`}>
+            <span class="sr-only">Decision</span>
+            <input type="range" min="0" max={n - 1} value={k} step="1" data-track aria-valuetext={`Decision ${k + 1} of ${n}, ${turnLabel(k)}`} />
+          </label>
+          <div class="rail" data-rail aria-hidden="true">
+            {turns.map((t) => <i class={`rail__turn is-${t.owner}${k >= t.i && k < t.i + t.len ? ' is-now' : ''}`} style={`flex-grow:${t.len}`} data-at={t.i} title={t.turn === 0 ? 'Setup' : `Turn ${t.turn}`}></i>)}
+          </div>
+          <p class="controls__legend"><span class="rail-key is-ai" aria-hidden="true"></span>AI’s turns <span class="rail-key is-opp" aria-hidden="true"></span>Opponent’s turns</p>
+        </div>
+        <p class="controls__where" data-where set:html={whereHTML(replay, k, g.policy_seat, owners)} />
+        <div class="controls__speed" role="group" aria-label="Playback speed">
+          {[1, 2, 4].map((x) => <button type="button" class="speed" data-speed={x} aria-pressed={x === 1 ? 'true' : 'false'}>{x}×</button>)}
+        </div>
+      </div>
+      <div class="viewer__notes">
+        <p class="persp__note" data-persp-note>What the AI could see: its own hand, the board and card counts. Hidden cards stay face down.</p>
+      </div>
+    </section>
+
+    <aside class="decision panel" data-decision aria-label="Decision" set:html={decisionHTML(ctx, k)} />
+    <p class="sr-only" aria-live="polite" data-announce></p>
+
+    <aside class="slip panel">
+      <h2 class="ribbon">AI vs {opponentName[g.opponent].toLowerCase()}, {familyName[g.family]}</h2>
+      <div class="panel__body">
+        <p class="slip__outcome">{outcomeSentence(g)}</p>
+        <dl class="slip__facts">
+          <div><dt>Which AI</dt><dd>{checkpointName(g)}</dd></div>
+          <div><dt>Game</dt><dd>{index + 1} of 360</dd></div>
+          <div><dt>Opponent</dt><dd>{opponentName[g.opponent]}</dd></div>
+          <div class="slip__wide"><dt>Rematch</dt><dd>Game {g.game_in_pair} of 2. The rematch swaps the seats and keeps the decks.</dd></div>
+          <div><dt>AI’s seat</dt><dd>{seatName(g.policy_seat)[0]!.toUpperCase() + seatName(g.policy_seat).slice(1)}</dd></div>
+          <div><dt>Ending</dt><dd>{endingName[g.end_reason]}</dd></div>
+          <div><dt>Prize cards taken</dt><dd>{g.prizes_taken.policy} by the AI, {g.prizes_taken.opponent} by the opponent</dd></div>
+        </dl>
+        <details class="slip__tech">
+          <summary>Technical details</summary>
+          <dl class="slip__facts">
+            <div><dt>Training seed</dt><dd>{g.training_seed}</dd></div>
+            <div><dt>Evaluation label</dt><dd>{g.eval_seed}</dd></div>
+            <div class="slip__wide"><dt>Model fingerprint (SHA-256)</dt><dd><code>{g.weights_sha256}</code></dd></div>
+          </dl>
+        </details>
+        <p class="slip__links">
+          <a class="inline" href="/" data-back>Back to the table</a>
+          <a class="inline" href={`/games/${pairId}/`}>The rematch, seats swapped</a>
+          {prev && <a class="inline" href={`/games/${prev.game_id}/`} rel="prev">Previous game</a>}
+          {next && <a class="inline" href={`/games/${next.game_id}/`} rel="next">Next game</a>}
+        </p>
+      </div>
+    </aside>
+
+    <details class="log panel">
+      <summary class="ribbon ribbon--summary">The AI’s decisions ({mine.length} of the game’s {n})</summary>
+      <ol class="panel__body">
+        {logRows.map((r) => (
+          <li><a class="inline" href={`?d=${r.i}`}>Turn {r.turn}</a>: {r.prompt === 'Choose an action' ? '' : `${promptText(r.prompt)}: `}<Fragment set:html={r.label} />{r.times > 1 ? ` (${r.times} times)` : ''}</li>
+        ))}
+      </ol>
+    </details>
+  </article>
+</Base>
