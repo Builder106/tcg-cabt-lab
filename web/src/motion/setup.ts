@@ -8,15 +8,13 @@ import './art';
 /** The lamp over the table: its pool of light follows a lagged pointer and drifts at rest. */
 function startLamp() {
   const pool = document.querySelector<HTMLElement>('.lamp__pool');
-  if (!pool || prefersReducedMotion()) return;
+  if (!pool || prefersReducedMotion() || isTouch()) return;
   const target = { x: 0, y: 0 };
   const cur = { x: 0, y: 0 };
-  if (!isTouch()) {
-    addEventListener('pointermove', (e) => {
-      target.x = (e.clientX / innerWidth - 0.5) * 0.35 * innerWidth;
-      target.y = (e.clientY / innerHeight - 0.5) * 0.25 * innerHeight;
-    }, { passive: true });
-  }
+  addEventListener('pointermove', (e) => {
+    target.x = (e.clientX / innerWidth - 0.5) * 0.35 * innerWidth;
+    target.y = (e.clientY / innerHeight - 0.5) * 0.25 * innerHeight;
+  }, { passive: true });
   const setX = gsap.quickSetter(pool, 'x', 'px');
   const setY = gsap.quickSetter(pool, 'y', 'px');
   gsap.ticker.add((time) => {
