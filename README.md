@@ -1,3 +1,9 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/banner-light.svg">
+  <img alt="TCG CABT Lab: compact agents for the Pokémon TCG. Fixed opponent pool 58.3%, diverse opponent pool 57.8% over 360 held-out games." src="assets/banner-dark.svg">
+</picture>
+
 # TCG CABT Lab
 
 [![CI](https://github.com/Builder106/tcg-cabt-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/Builder106/tcg-cabt-lab/actions/workflows/ci.yml)

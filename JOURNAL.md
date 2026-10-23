@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-10-22: README banner from the showcase art #decision
+
+The README opens with light and dark banners in `assets/`, written by `assets/banner.py`. They reuse the Glaxnimate mark, card back, Psychic and Water faces, and hex tile, and set the type as outlines from the site's Exo 2 and Archivo files, because GitHub shows README SVGs as images that cannot load web fonts. The pool chips use a deeper blue and red than the site so their 14 px white labels pass 4.5:1. PNG copies sit beside the SVGs for clients that do not draw SVG.
+
 ## 2026-10-22: Limit the first card deal on slower devices #decision
 
 A live mobile trace showed several seconds of main-thread work while the table initialized. Touch devices now show the cards without the first-deal animation or the decorative lamp and hand tickers. Desktop keeps a short deal of at most eight cards. In a paired throttled Chromium run, mobile startup long tasks fell from 4.8 seconds on production to 1.8 seconds in the changed build; this is lab evidence, not a field INP result. All 360 game links remain in the table.
