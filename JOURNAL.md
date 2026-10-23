@@ -2,7 +2,7 @@
 
 ## 2026-10-22: Limit the first card deal on slower devices #decision
 
-A live mobile trace showed several seconds of main-thread work while the table initialized. Touch devices now show the cards without the first-deal animation or the decorative lamp and hand tickers. Desktop keeps a short deal of at most 24 cards. In a paired throttled Chromium run, startup long tasks fell from 4.8 seconds on production to 1.8 seconds in the changed build; this is lab evidence, not a field INP result. All 360 game links remain in the table.
+A live mobile trace showed several seconds of main-thread work while the table initialized. Touch devices now show the cards without the first-deal animation or the decorative lamp and hand tickers. Desktop keeps a short deal of at most eight cards. In a paired throttled Chromium run, mobile startup long tasks fell from 4.8 seconds on production to 1.8 seconds in the changed build; this is lab evidence, not a field INP result. All 360 game links remain in the table.
 
 ## 2026-10-22: Deploy the showcase from GitHub #decision
 

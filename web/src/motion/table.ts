@@ -57,7 +57,7 @@ function deal(intro: gsap.core.Timeline) {
   const ox = innerWidth * 0.5;
   const oy = innerHeight + 80;
   // Animate a sample of the visible cards; the full table remains available immediately.
-  const visible = tiles.slice(0, 24).filter((t) => t.getBoundingClientRect().top < innerHeight + 200);
+  const visible = tiles.slice(0, 8).filter((t) => t.getBoundingClientRect().top < innerHeight + 200);
   const from = visible.map((t) => { const r = t.getBoundingClientRect(); return { x: ox - (r.left + r.width / 2), y: oy - (r.top + r.height / 2) }; });
   const hand = gsap.utils.toArray<HTMLElement>('.hand__slot');
   if (hand.length) {
