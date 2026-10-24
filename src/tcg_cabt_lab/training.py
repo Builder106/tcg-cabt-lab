@@ -4,7 +4,7 @@ import random
 import time
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
-from typing import Any
+from typing import TypedDict
 
 import numpy as np
 
@@ -29,12 +29,31 @@ class DecisionExample:
     num_candidates: int
 
 
+class TrainingMetadata(TypedDict):
+    variant: str
+    seed: int
+    training_steps: int
+    batch_size: int
+    learning_rate: float
+    l2_reg: float
+    total_samples: int
+    train_samples: int
+    val_samples: int
+    initial_val_loss: float
+    initial_val_acc: float
+    final_val_loss: float
+    final_val_acc: float
+    training_duration_seconds: float
+    loss_history_start: float | None
+    loss_history_end: float | None
+
+
 def collect_game_decisions(
     agent_p0: Callable[..., list[int]],
     agent_p1: Callable[..., list[int]],
     deck_p0: Sequence[int],
     deck_p1: Sequence[int],
-    attacks: Mapping[int, Any] | None = None,
+    attacks: Mapping[int, object] | None = None,
 ) -> list[DecisionExample]:
     """Play a game and collect (candidate_matrix, target_index) for player 0 decisions."""
     from kaggle_environments import make
@@ -51,7 +70,9 @@ def collect_game_decisions(
     examples: list[DecisionExample] = []
 
     # Custom wrapper for player 0 to capture observation and choice
-    def recording_agent(obs: Mapping[str, Any], conf: Any = None) -> list[int]:
+    def recording_agent(
+        obs: Mapping[str, object], conf: Mapping[str, object] | None = None
+    ) -> list[int]:
         clean_obs = sanitize_observation(obs)
         sel = clean_obs.get("select")
         chosen = p0(clean_obs, conf)
@@ -142,7 +163,7 @@ def train_policy(
     target_samples: int = 2500,
     training_families: Sequence[str] = TRAINING_FAMILIES,
     dataset: list[DecisionExample] | None = None,
-) -> tuple[CompactPolicy, dict[str, Any]]:
+) -> tuple[CompactPolicy, TrainingMetadata]:
     """Train a CompactPolicy on collected decisions using Adam gradient descent.
 
     Args:
@@ -286,7 +307,7 @@ def train_policy(
     final_loss, final_acc = evaluate_loss_acc(val_data)
     training_duration = time.perf_counter() - t_start
 
-    metadata = {
+    metadata: TrainingMetadata = {
         "variant": variant,
         "seed": seed,
         "training_steps": training_steps,

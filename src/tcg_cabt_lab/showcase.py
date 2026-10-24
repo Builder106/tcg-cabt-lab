@@ -68,7 +68,7 @@ def _zone(player: Mapping[str, Any], area: int | None) -> list[Any]:
     return cards if isinstance(cards, list) else []
 
 
-def _at(cards: Sequence[Any], index: Any) -> Mapping[str, Any] | None:
+def _at(cards: Sequence[Any], index: Any) -> Mapping[str, Any] | None:  # noqa: ANN401
     if not isinstance(index, int) or not 0 <= index < len(cards):
         return None
     card = cards[index]
@@ -150,8 +150,10 @@ def _pokemon(mon: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
-def _ids(cards: Any) -> list[Any]:
-    return [c.get("id") for c in cards or [] if isinstance(c, Mapping)]
+def _ids(cards: object) -> list[object]:
+    if not isinstance(cards, Sequence):
+        return []
+    return [c.get("id") for c in cards if isinstance(c, Mapping)]
 
 
 def _player(state: Mapping[str, Any]) -> dict[str, Any]:

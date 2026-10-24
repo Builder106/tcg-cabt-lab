@@ -71,3 +71,7 @@ The user requested repository creation and scaffolding. A Python 3.12 package, u
 ## 2026-10-04: Separate TCG from competitive battles #decision
 
 TCG CABT Lab covers the standard 60-card game. VGC Rulebreak is a separate repository because the engines, choices, observations, datasets, and evaluation differ. The intended public deliverable is a reproducible agent tournament with a matchup grid and a match viewer built around actual research runs.
+
+## 2026-10-23: Reject Any annotations in CI #decision
+
+Ruff checks function arguments and returns for Any. Line-level exceptions remain at dynamic CABT and JSON record boundaries that still need schema types. Pytest treats warnings as errors, and strict mypy stays enabled.

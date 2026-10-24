@@ -2,7 +2,6 @@
 
 from collections import Counter
 from collections.abc import Mapping, Sequence
-from typing import Any
 
 from tcg_cabt_lab.catalog import get_catalog_by_id
 
@@ -75,7 +74,7 @@ MAX_COPIES_NON_BASIC_ENERGY = 4
 
 def validate_deck(
     deck: Sequence[int],
-    catalog: Mapping[int, Mapping[str, Any]] | None = None,
+    catalog: Mapping[int, Mapping[str, object]] | None = None,
 ) -> list[int]:
     """Validate a 60-card Pokemon TCG deck against standard deck invariants.
 
@@ -119,10 +118,13 @@ def validate_deck(
             if card is None:
                 raise ValueError(f"Card ID {cid} does not exist in the CABT card catalog")
 
-            is_basic_energy = card.get("energyType") == 1 or (
-                card.get("cardType") == 5 and card.get("name", "").startswith("Basic")
+            card_name_value = card.get("name", f"Card-{cid}")
+            card_name = (
+                card_name_value if isinstance(card_name_value, str) else f"Card-{cid}"
             )
-            card_name = card.get("name", f"Card-{cid}")
+            is_basic_energy = card.get("energyType") == 1 or (
+                card.get("cardType") == 5 and card_name.startswith("Basic")
+            )
             if not is_basic_energy:
                 name_counts[card_name] += count
                 if name_counts[card_name] > MAX_COPIES_NON_BASIC_ENERGY:
@@ -142,7 +144,7 @@ def validate_deck(
 
 def format_deck_summary(
     deck: Sequence[int],
-    catalog: Mapping[int, Mapping[str, Any]] | None = None,
+    catalog: Mapping[int, Mapping[str, object]] | None = None,
 ) -> str:
     """Format a human-readable summary of deck contents."""
     if catalog is None:

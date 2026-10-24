@@ -18,7 +18,9 @@ def _normalize_agent(
     seat: int = 0,
     decisions: list[dict[str, Any]] | None = None,
 ) -> Callable[..., list[int]]:
-    def wrapped(observation: Mapping[str, Any], configuration: Any = None) -> list[int]:
+    def wrapped(
+        observation: Mapping[str, Any], configuration: Any = None  # noqa: ANN401
+    ) -> list[int]:
         try:
             action = agent(observation, configuration)
         except TypeError:

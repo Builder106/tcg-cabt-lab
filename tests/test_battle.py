@@ -47,7 +47,9 @@ def test_battle_outcome_structure() -> None:
 
 def test_invalid_action_handling() -> None:
     # Player 0 plays an out-of-bounds action during in-game choices
-    def faulty_agent(obs: Mapping[str, Any], config: Any = None) -> list[int]:
+    def faulty_agent(
+        obs: Mapping[str, Any], config: Any = None  # noqa: ANN401
+    ) -> list[int]:
         if obs.get("select") is None:
             from tcg_cabt_lab.deck import REFERENCE_DECK
 

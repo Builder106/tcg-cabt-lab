@@ -3,7 +3,7 @@
 import gzip
 import json
 from collections import Counter
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -43,7 +43,9 @@ EVAL_SEED_ROLE = (
 )
 
 
-def get_opponent_factory(opponent_type: str) -> Any:
+def get_opponent_factory(
+    opponent_type: str,
+) -> Callable[[Sequence[int] | None], HeuristicAgent | FirstAgent | RandomAgent]:
     """Return an agent factory for the specified baseline opponent type."""
     if opponent_type == "heuristic":
         return lambda deck: HeuristicAgent(deck=deck)

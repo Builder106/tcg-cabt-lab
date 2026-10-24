@@ -12,7 +12,9 @@ from tcg_cabt_lab.deck import REFERENCE_DECK, validate_deck
 DISALLOWED_OBSERVATION_KEYS = frozenset({"search_begin_input"})
 
 
-def sanitize_observation(raw_obs: Mapping[str, Any]) -> dict[str, Any]:
+def sanitize_observation(
+    raw_obs: Mapping[str, Any],
+) -> dict[str, Any]:
     """Sanitize observation to enforce an observation-only agent boundary.
 
     Strips C++ internal engine states (such as search_begin_input) and ensures
