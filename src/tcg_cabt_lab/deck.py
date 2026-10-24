@@ -119,9 +119,7 @@ def validate_deck(
                 raise ValueError(f"Card ID {cid} does not exist in the CABT card catalog")
 
             card_name_value = card.get("name", f"Card-{cid}")
-            card_name = (
-                card_name_value if isinstance(card_name_value, str) else f"Card-{cid}"
-            )
+            card_name = card_name_value if isinstance(card_name_value, str) else f"Card-{cid}"
             is_basic_energy = card.get("energyType") == 1 or (
                 card.get("cardType") == 5 and card_name.startswith("Basic")
             )
