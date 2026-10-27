@@ -45,6 +45,29 @@ jobs:
       - name: Audit dependencies
         run: uv run pip-audit --strict --disable-pip --require-hashes --cache-dir /tmp/tcg-cabt-lab-audit-cache --requirement /tmp/tcg-cabt-lab-requirements.txt
 
+  showcase:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install locked showcase dependencies
+        working-directory: web
+        run: npm ci
+      - name: Audit showcase dependencies
+        working-directory: web
+        run: npm audit --audit-level=high
+      - name: Check Astro project
+        working-directory: web
+        run: npm run check
+      - name: Build showcase
+        working-directory: web
+        run: npm run build
+
   secrets:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
