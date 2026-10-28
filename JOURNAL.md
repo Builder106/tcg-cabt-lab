@@ -79,3 +79,7 @@ TCG CABT Lab covers the standard 60-card game. VGC Rulebreak is a separate repos
 ## 2026-10-23: Reject Any annotations in CI #decision
 
 Ruff checks function arguments and returns for Any. Line-level exceptions remain at dynamic CABT and JSON record boundaries that still need schema types. Pytest treats warnings as errors, and strict mypy stays enabled.
+
+## 2026-10-28: Override litellm and filelock for audit #decision
+
+kaggle-environments caps litellm below 1.94, and litellm caps filelock below 4. Every fixed release of both is above those caps, so pip-audit failed with no resolver path. pyproject now overrides litellm to 1.104 or newer and filelock to 4.2.1 or newer. The repository imports neither package, and the full test suite, wheel check, and audit pass with the overrides. Drop the overrides once kaggle-environments and litellm raise their own caps.
