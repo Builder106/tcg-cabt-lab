@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-10-29: Restore the production deployment #decision
+
+The `main` commit `9dc7532` had no ready production deployment. Vercel skipped its two latest Git deployments because the ignored-build command found no changes in `web/` or `experiments/`. A forced CLI production deploy built 371 static pages and now serves HTTP 200 at https://tcg-cabt-lab.vercel.app. Vercel Authentication uses Standard Protection (`prod_deployment_urls_and_all_previews`), which leaves the production domain public and protects preview and deployment URLs.
+
 ## 2026-10-27: Check the Astro showcase in CI #ci #decision
 
 The Python checks covered the research package, while the Astro showcase had no CI check. The workflow now installs the locked web dependencies, checks the Astro project, audits npm dependencies, and builds the site.
