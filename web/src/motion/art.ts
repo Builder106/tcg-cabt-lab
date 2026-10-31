@@ -2,8 +2,8 @@
 // hovering or focusing a card in the hand replays how it got there, and the played card plays
 // once as it lands. Reduced motion keeps the final frames.
 import { gsap } from 'gsap';
-import { ease, onPage, prefersReducedMotion } from '../engine';
-import type { SortKey } from '../lib/sorts';
+import { ease, onPage, prefersReducedMotion } from '@/engine';
+import type { SortKey } from '@/lib/sorts';
 
 type Pick = { one: (id: string) => Element | null; all: (prefix: string) => Element[] };
 type Build = (tl: gsap.core.Timeline, $: Pick) => void;

@@ -1,8 +1,8 @@
 ---
 // Five games to start with, picked by rule from the data so the picks stay honest.
-import { checkpointName, familyName, opponentName, outcomeSentence } from '../lib/labels';
-import { getGames, getReplay } from '../lib/study';
-import type { Game } from '../lib/types';
+import { checkpointName, familyName, opponentName, outcomeSentence } from '@/lib/labels';
+import { getGames, getReplay } from '@/lib/study';
+import type { Game } from '@/lib/types';
 
 const games = getGames();
 const usedAttack = (g: Game, name: string) => {

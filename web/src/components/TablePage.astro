@@ -1,7 +1,7 @@
 ---
 // A table page as a battle board: the sort in play sits in the center slot, the piles face off in
 // colored zones, the score column runs down the right edge, and the hand waits along the bottom.
-import Base from '../layouts/Base.astro';
+import Base from '@/layouts/Base.astro';
 import Featured from './Featured.astro';
 import Hand from './Hand.astro';
 import Legend from './Legend.astro';
@@ -9,9 +9,9 @@ import MatchupGrid from './MatchupGrid.astro';
 import Pile from './Pile.astro';
 import PlayedCard from './PlayedCard.astro';
 import Score from './Score.astro';
-import { sortCopy } from '../data/sorts-copy';
-import { getGames, getReport } from '../lib/study';
-import { buildSort, type SortKey } from '../lib/sorts';
+import { sortCopy } from '@/data/sorts-copy';
+import { getGames, getReport } from '@/lib/study';
+import { buildSort, type SortKey } from '@/lib/sorts';
 interface Props { sortKey: SortKey }
 const { sortKey } = Astro.props;
 const report = getReport();

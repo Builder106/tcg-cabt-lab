@@ -1,8 +1,8 @@
 ---
 // One pile of games, laid in a zone on the board. Zone color follows the side it sits on.
 import Tile from './Tile.astro';
-import { pct } from '../lib/labels';
-import type { Pile } from '../lib/sorts';
+import { pct } from '@/lib/labels';
+import type { Pile } from '@/lib/sorts';
 interface Props { pile: Pile; index: number; cols: { wide: number; phone: number }; side: string }
 const { pile, index, cols, side } = Astro.props;
 const [lo, hi] = pile.ci;

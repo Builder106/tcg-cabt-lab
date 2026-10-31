@@ -1,6 +1,6 @@
 // Global motion: runs once on the client, before the first page initializes.
 import { gsap } from 'gsap';
-import { ease, isTouch, prefersReducedMotion, setTransition } from '../engine';
+import { ease, isTouch, prefersReducedMotion, setTransition } from '@/engine';
 import './table';
 import './replay';
 import './art';

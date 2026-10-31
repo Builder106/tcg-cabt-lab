@@ -1,9 +1,9 @@
 ---
 // The navigation: a hand of Trainer cards, one per sort, glowing as playable. Playing one
 // (following its link) slides it onto the board while the 360 games re-sort.
-import { cardText } from '../data/sorts-copy';
+import { cardText } from '@/data/sorts-copy';
 import SortArt from './SortArt.astro';
-import { SORT_ORDER, sortPath, type SortKey } from '../lib/sorts';
+import { SORT_ORDER, sortPath, type SortKey } from '@/lib/sorts';
 interface Props { current: SortKey }
 const { current } = Astro.props;
 const hand = SORT_ORDER.filter((k) => k !== current);

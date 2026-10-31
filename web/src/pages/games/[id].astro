@@ -1,9 +1,9 @@
 ---
-import Base from '../../layouts/Base.astro';
-import { boardHTML, decisionHTML, nameHTML, promptText, startFrame, turnOwners, whereHTML } from '../../lib/board';
-import { checkpointName, endingName, familyName, opponentName, outcomeSentence, seatName } from '../../lib/labels';
-import { getGames, getReplay } from '../../lib/study';
-import type { Game } from '../../lib/types';
+import Base from '@/layouts/Base.astro';
+import { boardHTML, decisionHTML, nameHTML, promptText, startFrame, turnOwners, whereHTML } from '@/lib/board';
+import { checkpointName, endingName, familyName, opponentName, outcomeSentence, seatName } from '@/lib/labels';
+import { getGames, getReplay } from '@/lib/study';
+import type { Game } from '@/lib/types';
 
 export function getStaticPaths() {
   const games = getGames();

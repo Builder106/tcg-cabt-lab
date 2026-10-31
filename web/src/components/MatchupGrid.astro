@@ -1,8 +1,8 @@
 ---
 import Tile from './Tile.astro';
-import { familyName, opponentShort } from '../lib/labels';
-import type { Pile } from '../lib/sorts';
-import type { Family, Opponent } from '../lib/types';
+import { familyName, opponentShort } from '@/lib/labels';
+import type { Pile } from '@/lib/sorts';
+import type { Family, Opponent } from '@/lib/types';
 interface Props { piles: Pile[] }
 const { piles } = Astro.props;
 const FAMILIES: Family[] = ['psychic-mewtwo', 'colorless-snorlax'];

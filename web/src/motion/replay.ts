@@ -2,10 +2,10 @@
 // (agent view) or as a spectator. The board and panel come from the same renderer the server
 // used for the first paint.
 import { gsap } from 'gsap';
-import { ease, onPage, prefersReducedMotion } from '../engine';
-import { boardHTML, decisionHTML, promptText, turnOwners, whereHTML } from '../lib/board';
+import { ease, onPage, prefersReducedMotion } from '@/engine';
+import { boardHTML, decisionHTML, promptText, turnOwners, whereHTML } from '@/lib/board';
 import { animateStep, snapshot } from './board-fx';
-import type { Replay, View } from '../lib/types';
+import type { Replay, View } from '@/lib/types';
 import { nav } from './state';
 
 const PLAY_STEP = 0.9; // seconds per decision while playing, at 1×

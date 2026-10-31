@@ -1,7 +1,7 @@
 ---
-import Base from '../../layouts/Base.astro';
-import { checkpointName, endingShort, familyName, opponentName, seatName } from '../../lib/labels';
-import { getGames } from '../../lib/study';
+import Base from '@/layouts/Base.astro';
+import { checkpointName, endingShort, familyName, opponentName, seatName } from '@/lib/labels';
+import { getGames } from '@/lib/study';
 const games = getGames();
 const groups = [...new Set(games.map((g) => checkpointName(g)))].map((name) => ({ name, games: games.filter((g) => checkpointName(g) === name) }));
 const result = { win: 'Won', loss: 'Lost', draw: 'Draw' } as const;

@@ -2,8 +2,8 @@
 // movement through a pile.
 import { gsap } from 'gsap';
 import { Flip } from 'gsap/Flip';
-import { ease, isTouch, onPage, prefersReducedMotion } from '../engine';
-import { setSwap } from '../engine/astro';
+import { ease, isTouch, onPage, prefersReducedMotion } from '@/engine';
+import { setSwap } from '@/engine/astro';
 import { nav } from './state';
 
 gsap.registerPlugin(Flip);

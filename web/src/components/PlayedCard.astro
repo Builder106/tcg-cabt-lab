@@ -1,10 +1,10 @@
 ---
 // The sort in play, face up in the center slot: the art window carries the result, the rules
 // area explains it, and the footer names the run it comes from.
-import { facts } from '../data/site';
-import type { SortCopy } from '../data/sorts-copy';
+import { facts } from '@/data/site';
+import type { SortCopy } from '@/data/sorts-copy';
 import SortArt from './SortArt.astro';
-import type { SortKey } from '../lib/sorts';
+import type { SortKey } from '@/lib/sorts';
 interface Props { copy: SortCopy; sortKey: SortKey }
 const { copy, sortKey } = Astro.props;
 ---
