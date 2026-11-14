@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-14: Remove the ignore-build command #decision
+
+The rerun commits were pushed together with a docs-only commit on top, and Vercel canceled every deployment in 2 seconds, so the live site kept the old results. The project's ignore-build command diffed `VERCEL_GIT_PREVIOUS_SHA` against `HEAD` and skipped builds that contained real changes. The command is removed through the project settings and the site was redeployed with the CLI. The build takes about 5 seconds, so skipping docs-only commits saved nothing. The 29 October entry describes the same failure.
+
 ## 2026-11-14: Rerun after the teacher-deck fix #decision
 
 The study was rerun with the same settings (seeds 11, 29 and 47, 400 steps, 2,000 decisions per checkpoint) after the teacher-deck fix, and it replaces the 21 October run as the run of record. Fixed pool 55.83% (95% CI [48.53%, 62.89%]), diverse pool 62.78% (95% CI [55.52%, 69.50%]), delta +6.95 points (95% CI [-3.17, +17.07]). Zero is still inside the interval. The sign flipped from the 21 October run (-0.55), and the diverse pool now leads on both decks, so the showcase copy that said each style won one deck was rewritten. Per-seed win rates range from 50.0% to 74.2%, which is the main reason to add seeds before a write-up.

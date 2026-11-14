@@ -18,7 +18,7 @@ npm run preview
 
 Vercel deploys the site from GitHub. The project uses `web/` as its root directory and may read files outside it, which the build needs for `experiments/`. Pushes to `main` deploy to production, and pull requests get a preview deployment.
 
-Changes that touch neither `web/` nor `experiments/` skip the deploy. `vercel.json` adds trailing-slash redirects and long caching for hashed assets.
+Every push to `main` builds, including documentation-only changes. The project has no ignore-build command: the one it had compared against an unreliable base commit and skipped builds that contained real changes. `vercel.json` adds trailing-slash redirects and long caching for hashed assets.
 
 ## Artwork
 
