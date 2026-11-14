@@ -123,14 +123,14 @@ def chip(x, y, fill, label, value):
 def banner(theme):
     t = THEMES[theme]
     muted = t["muted"]
-    blue, blue_w = chip(56, 314, BLUE, "Fixed opponent pool", "58.3%")
-    red, _ = chip(56 + blue_w + 12, 314, RED, "Diverse opponent pool", "57.8%")
+    blue, blue_w = chip(56, 314, BLUE, "Fixed opponent pool", "55.8%")
+    red, _ = chip(56 + blue_w + 12, 314, RED, "Diverse opponent pool", "62.8%")
     hex_path = re.search(r' d="([^"]+)"', (ART / "hex-dark.svg").read_text()).group(1)
     parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
         'role="img" aria-labelledby="banner-title">',
         '<title id="banner-title">TCG CABT Lab: compact agents for the Pokémon TCG. Fixed '
-        "opponent pool 58.3%, diverse opponent pool 57.8% over 360 held-out games.</title>",
+        "opponent pool 55.8%, diverse opponent pool 62.8% over 360 held-out games.</title>",
         "<defs>",
         f'<pattern id="hex" width="52" height="90" patternUnits="userSpaceOnUse" x="-6" y="{BAR}">'
         f'<path d="{hex_path}" fill="none" stroke="{t["hex"]}" stroke-width="2" '

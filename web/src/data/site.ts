@@ -12,18 +12,19 @@ export const site = {
 };
 
 export const facts = {
-  recordDate: '21 October 2026',
+  recordDate: '14 November 2026',
+  // The last run before the teacher-deck fix (see JOURNAL.md, 14 November 2026).
   earlier: {
-    commit: 'acfec93',
-    date: '20 October 2026',
-    fixed: 0.556,
-    diverse: 0.517,
-    delta: -3.9,
-    ci: [-14.2, 6.4] as [number, number],
+    commit: 'e918838',
+    date: '21 October 2026',
+    fixed: 0.583,
+    diverse: 0.578,
+    delta: -0.6,
+    ci: [-10.7, 9.6] as [number, number],
   },
   plannedSteps: 100_000,
   usedSteps: 400,
-  copyAccuracy: 'Still, four AIs copied the bot on all 400 test decisions.',
+  copyAccuracy: 'Still, five AIs copied the bot on all 400 test decisions.',
   parameters: 2881,
-  mewtwoAttacks: 397,
+  mewtwoAttacks: 378,
 };

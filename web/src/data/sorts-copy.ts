@@ -37,12 +37,12 @@ export function sortCopy(sort: Sort, delta: number, deltaCi: [number, number]): 
     training: () => {
       const f = p(P, 'fixed-opponent-pool'), d = p(P, 'diverse-opponent-pool');
       return {
-        title: 'A dead heat',
-        headline: 'A dead heat.',
+        title: 'No clear winner',
+        headline: 'No clear winner.',
         lede: `Games won (a draw counts half): one opponent ${pct(f.rate)}, three opponents ${pct(d.rate)}.`,
         notes: [
           'A tiny AI learned the Pokémon card game by copying a bot. Half the copies trained against one kind of opponent, half against three.',
-          `Over 180 games each, a ${Math.abs(delta * 100).toFixed(1)}% difference is noise. Luck alone could have left the three-opponent AIs ${Math.abs(deltaCi[0] * 100).toFixed(1)}% behind or ${(deltaCi[1] * 100).toFixed(1)}% ahead, so the extra variety didn’t measurably help.`,
+          `Over 180 games each, a ${Math.abs(delta * 100).toFixed(1)}% difference is within luck. Luck alone could have left the three-opponent AIs ${Math.abs(deltaCi[0] * 100).toFixed(1)}% behind or ${(deltaCi[1] * 100).toFixed(1)}% ahead, so the extra variety didn’t measurably help.`,
         ],
         description: `The same tiny Pokémon card game AI, trained two ways, scored ${pct(f.rate)} and ${pct(d.rate)} over 180 games each, with decks it had never seen. Sort all 360 games yourself.`,
       };
@@ -54,7 +54,7 @@ export function sortCopy(sort: Sort, delta: number, deltaCi: [number, number]): 
         headline: 'The deck mattered more.',
         lede: `Games won with the Mewtwo deck ${pct(m.rate)}, with the Snorlax deck ${pct(s.rate)}.`,
         notes: [
-          `That ${((s.rate - m.rate) * 100).toFixed(1)}% gap between decks (180 games each) is far bigger than the ${Math.abs(delta * 100).toFixed(1)}% gap between training styles.`,
+          `That ${((s.rate - m.rate) * 100).toFixed(1)}% gap between decks (180 games each) is bigger than the ${Math.abs(delta * 100).toFixed(1)}% gap between training styles.`,
           'In every game both players used the same deck, and no AI saw either deck during training.',
         ],
         description: `With the Mewtwo deck the AI scored ${pct(m.rate)}; with the Snorlax deck, ${pct(s.rate)}. The deck made a bigger difference than how it was trained.`,
@@ -65,12 +65,12 @@ export function sortCopy(sort: Sort, delta: number, deltaCi: [number, number]): 
       const sf = p(P, 'fixed-opponent-pool:colorless-snorlax'), sd = p(P, 'diverse-opponent-pool:colorless-snorlax');
       return {
         title: 'Sorted by training and deck',
-        headline: 'Each style won one deck.',
+        headline: 'Three opponents led on both decks.',
         lede: `Games won. Mewtwo: ${pct(md.rate)} (3 opponents), ${pct(mf.rate)} (1). Snorlax: ${pct(sf.rate)} (1), ${pct(sd.rate)} (3).`,
         notes: [
-          'Each pile holds only 90 games, so luck alone could shift each number by about 10% either way. Still, the two decks point opposite ways and cancel out, so one overall average hides both.',
+          'Each pile holds only 90 games, so luck alone could shift each number by about 10% either way. The Mewtwo gap is well within that; the Snorlax gap is larger, but it rests on just three AIs per style.',
         ],
-        description: 'Split by deck, AIs trained against three opponents did better with Mewtwo, and AIs trained against one did better with Snorlax. One average hides both.',
+        description: 'Split by deck, AIs trained against three opponents scored higher with both decks: a little with Mewtwo, more with Snorlax.',
       };
     },
     opponent: () => {
@@ -105,7 +105,7 @@ export function sortCopy(sort: Sort, delta: number, deltaCi: [number, number]): 
         headline: 'Few games reached the last Prize.',
         lede: `Of 360 games: ${z.games.length} by Prize cards, ${d.games.length} by an empty deck, ${n.games.length} with no Pokémon left.`,
         notes: [
-          'Mewtwo games mostly ended with a deck running out (117 of 180), Snorlax games with a player out of Pokémon (163 of 180).',
+          'Mewtwo games mostly ended with a deck running out (123 of 180), Snorlax games with a player out of Pokémon (157 of 180).',
           `Team Rocket’s Mewtwo ex needs four Team Rocket’s Pokémon in play to attack. It attacked ${facts.mewtwoAttacks} times in 180 games; Eevee ex never did.`,
         ],
         description: `${z.games.length} games ended with every Prize card taken, ${d.games.length} when a deck ran out and ${n.games.length} when a player had no Pokémon left in play.`,

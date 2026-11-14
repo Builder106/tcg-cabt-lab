@@ -6,13 +6,13 @@ Does training against a diverse opponent pool improve a compact CABT policy's wi
 
 **Empirical Result (Milestone 3)**:
 The hypothesis is **not supported**. In a controlled study comparing a 2-layer option-scoring MLP policy (88 input features -> 32 hidden units -> 1 logit, 2,881 parameters) across 3 independent training seeds (11, 29, 47) and evaluated across 360 matched-pair games with reversed player assignments on frozen held-out test families (`psychic-mewtwo` and `colorless-snorlax`):
-- `fixed-opponent-pool` (trained against greedy `FirstAgent`): mean win rate 58.33% (std 0.036), pooled 58.33% (Wilson 95% CI: [51.03%, 65.29%]).
-- `diverse-opponent-pool` (trained against `HeuristicAgent`, `FirstAgent`, `RandomAgent`): mean win rate 57.78% (std 0.087), pooled 57.78% (Wilson 95% CI: [50.47%, 64.76%]).
-- **Delta (Diverse - Fixed)**: -0.55 points (95% CI: [-10.74, +9.64]).
+- `fixed-opponent-pool` (teacher demonstrations collected against greedy `FirstAgent`): mean win rate 55.83% (std 0.030), pooled 55.83% (Wilson 95% CI: [48.53%, 62.89%]).
+- `diverse-opponent-pool` (teacher demonstrations collected against `HeuristicAgent`, `FirstAgent`, `RandomAgent`): mean win rate 62.78% (std 0.099), pooled 62.78% (Wilson 95% CI: [55.52%, 69.50%]).
+- **Delta (Diverse - Fixed)**: +6.95 points (95% CI: [-3.17, +17.07]).
 
-Zero sits well inside the interval, so diverse opponent training did not measurably change held-out performance under an equal sample budget. The deck mattered more than the training pool: pooled over both pools, Snorlax games scored 63.3% and Mewtwo games 52.8%. Split by deck, the pools swap places (Mewtwo: diverse 60.0%, fixed 45.6%; Snorlax: fixed 71.1%, diverse 55.6%), which a single average hides. Against the `HeuristicAgent` both pools came out lowest (fixed 53.3%, diverse 45.8%). The spread between training seeds (50.8% to 70.0%) is wider than the gap between pools.
+Zero is inside the interval, so diverse opponent training did not measurably change held-out performance under an equal sample budget. The interval treats every game as independent and ignores clustering within the three training seeds, so the real uncertainty is wider. Pooled over both pools, Snorlax games scored 65.3% and Mewtwo games 53.3%. The diverse pool scored higher on both decks (Mewtwo: diverse 54.4%, fixed 52.2%; Snorlax: diverse 71.1%, fixed 59.4%). Against the `HeuristicAgent` teacher, the fixed pool scored 53.3% and the diverse pool 60.8%. The spread between training seeds (50.0% to 74.2%) is wider than the gap between pools.
 
-These figures come from the logged re-run of 21 October 2026, which stores every game and its replay. An earlier run of the same configuration, which was not logged, reported -3.88 points (95% CI: [-14.18, +6.42]); both runs find no effect. Training stopped at 400 of the 100,000 planned gradient steps. The full report is `experiments/ml-experiment-report.json`.
+These figures come from the run of 14 November 2026, which stores every game and its replay. It is the first run after a fix: until then the teacher always played the `water-kyogre` deck while its decisions were recorded, so Bulbasaur and Pikachu reached only the opponent. The two earlier runs used that code. The logged run of 21 October 2026 reported -0.55 points (95% CI: [-10.74, +9.64]), and an unlogged run before it reported -3.88 points (95% CI: [-14.18, +6.42]). All three runs find no significant effect, and the sign of the delta changed between them, which is what three seeds per arm allow. Training stopped at 400 of the 100,000 planned gradient steps. The full report is `experiments/ml-experiment-report.json`.
 
 ## Environment and information boundary
 

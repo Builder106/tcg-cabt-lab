@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-14: Rerun after the teacher-deck fix #decision
+
+The study was rerun with the same settings (seeds 11, 29 and 47, 400 steps, 2,000 decisions per checkpoint) after the teacher-deck fix, and it replaces the 21 October run as the run of record. Fixed pool 55.83% (95% CI [48.53%, 62.89%]), diverse pool 62.78% (95% CI [55.52%, 69.50%]), delta +6.95 points (95% CI [-3.17, +17.07]). Zero is still inside the interval. The sign flipped from the 21 October run (-0.55), and the diverse pool now leads on both decks, so the showcase copy that said each style won one deck was rewritten. Per-seed win rates range from 50.0% to 74.2%, which is the main reason to add seeds before a write-up.
+
 ## 2026-11-14: Teacher now plays the sampled training deck #fix
 
 `collect_training_dataset` sampled a deck for the teacher but built the teacher once as `HeuristicAgent()`, so it always submitted the default deck, which is the `water-kyogre` list. `collect_game_decisions` accepted `deck_p0` and `deck_p1` and ignored both, because each agent submits its own deck to the engine. The teacher is now built per game with the sampled deck, and the unused parameters are gone. Both arms shared the defect, so the logged comparison is not biased by it. But the six checkpoints in `experiments/checkpoints/` and the 21 October results were trained only on Kyogre-deck decisions, with Bulbasaur and Pikachu seen only from the opponent's side. They need a rerun before any write-up describes three training decks.
