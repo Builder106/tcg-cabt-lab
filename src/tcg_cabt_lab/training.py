@@ -51,11 +51,13 @@ class TrainingMetadata(TypedDict):
 def collect_game_decisions(
     agent_p0: Callable[..., list[int]],
     agent_p1: Callable[..., list[int]],
-    deck_p0: Sequence[int],
-    deck_p1: Sequence[int],
     attacks: Mapping[int, object] | None = None,
 ) -> list[DecisionExample]:
-    """Play a game and collect (candidate_matrix, target_index) for player 0 decisions."""
+    """Play a game and collect (candidate_matrix, target_index) for player 0 decisions.
+
+    Each agent submits its own deck at the engine's deck-selection step, so build
+    the agents with the decks they should play.
+    """
     from kaggle_environments import make
 
     if attacks is None:
@@ -121,11 +123,11 @@ def collect_training_dataset(
     dataset: list[DecisionExample] = []
 
     decks = [get_deck_family(fam)["deck"] for fam in training_families]
-    teacher = HeuristicAgent()
 
     while len(dataset) < target_samples:
         deck_p0 = rng.choice(decks)
         deck_p1 = rng.choice(decks)
+        teacher = HeuristicAgent(deck=deck_p0)
 
         opp: Callable[..., list[int]]
         if variant == "fixed-opponent-pool":
@@ -144,8 +146,6 @@ def collect_training_dataset(
         game_examples = collect_game_decisions(
             agent_p0=teacher,
             agent_p1=opp,
-            deck_p0=deck_p0,
-            deck_p1=deck_p1,
             attacks=attacks,
         )
         dataset.extend(game_examples)

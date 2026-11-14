@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-14: Teacher now plays the sampled training deck #fix
+
+`collect_training_dataset` sampled a deck for the teacher but built the teacher once as `HeuristicAgent()`, so it always submitted the default deck, which is the `water-kyogre` list. `collect_game_decisions` accepted `deck_p0` and `deck_p1` and ignored both, because each agent submits its own deck to the engine. The teacher is now built per game with the sampled deck, and the unused parameters are gone. Both arms shared the defect, so the logged comparison is not biased by it. But the six checkpoints in `experiments/checkpoints/` and the 21 October results were trained only on Kyogre-deck decisions, with Bulbasaur and Pikachu seen only from the opponent's side. They need a rerun before any write-up describes three training decks.
+
 ## 2026-10-29: Restore the production deployment #decision
 
 The `main` commit `9dc7532` had no ready production deployment. Vercel skipped its two latest Git deployments because the ignored-build command found no changes in `web/` or `experiments/`. A forced CLI production deploy built 371 static pages and now serves HTTP 200 at https://tcg-cabt-lab.vercel.app. Vercel Authentication uses Standard Protection (`prod_deployment_urls_and_all_previews`), which leaves the production domain public and protects preview and deployment URLs.

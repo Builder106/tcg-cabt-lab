@@ -1,8 +1,46 @@
 """Tests for training pipeline and supervised baseline optimization."""
 
-import numpy as np
+from collections.abc import Callable, Mapping
 
-from tcg_cabt_lab.training import DecisionExample, train_policy
+import numpy as np
+import pytest
+
+from tcg_cabt_lab import training
+from tcg_cabt_lab.agent import HeuristicAgent
+from tcg_cabt_lab.manifest import get_deck_family
+from tcg_cabt_lab.training import DecisionExample, collect_training_dataset, train_policy
+
+
+def test_teacher_plays_every_training_deck(monkeypatch: pytest.MonkeyPatch) -> None:
+    teacher_decks: list[list[int]] = []
+
+    def fake_collect(
+        agent_p0: Callable[..., list[int]],
+        agent_p1: Callable[..., list[int]],
+        attacks: Mapping[int, object] | None = None,
+    ) -> list[DecisionExample]:
+        assert isinstance(agent_p0, HeuristicAgent)
+        teacher_decks.append(list(agent_p0.deck))
+        return [
+            DecisionExample(
+                candidate_matrix=np.zeros((2, 88), dtype=np.float32),
+                target_index=0,
+                num_candidates=2,
+            )
+        ]
+
+    monkeypatch.setattr(training, "collect_game_decisions", fake_collect)
+
+    families = ["water-kyogre", "grass-bulbasaur", "lightning-pikachu"]
+    collect_training_dataset(
+        variant="fixed-opponent-pool",
+        seed=11,
+        target_samples=30,
+        training_families=families,
+    )
+
+    expected = {tuple(get_deck_family(fam)["deck"]) for fam in families}
+    assert {tuple(deck) for deck in teacher_decks} == expected
 
 
 def test_training_loss_reduction() -> None:
