@@ -10,15 +10,15 @@
 [![Python](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](#license)
 
-TCG CABT Lab is a research project about compact agents for the 60-card Pokemon Trading Card Game. The first planned study asks whether training against varied opponents improves performance on deck families the agent has never trained on.
+TCG CABT Lab studies compact agents for the 60-card Pokemon Trading Card Game. Its first study asks whether training against varied opponents improves performance on deck families the agent has never trained on.
 
 ## Project status
 
-The project integrates the CABT 1.0.0 simulation engine (`kaggle-environments==1.33.0`) with verified platform binaries on Linux ARM64, Linux x86_64, and macOS. The card catalog (1,431 cards) and attack catalog (1,755 attacks) are pinned and checksum-verified. The evaluation framework provides 6 canonical elemental deck families with verified split disjointness across training, tuning, and held-out test splits, alongside reference agents (`RandomAgent`, `FirstAgent`, `HeuristicAgent`).
+The project integrates the CABT 1.0.0 simulation engine (`kaggle-environments==1.33.0`) with verified platform binaries on Linux ARM64, Linux x86_64, and macOS. The pinned card catalog contains 1,431 cards and the attack catalog contains 1,755 attacks; both are checksum-verified. The evaluation framework uses 6 canonical elemental deck families, checks that training, tuning, and held-out test splits are disjoint, and includes reference agents (`RandomAgent`, `FirstAgent`, `HeuristicAgent`).
 
 The first controlled ML study (Milestone 3) is complete. It evaluates an 88-dimensional compact option-scoring MLP policy ($88 \to 32 \to 1$, 2,881 parameters) with He-normal initialization and Adam optimization. Resource benchmarks confirm 0.0285 ms inference latency (<50 ms budget) and 1.8 KB footprint (<512 MiB budget). Checkpoints trained under `fixed-opponent-pool` vs. `diverse-opponent-pool` were evaluated across 360 matched-pair games with reversed seating on frozen held-out test families (`psychic-mewtwo`, `colorless-snorlax`). In the run of record (14 November 2026), pooled win rates were 55.83% (95% CI: [48.53%, 62.89%]) for fixed-opponent training and 62.78% (95% CI: [55.52%, 69.50%]) for diverse-opponent training (delta: +6.95 points, 95% CI: [-3.17, +17.07]). The interval includes zero, so diverse opponent training did not measurably improve play on held-out decks under an equal sample budget. Two earlier runs, made before a fix that lets the imitated teacher play all three training decks, also found no significant difference.
 
-The public showcase (Milestone 4) is live at <https://tcg-cabt-lab.vercel.app> and lives in [`web/`](web/). It lays the 360 held-out games out as cards on a table, lets readers re-sort them by training pool, deck, opponent, seat, ending or checkpoint, and replays any game decision by decision, from the AI's view or as a spectator. It is a static Astro site built from `experiments/` at build time:
+The public showcase (Milestone 4) is live at <https://tcg-cabt-lab.vercel.app>; its source is in [`web/`](web/). It displays the 360 held-out games as cards that readers can sort by training pool, deck, opponent, seat, ending or checkpoint. Each game can be replayed decision by decision, either from the AI's view or as a spectator. The static Astro site is built from `experiments/`:
 
 ```sh
 cd web
