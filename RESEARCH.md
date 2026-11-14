@@ -16,6 +16,16 @@ These figures come from the run of 14 November 2026, which stores every game and
 
 A seed-level reanalysis treats each training seed as one observation, with a cluster bootstrap over seeds (`tcg-cabt-lab analyze experiments/ml-experiment-report.json --seed 20261114`). It gives a delta of +6.94 points with a 95% interval of [-5.56, +18.33]. With three seeds per arm the bootstrap is coarse. The scaled follow-up study is specified in [docs/analysis-plan.md](docs/analysis-plan.md).
 
+**Scaled study (14 November 2026, plan frozen before the run)**:
+30 new training seeds per arm (1001 to 1030), 120 held-out games per checkpoint, 7,200 games in total. The unit of analysis is the training seed, and the interval is a cluster bootstrap over seeds. Report: `experiments/scaled/report.json`.
+- Mean checkpoint score, fixed pool: 56.03% (std 5.42 points across seeds). Diverse pool: 54.81% (std 4.91).
+- Delta (diverse minus fixed): -1.22 points, 95% interval [-3.78, +1.33]. The interval includes zero, so no difference is reported.
+- The 90% interval is [-3.40, +0.90], inside the preregistered margin of plus or minus 5 points, so the arms are reported as equivalent within that margin.
+- The +6.95 points seen in the 3-seed rerun was not reproduced. With 3 seeds per arm the seed-to-seed spread (about 5 points per arm here) is as large as that gap.
+- Teacher agreement: on held-out decisions with more than one option, the student's first choice matched the `HeuristicAgent` teacher in 99.92% to 100% of decisions for the fixed pool and 99.80% to 100% for the diverse pool (per-checkpoint range). Both arms are near-exact copies of the teacher, which is the likely reason the demonstration opponent does not change play.
+- Baselines under the same protocol (120 games each, Wilson 95%): teacher 56.67% [47.73, 65.19], `FirstAgent` 39.58% [31.29, 48.53], `RandomAgent` 41.67% [33.24, 50.61]. Both student arms score about the same as their teacher, and above the two simpler agents.
+- Training decks and held-out decks are unchanged from the 14 November rerun, so deck effects carry over: Snorlax 63.7% and 63.1%, Mewtwo 48.3% and 46.5% (fixed, diverse).
+
 ## Environment and information boundary
 
 Use a pinned CABT distribution and record its package version, source revision when available, and card-catalog hash. The project integrates `kaggle-environments==1.33.0` with the 1,431-card catalog pinned at SHA-256 `7fd6c45fcdc2913a1fe19ddb67c01aa9b204718cb760be7582cf4fcc3513de9c`. Environment simulation runs on native Linux ARM64, Linux x86_64, and macOS binaries. Note that while agent decision policies accept deterministic seeds, the engine's internal state transitions (deck shuffles, coin flips, prize cards) are initialized via `std::random_device`.

@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-14: Scaled study reports equivalence #milestone
+
+The frozen plan ran with 30 new training seeds per arm and 120 held-out games per checkpoint. Delta (diverse minus fixed) is -1.22 points, 95% seed-level interval [-3.78, +1.33], 90% interval [-3.40, +0.90], so the pools are equivalent within the preregistered plus or minus 5 points. The +6.95 points in the 3-seed rerun did not replicate. Students match the teacher on at least 99.8% of held-out decisions and score about as well as it (teacher baseline 56.67%), so the study measures how little the demonstration opponent changes a near-exact copy. The run used the committed code from a build directory, because verify-on-vm refused to start at 7% free disk.
+
 ## 2026-11-14: Seed-level analysis and a pre-registered scaled study #decision
 
 The delta interval in the experiment report treats all 180 games per arm as independent, though they come from three checkpoints. The new `stats` module scores each checkpoint once (held-out decks weighted equally) and builds the interval with a cluster bootstrap over training seeds. The runner adds the teacher and the other reference agents as baselines and counts how often each student's first choice matches the teacher on held-out decisions. The scaled study is written down before it runs, in `experiments/opponent-pool-scaled.json` and `docs/analysis-plan.md`, and `tcg-cabt-lab experiment --config` refuses a plan that is not frozen. The old report fields stay as they are, because the showcase copy reads them.
