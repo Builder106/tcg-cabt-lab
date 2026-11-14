@@ -99,3 +99,35 @@ def test_policy_agent_step_decisions(tmp_path: Path) -> None:
     assert isinstance(action, list)
     assert len(action) == 1
     assert action[0] in [0, 1, 2, 3]
+
+
+def test_policy_agent_counts_reference_agreement() -> None:
+    policy = CompactPolicy(input_dim=88, hidden_dim=32, seed=789)
+    ckpt = create_checkpoint(
+        policy=policy,
+        variant="fixed-opponent-pool",
+        seed=789,
+        training_steps=10,
+        training_deck_families=["water-kyogre"],
+    )
+    obs = {
+        "current": {"turn": 2, "yourIndex": 0, "players": [{}, {}]},
+        "select": {"minCount": 1, "maxCount": 1, "option": [{"type": 13}, {"type": 14}]},
+    }
+    single = {
+        "current": {"turn": 2, "yourIndex": 0, "players": [{}, {}]},
+        "select": {"minCount": 1, "maxCount": 1, "option": [{"type": 14}]},
+    }
+    probe = PolicyAgent(checkpoint=ckpt)
+    own_choice = probe(obs)[0]
+
+    agreeing = PolicyAgent(checkpoint=ckpt, reference=lambda o, c=None: [own_choice])
+    disagreeing = PolicyAgent(checkpoint=ckpt, reference=lambda o, c=None: [1 - own_choice])
+    for agent in (agreeing, disagreeing):
+        agent({"current": {"turn": 0}})  # deck submission is not a decision
+        agent(single)  # one option: nothing to compare
+        agent(obs)
+
+    assert (agreeing.reference_decisions, agreeing.reference_matches) == (1, 1)
+    assert (disagreeing.reference_decisions, disagreeing.reference_matches) == (1, 0)
+    assert probe.reference_decisions == 0

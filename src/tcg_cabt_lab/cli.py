@@ -17,6 +17,8 @@ from tcg_cabt_lab.catalog import (
 )
 from tcg_cabt_lab.deck import REFERENCE_DECK, format_deck_summary, validate_deck
 from tcg_cabt_lab.experiment import (
+    DEFAULT_EVAL_SEEDS,
+    DEFAULT_OPPONENT_TYPES,
     DEFAULT_TRAINING_SEEDS,
     run_controlled_experiment,
     run_training_suite,
@@ -24,8 +26,9 @@ from tcg_cabt_lab.experiment import (
 from tcg_cabt_lab.features import measure_representation_profile
 from tcg_cabt_lab.manifest import SPLIT_ASSIGNMENTS, verify_split_disjointness
 from tcg_cabt_lab.policy import create_checkpoint, save_checkpoint
+from tcg_cabt_lab.stats import checkpoint_score, seed_level_analysis
 from tcg_cabt_lab.tournament import run_pilot_tournament, run_tournament
-from tcg_cabt_lab.training import TRAINING_FAMILIES, train_policy
+from tcg_cabt_lab.training import FINAL_TEST_FAMILIES, TRAINING_FAMILIES, train_policy
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -162,6 +165,25 @@ def _build_parser() -> argparse.ArgumentParser:
         default=None,
         help="directory for one compact gzipped replay per evaluated game",
     )
+    experiment.add_argument(
+        "--config",
+        type=Path,
+        default=None,
+        help="frozen study plan (JSON); its design and outputs replace the options above",
+    )
+
+    # Subcommand: analyze
+    analyze = subcommands.add_parser(
+        "analyze", help="seed-level comparison of the two variants in an experiment report"
+    )
+    analyze.add_argument("report", type=Path, help="experiment report JSON")
+    analyze.add_argument(
+        "--margin", type=float, default=None, help="equivalence margin as a proportion"
+    )
+    analyze.add_argument(
+        "--resamples", type=int, default=10_000, help="bootstrap resamples (default: 10000)"
+    )
+    analyze.add_argument("--seed", type=int, default=0, help="bootstrap seed (default: 0)")
 
     return parser
 
@@ -376,27 +398,75 @@ def _cmd_train(args: argparse.Namespace) -> int:
 
 
 def _cmd_experiment(args: argparse.Namespace) -> int:
-    print("Executing Milestone 3 Controlled ML Experiment...")
+    seeds: list[int] = list(DEFAULT_TRAINING_SEEDS)
+    variants: tuple[str, ...] = ("fixed-opponent-pool", "diverse-opponent-pool")
+    training_families: list[str] = list(TRAINING_FAMILIES)
+    test_families: list[str] = list(FINAL_TEST_FAMILIES)
+    opponents: list[str] = list(DEFAULT_OPPONENT_TYPES)
+    eval_seeds: list[int] = list(DEFAULT_EVAL_SEEDS)
+    pairs_per_seed = 1
+    baselines: list[str] = []
+    margin: float | None = None
+    resamples, bootstrap_seed = 10_000, 0
+    if args.config is not None:
+        try:
+            plan = json.loads(args.config.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            print(f"Cannot read study plan: {exc}", file=sys.stderr)
+            return 2
+        if plan.get("status") != "frozen":
+            print("Study plan is not frozen; set status to frozen to run it.", file=sys.stderr)
+            return 2
+        design, analysis, outputs = plan["design"], plan["analysis"], plan["outputs"]
+        seeds = [int(s) for s in design["training_seeds"]]
+        variants = tuple(design["variants"])
+        training_families = list(design["training_families"])
+        test_families = list(design["test_families"])
+        opponents = list(design["opponents"])
+        eval_seeds = [int(s) for s in design["eval_seeds"]]
+        pairs_per_seed = int(design["pairs_per_seed"])
+        baselines = list(design["baselines"])
+        margin = float(analysis["equivalence_margin"])
+        resamples = int(analysis["bootstrap_resamples"])
+        bootstrap_seed = int(analysis["bootstrap_seed"])
+        args.train_steps = int(design["training_steps"])
+        args.samples_per_run = int(design["samples_per_checkpoint"])
+        args.checkpoints_dir = Path(outputs["checkpoints_dir"])
+        args.report_out = Path(outputs["report"])
+        args.replays = Path(outputs["replays"]) if outputs.get("replays") else None
+
+    print("Executing controlled ML experiment...")
     if args.skip_training:
         print(f"Step 1: Reusing existing checkpoints in {args.checkpoints_dir}")
     else:
         print(f"Step 1: Training checkpoints in {args.checkpoints_dir}...")
         run_training_suite(
             output_dir=args.checkpoints_dir,
-            training_seeds=DEFAULT_TRAINING_SEEDS,
+            training_seeds=seeds,
+            variants=variants,
             training_steps=args.train_steps,
             target_samples=args.samples_per_run,
+            training_families=training_families,
         )
     print("Step 2: Evaluating checkpoints on held-out deck families...")
     report = run_controlled_experiment(
         checkpoints_dir=args.checkpoints_dir,
         output_report_path=args.report_out,
-        training_seeds=DEFAULT_TRAINING_SEEDS,
+        training_seeds=seeds,
+        variants=variants,
+        test_families=test_families,
+        opponents=opponents,
+        eval_seeds=eval_seeds,
         replay_dir=args.replays,
+        pairs_per_seed=pairs_per_seed,
+        baselines=baselines,
+        equivalence_margin=margin,
+        bootstrap_resamples=resamples,
+        bootstrap_seed=bootstrap_seed,
     )
     ablation = report["ablation_results"]
     summary = ablation["summary_by_variant"]
-    print("\nExperiment Summary across 3 independent training seeds:")
+    print(f"\nExperiment Summary across {len(seeds)} independent training seeds:")
     for var, s in summary.items():
         ci = s["pooled_wilson_ci_95"]
         print(
@@ -407,9 +477,38 @@ def _cmd_experiment(args: argparse.Namespace) -> int:
     print(f"\nWin Rate Delta (Diverse - Fixed): {delta_pct:+.2f}%")
     ci_delta = ablation["delta_confidence_interval_95"]
     print(f"95% CI on Delta: [{ci_delta[0] * 100:+.2f}%, {ci_delta[1] * 100:+.2f}%]")
+    if "seed_level_analysis" in report:
+        sla = report["seed_level_analysis"]
+        print(f"Seed-level delta: {sla['delta'] * 100:+.2f}% (95% CI {_pct_pair(sla['ci_95'])})")
     if args.replays is not None:
         print(f"Saved {len(report.get('games', []))} game replays to: {args.replays}")
     print(f"Saved complete experiment report to: {args.report_out}")
+    return 0
+
+
+def _pct_pair(pair: Sequence[float]) -> str:
+    return f"[{pair[0] * 100:+.2f}%, {pair[1] * 100:+.2f}%]"
+
+
+def _cmd_analyze(args: argparse.Namespace) -> int:
+    try:
+        report = json.loads(args.report.read_text(encoding="utf-8"))
+        evals = report["checkpoint_evaluations"]
+        variants = list(evals)
+        scores = [[checkpoint_score(e["family_breakdown"]) for e in evals[v]] for v in variants]
+        if len(variants) != 2:
+            raise ValueError("the report must hold exactly two variants")
+        result = seed_level_analysis(
+            scores[0],
+            scores[1],
+            equivalence_margin=args.margin,
+            resamples=args.resamples,
+            seed=args.seed,
+        )
+    except (OSError, json.JSONDecodeError, KeyError, ValueError) as exc:
+        print(f"Cannot analyze report: {exc}", file=sys.stderr)
+        return 2
+    print(json.dumps({"comparison": f"{variants[1]} minus {variants[0]}", **result}, indent=2))
     return 0
 
 
@@ -435,5 +534,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _cmd_train(args)
     if args.command == "experiment":
         return _cmd_experiment(args)
+    if args.command == "analyze":
+        return _cmd_analyze(args)
 
     return 1

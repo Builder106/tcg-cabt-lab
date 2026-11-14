@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-14: Seed-level analysis and a pre-registered scaled study #decision
+
+The delta interval in the experiment report treats all 180 games per arm as independent, though they come from three checkpoints. The new `stats` module scores each checkpoint once (held-out decks weighted equally) and builds the interval with a cluster bootstrap over training seeds. The runner adds the teacher and the other reference agents as baselines and counts how often each student's first choice matches the teacher on held-out decisions. The scaled study is written down before it runs, in `experiments/opponent-pool-scaled.json` and `docs/analysis-plan.md`, and `tcg-cabt-lab experiment --config` refuses a plan that is not frozen. The old report fields stay as they are, because the showcase copy reads them.
+
 ## 2026-11-14: Remove the ignore-build command #decision
 
 The rerun commits were pushed together with a docs-only commit on top, and Vercel canceled every deployment in 2 seconds, so the live site kept the old results. The project's ignore-build command diffed `VERCEL_GIT_PREVIOUS_SHA` against `HEAD` and skipped builds that contained real changes. The command is removed through the project settings and the site was redeployed with the CLI. The build takes about 5 seconds, so skipping docs-only commits saved nothing. The 29 October entry describes the same failure.

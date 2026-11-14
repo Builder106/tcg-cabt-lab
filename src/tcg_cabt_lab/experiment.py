@@ -3,7 +3,7 @@
 import gzip
 import json
 from collections import Counter
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -25,6 +25,7 @@ from tcg_cabt_lab.policy import (
     save_checkpoint,
 )
 from tcg_cabt_lab.showcase import compact_replay, summarize_game
+from tcg_cabt_lab.stats import checkpoint_score, seed_level_analysis
 from tcg_cabt_lab.tournament import compute_wilson_interval, run_paired_match
 from tcg_cabt_lab.training import (
     FINAL_TEST_FAMILIES,
@@ -62,6 +63,7 @@ def run_training_suite(
     variants: Sequence[str] = ("fixed-opponent-pool", "diverse-opponent-pool"),
     training_steps: int = 400,
     target_samples: int = 2000,
+    training_families: Sequence[str] = TRAINING_FAMILIES,
 ) -> dict[str, Any]:
     """Train checkpoints across variants and seeds, saving them to output_dir."""
     out_path = Path(output_dir)
@@ -77,14 +79,14 @@ def run_training_suite(
                 seed=s,
                 training_steps=training_steps,
                 target_samples=target_samples,
-                training_families=TRAINING_FAMILIES,
+                training_families=training_families,
             )
             ckpt = create_checkpoint(
                 policy=policy,
                 variant=var,
                 seed=s,
                 training_steps=training_steps,
-                training_deck_families=TRAINING_FAMILIES,
+                training_deck_families=training_families,
                 extra_metadata=meta,
             )
             ckpt_filename = f"{var}-seed-{s}.json"
@@ -100,37 +102,44 @@ def run_training_suite(
     return suite_results
 
 
-def evaluate_checkpoint_on_heldout(
-    checkpoint_path: Path | str,
+def evaluate_agent_on_heldout(
+    agent_factory: Callable[[Sequence[int] | None], Callable[..., list[int]]],
+    label: Mapping[str, Any],
     test_families: Sequence[str] = FINAL_TEST_FAMILIES,
     opponents: Sequence[str] = DEFAULT_OPPONENT_TYPES,
     eval_seeds: Sequence[int] = DEFAULT_EVAL_SEEDS,
     pairs_per_seed: int = 1,
     replay_dir: Path | str | None = None,
 ) -> dict[str, Any]:
-    """Evaluate a policy checkpoint on frozen held-out deck families.
+    """Evaluate any agent on frozen held-out deck families.
 
-    Runs matched pairs with reversed seats against each opponent type. With
-    replay_dir, writes one compact gzipped replay per game and returns a
-    per-game record list under "games".
+    Runs matched pairs with reversed seats against each opponent type and returns per-family
+    and per-opponent results plus one record per game under "games". `label` must hold "id"
+    (the game-id prefix) and may hold fields copied into every game record. With replay_dir,
+    also writes one compact gzipped replay per game. Agents that count agreement with a
+    reference (PolicyAgent with `reference`) add a "teacher_agreement" tally.
     """
-    ckpt_dict = load_checkpoint(checkpoint_path)
-    provenance = ckpt_dict.get("provenance", {})
     replay_path = Path(replay_dir) if replay_dir is not None else None
     if replay_path is not None:
         replay_path.mkdir(parents=True, exist_ok=True)
         catalog = get_catalog_by_id()
         attacks = get_attack_by_id()
+    record_fields = {k: v for k, v in label.items() if k != "id"}
     game_records: list[dict[str, Any]] = []
 
-    def policy_factory(deck: Sequence[int] | None = None) -> PolicyAgent:
-        return PolicyAgent(ckpt_dict, deck=deck)
+    created: list[Callable[..., list[int]]] = []
 
-    matchup_records: list[dict[str, Any]] = []
+    def tracked_factory(deck: Sequence[int] | None = None) -> Callable[..., list[int]]:
+        agent = agent_factory(deck)
+        created.append(agent)
+        return agent
+
     family_stats: dict[str, dict[str, Any]] = {}
     opponent_stats: dict[str, dict[str, float]] = {
         opp: {"wins": 0, "draws": 0, "total": 0} for opp in opponents
     }
+    agreement = {"decisions": 0, "matches": 0}
+    tracks_agreement = False
 
     total_wins = 0.0
     total_games = 0
@@ -145,8 +154,9 @@ def evaluate_checkpoint_on_heldout(
 
             for seed_val in eval_seeds:
                 for p_idx in range(pairs_per_seed):
+                    first_new = len(created)
                     pair_result = run_paired_match(
-                        agent_a_factory=policy_factory,
+                        agent_a_factory=tracked_factory,
                         agent_b_factory=opp_factory,
                         deck_a=deck,
                         deck_b=deck,
@@ -155,31 +165,42 @@ def evaluate_checkpoint_on_heldout(
                         best_of=1,
                         record_replay=replay_path is not None,
                     )
+                    # The studied agent is built once per game: game 1 first, then game 2
+                    pair_agents = created[first_new:]
 
-                    if replay_path is not None:
-                        for g in pair_result["games"]:
-                            game_id = (
-                                f"{provenance.get('variant')}-s{provenance.get('seed')}-{fam}"
-                                f"-{opp_name}-e{seed_val}-p{p_idx}-g{g['game']}"
-                            )
-                            record = {
-                                "game_id": game_id,
-                                "variant": provenance.get("variant"),
-                                "training_seed": provenance.get("seed"),
-                                "weights_sha256": ckpt_dict["weights_sha256"],
-                                "family": fam,
-                                "opponent": opp_name,
-                                "eval_seed": seed_val,
-                                "pair_index": p_idx,
-                                "game_in_pair": g["game"],
-                                "steps": g["total_steps"],
-                                "duration_seconds": g["duration_seconds"],
-                                **summarize_game(g["log"], policy_seat=0 if g["game"] == 1 else 1),
+                    for g in pair_result["games"]:
+                        policy_seat = 0 if g["game"] == 1 else 1
+                        game_id = (
+                            f"{label['id']}-{fam}-{opp_name}-e{seed_val}-p{p_idx}-g{g['game']}"
+                        )
+                        record: dict[str, Any] = {
+                            "game_id": game_id,
+                            **record_fields,
+                            "family": fam,
+                            "opponent": opp_name,
+                            "eval_seed": seed_val,
+                            "pair_index": p_idx,
+                            "game_in_pair": g["game"],
+                            "steps": g["total_steps"],
+                            "duration_seconds": g["duration_seconds"],
+                            "policy_seat": policy_seat,
+                            "result": {"A": "win", "B": "loss"}.get(g["winner"], "draw"),
+                        }
+                        agent = pair_agents[g["game"] - 1]
+                        if isinstance(agent, PolicyAgent) and agent.reference is not None:
+                            tracks_agreement = True
+                            record["teacher_agreement"] = {
+                                "decisions": agent.reference_decisions,
+                                "matches": agent.reference_matches,
                             }
+                            agreement["decisions"] += agent.reference_decisions
+                            agreement["matches"] += agent.reference_matches
+                        if replay_path is not None:
+                            record.update(summarize_game(g["log"], policy_seat=policy_seat))
                             replay = compact_replay(g["log"], record, catalog, attacks)
                             with gzip.open(replay_path / f"{game_id}.json.gz", "wt") as f:
                                 json.dump(replay, f, separators=(",", ":"))
-                            game_records.append(record)
+                        game_records.append(record)
 
                     pts = float(pair_result["score_a"])
                     tot = len(pair_result["games"])
@@ -189,18 +210,6 @@ def evaluate_checkpoint_on_heldout(
                     opponent_stats[opp_name]["total"] += tot
                     total_wins += pts
                     total_games += tot
-
-                    matchup_records.append(
-                        {
-                            "family": fam,
-                            "opponent": opp_name,
-                            "seed": seed_val,
-                            "pair_index": p_idx,
-                            "agent_a_points": pts,
-                            "total_games": tot,
-                            "outcomes": [g["winner"] for g in pair_result["games"]],
-                        }
-                    )
 
         fam_rate = (fam_wins / fam_games) if fam_games > 0 else 0.0
         fam_ci = compute_wilson_interval(fam_wins, fam_games, confidence=0.95)
@@ -228,21 +237,65 @@ def evaluate_checkpoint_on_heldout(
             "wilson_ci_95": [o_ci[0], o_ci[1]],
         }
 
+    matchups = len(test_families) * len(opponents) * len(eval_seeds) * pairs_per_seed
     result: dict[str, Any] = {
-        "checkpoint_path": str(checkpoint_path),
-        "weights_sha256": ckpt_dict["weights_sha256"],
-        "provenance": provenance,
         "total_games": total_games,
         "total_points": total_wins,
         "overall_win_rate": round(overall_win_rate, 4),
         "overall_wilson_ci_95": [overall_ci[0], overall_ci[1]],
         "family_breakdown": family_stats,
         "opponent_breakdown": opp_summary,
-        "matchup_records_count": len(matchup_records),
+        "matchup_records_count": matchups,
     }
-    if replay_path is not None:
-        result["games"] = game_records
+    if tracks_agreement:
+        decisions = agreement["decisions"]
+        result["teacher_agreement"] = {
+            **agreement,
+            "rate": round(agreement["matches"] / decisions, 4) if decisions else None,
+        }
+    result["games"] = game_records
     return result
+
+
+def evaluate_checkpoint_on_heldout(
+    checkpoint_path: Path | str,
+    test_families: Sequence[str] = FINAL_TEST_FAMILIES,
+    opponents: Sequence[str] = DEFAULT_OPPONENT_TYPES,
+    eval_seeds: Sequence[int] = DEFAULT_EVAL_SEEDS,
+    pairs_per_seed: int = 1,
+    replay_dir: Path | str | None = None,
+) -> dict[str, Any]:
+    """Evaluate a policy checkpoint on frozen held-out deck families.
+
+    Each decision is also checked against the HeuristicAgent teacher the policy imitated.
+    """
+    ckpt_dict = load_checkpoint(checkpoint_path)
+    provenance = ckpt_dict.get("provenance", {})
+
+    def policy_factory(deck: Sequence[int] | None = None) -> PolicyAgent:
+        return PolicyAgent(ckpt_dict, deck=deck, reference=HeuristicAgent())
+
+    label = {
+        "id": f"{provenance.get('variant')}-s{provenance.get('seed')}",
+        "variant": provenance.get("variant"),
+        "training_seed": provenance.get("seed"),
+        "weights_sha256": ckpt_dict["weights_sha256"],
+    }
+    evaluation = evaluate_agent_on_heldout(
+        policy_factory,
+        label,
+        test_families=test_families,
+        opponents=opponents,
+        eval_seeds=eval_seeds,
+        pairs_per_seed=pairs_per_seed,
+        replay_dir=replay_dir,
+    )
+    return {
+        "checkpoint_path": str(checkpoint_path),
+        "weights_sha256": ckpt_dict["weights_sha256"],
+        "provenance": provenance,
+        **evaluation,
+    }
 
 
 def run_controlled_experiment(
@@ -254,11 +307,19 @@ def run_controlled_experiment(
     opponents: Sequence[str] = DEFAULT_OPPONENT_TYPES,
     eval_seeds: Sequence[int] = DEFAULT_EVAL_SEEDS,
     replay_dir: Path | str | None = None,
+    pairs_per_seed: int = 1,
+    baselines: Sequence[str] = (),
+    equivalence_margin: float | None = None,
+    bootstrap_resamples: int = 10_000,
+    bootstrap_seed: int = 0,
 ) -> dict[str, Any]:
     """Execute evaluation for all checkpoints across variants and synthesize comparative report.
 
-    With replay_dir, every evaluated game is stored as a compact replay and the
-    report gains a per-game table and end-condition counts.
+    The report always carries a per-game table. With replay_dir, every evaluated game is also
+    stored as a compact replay and the report gains end-condition counts. `baselines` names
+    reference agents (heuristic, first, random) scored under the same protocol. With two
+    variants and at least two seeds each, the report adds a seed-level analysis of the second
+    variant minus the first.
     """
     ckpt_dir = Path(checkpoints_dir)
     report_file = Path(output_report_path)
@@ -273,6 +334,7 @@ def run_controlled_experiment(
                 test_families=test_families,
                 opponents=opponents,
                 eval_seeds=eval_seeds,
+                pairs_per_seed=pairs_per_seed,
                 replay_dir=replay_dir,
             )
             variant_evals[var].append(eval_res)
@@ -315,10 +377,13 @@ def run_controlled_experiment(
             "deck_family_means": fam_avgs,
             "opponent_means": opp_avgs,
         }
-        if all_games:
+        if any("end_reason" in g for g in all_games):
             summary_by_variant[var]["end_reasons"] = dict(
                 Counter(g["end_reason"] for g in all_games if g["variant"] == var)
             )
+        agreement = [e["teacher_agreement"]["rate"] for e in evals if "teacher_agreement" in e]
+        if agreement:
+            summary_by_variant[var]["teacher_agreement_by_seed"] = agreement
 
     # Hypothesis test delta: diverse - fixed
     fixed_mean = summary_by_variant.get("fixed-opponent-pool", {}).get("mean_win_rate", 0.0)
@@ -364,6 +429,8 @@ def run_controlled_experiment(
             "heldout_test_deck_families": list(test_families),
             "eval_opponents": list(opponents),
             "eval_seeds": list(eval_seeds),
+            "pairs_per_seed": pairs_per_seed,
+            "baselines": list(baselines),
             "pairing": "matched deck pair and seed with reversed player assignments",
             "eval_seed_role": EVAL_SEED_ROLE,
             "confidence_level": 0.95,
@@ -376,6 +443,37 @@ def run_controlled_experiment(
         },
         "checkpoint_evaluations": variant_evals,
     }
+    scores = {
+        var: [checkpoint_score(e["family_breakdown"]) for e in evals]
+        for var, evals in variant_evals.items()
+    }
+    if len(variants) == 2 and all(len(s) >= 2 for s in scores.values()):
+        report["seed_level_analysis"] = {
+            "comparison": f"{variants[1]} minus {variants[0]}",
+            "checkpoint_score": "equally weighted mean of held-out deck-family win rates",
+            "checkpoint_scores": {var: [round(s, 4) for s in vals] for var, vals in scores.items()},
+            **seed_level_analysis(
+                scores[variants[0]],
+                scores[variants[1]],
+                equivalence_margin=equivalence_margin,
+                resamples=bootstrap_resamples,
+                seed=bootstrap_seed,
+            ),
+        }
+
+    if baselines:
+        report["baseline_evaluations"] = {
+            name: evaluate_agent_on_heldout(
+                get_opponent_factory(name),
+                {"id": f"baseline-{name}", "agent": name},
+                test_families=test_families,
+                opponents=opponents,
+                eval_seeds=eval_seeds,
+                pairs_per_seed=pairs_per_seed,
+            )
+            for name in baselines
+        }
+
     if all_games:
         report["games"] = all_games
 

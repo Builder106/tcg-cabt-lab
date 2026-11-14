@@ -44,6 +44,17 @@ def test_evaluate_checkpoint_heldout(tmp_path: Path) -> None:
     assert "psychic-mewtwo" in eval_res["family_breakdown"]
     assert "first" in eval_res["opponent_breakdown"]
 
+    # Per-game records exist without replays, with seats reversed within the pair
+    games = eval_res["games"]
+    assert [g["policy_seat"] for g in games] == [0, 1]
+    assert all(g["result"] in {"win", "loss", "draw"} for g in games)
+    points = sum({"win": 1.0, "draw": 0.5, "loss": 0.0}[g["result"]] for g in games)
+    assert points == eval_res["total_points"]
+
+    agreement = eval_res["teacher_agreement"]
+    assert agreement["decisions"] == sum(g["teacher_agreement"]["decisions"] for g in games)
+    assert 0 <= agreement["matches"] <= agreement["decisions"]
+
 
 def test_run_controlled_experiment_report(tmp_path: Path) -> None:
     ckpt_dir = tmp_path / "checkpoints"
@@ -73,9 +84,18 @@ def test_run_controlled_experiment_report(tmp_path: Path) -> None:
         test_families=["psychic-mewtwo"],
         opponents=["first"],
         eval_seeds=[11],
+        baselines=["first"],
+        equivalence_margin=0.05,
+        bootstrap_resamples=200,
     )
 
     assert report_file.exists()
+    sla = report["seed_level_analysis"]
+    assert sla["n_seeds"] == [2, 2]
+    assert sla["comparison"] == "diverse-opponent-pool minus fixed-opponent-pool"
+    assert sla["equivalent"] in {True, False}
+    assert report["baseline_evaluations"]["first"]["total_games"] == 2
+    assert len(report["games"]) == 8  # 4 checkpoints x 1 pair
     assert report["schema_version"] == 1
     assert "ablation_results" in report
     ablation = report["ablation_results"]

@@ -3,7 +3,7 @@
 import copy
 import hashlib
 import json
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -164,6 +164,7 @@ class PolicyAgent:
         self,
         checkpoint: Mapping[str, Any] | Path | str,
         deck: Sequence[int] | None = None,
+        reference: Callable[..., list[int]] | None = None,
     ) -> None:
         if isinstance(checkpoint, (Path, str)):
             ckpt_dict = load_checkpoint(checkpoint)
@@ -181,6 +182,11 @@ class PolicyAgent:
         self.deck = validate_deck(deck) if deck is not None else list(REFERENCE_DECK)
         # Raw option scores from the latest decision; not win probabilities
         self.last_scores: list[float] | None = None
+        # Optional agent to compare against (the imitation teacher). Counts decisions with
+        # more than one option, and how often the first choice matched, as in training.
+        self.reference = reference
+        self.reference_decisions = 0
+        self.reference_matches = 0
 
         try:
             self.attacks = get_attack_by_id()
@@ -218,5 +224,11 @@ class PolicyAgent:
         # Select top max_count candidate indices
         sorted_indices = np.argsort(-scores)
         chosen = [int(idx) for idx in sorted_indices[: min(max_count, len(scores))]]
+
+        if self.reference is not None and len(options) > 1 and chosen:
+            expected = self.reference(clean_obs, configuration)
+            self.reference_decisions += 1
+            if expected and int(expected[0]) == chosen[0]:
+                self.reference_matches += 1
 
         return chosen

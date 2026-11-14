@@ -136,3 +136,72 @@ def test_cli_train_command(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -
     output = capsys.readouterr()
     assert "Training completed in" in output.out
     assert out_ckpt.exists()
+
+
+def test_cli_experiment_refuses_unfrozen_plan(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    plan = tmp_path / "plan.json"
+    plan.write_text(json.dumps({"status": "draft"}), encoding="utf-8")
+    assert main(["experiment", "--config", str(plan)]) == 2
+    assert "not frozen" in capsys.readouterr().err
+
+
+def test_cli_analyze_report(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    def evaluation(wins: float) -> dict[str, object]:
+        return {
+            "family_breakdown": {
+                "psychic-mewtwo": {"wins": wins, "total_games": 10},
+                "colorless-snorlax": {"wins": wins, "total_games": 10},
+            }
+        }
+
+    report = tmp_path / "report.json"
+    report.write_text(
+        json.dumps(
+            {
+                "checkpoint_evaluations": {
+                    "fixed-opponent-pool": [evaluation(5), evaluation(6)],
+                    "diverse-opponent-pool": [evaluation(5), evaluation(6)],
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert main(["analyze", str(report), "--margin", "0.05", "--resamples", "500"]) == 0
+    result = json.loads(capsys.readouterr().out)
+    assert result["comparison"] == "diverse-opponent-pool minus fixed-opponent-pool"
+    assert result["delta"] == 0.0
+    assert result["means"] == [0.55, 0.55]
+
+
+def test_cli_experiment_runs_frozen_plan(tmp_path: Path) -> None:
+    plan = json.loads(Path("experiments/opponent-pool-scaled.json").read_text(encoding="utf-8"))
+    plan["status"] = "frozen"
+    plan["design"].update(
+        training_seeds=[1, 2],
+        training_steps=5,
+        samples_per_checkpoint=20,
+        training_families=["water-kyogre"],
+        test_families=["psychic-mewtwo"],
+        opponents=["first"],
+        eval_seeds=[11],
+        pairs_per_seed=1,
+        baselines=["first"],
+    )
+    plan["analysis"]["bootstrap_resamples"] = 100
+    plan["outputs"] = {
+        "checkpoints_dir": str(tmp_path / "checkpoints"),
+        "report": str(tmp_path / "report.json"),
+        "replays": None,
+    }
+    config = tmp_path / "plan.json"
+    config.write_text(json.dumps(plan), encoding="utf-8")
+
+    assert main(["experiment", "--config", str(config)]) == 0
+    report = json.loads((tmp_path / "report.json").read_text(encoding="utf-8"))
+    assert report["study_configuration"]["training_seeds"] == [1, 2]
+    assert report["seed_level_analysis"]["equivalence_margin"] == 0.05
+    assert report["seed_level_analysis"]["bootstrap"] == {"resamples": 100, "seed": 20261114}
+    assert set(report["baseline_evaluations"]) == {"first"}
+    assert len(list((tmp_path / "checkpoints").glob("*.json"))) == 4
