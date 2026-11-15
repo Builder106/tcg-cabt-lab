@@ -138,9 +138,9 @@ def extract_option_features(
     """Extract a 16-dimensional normalized float32 vector for a candidate selection option.
 
     Layout:
-      0..9: Option type flags (attack, damage_norm, bench_evolve, energy, trainer,
-            context_choice, target, special_action, pass_end, other)
-      10..12: In-play area and target flags (in_play_active, in_play_bench, has_target)
+      0..9: Option type flags, named by CABT OptionType (attack, damage_norm, attach,
+            evolve, play, card, yes_no, ability_or_retreat, end, other)
+      10..12: In-play target flags (in_play_active, in_play_bench, has_target)
       13..15: Ordering and positional signals (is_first, is_last, index_norm)
     """
     feats = np.zeros(OPTION_DIM, dtype=np.float32)
@@ -159,38 +159,36 @@ def extract_option_features(
             dmg = float(attacks.get(attack_id, {}).get("damage", 0) or 0)
             feats[1] = min(dmg, 300.0) / 300.0
     elif opt_type == 8:
-        # 2: Bench or evolve
+        # 2: ATTACH a card from the hand to a Pokémon in play
         feats[2] = 1.0
     elif opt_type == 9:
-        # 3: Attach energy
+        # 3: EVOLVE a Pokémon in play
         feats[3] = 1.0
     elif opt_type == 7:
-        # 4: Trainer
+        # 4: PLAY a card from the hand (Pokémon to the bench, or a Trainer)
         feats[4] = 1.0
     elif opt_type == 3:
-        # 5: Context card / choice
+        # 5: CARD selection
         feats[5] = 1.0
     elif opt_type in (1, 2):
-        # 6: Target / Pokemon selection
+        # 6: YES or NO
         feats[6] = 1.0
     elif opt_type in (10, 12):
-        # 7: Special action / retreat / ability
+        # 7: ABILITY or RETREAT
         feats[7] = 1.0
     elif opt_type == 14:
-        # 8: Pass / End Turn
+        # 8: END the turn
         feats[8] = 1.0
     else:
         # 9: Other / unrecognized
         feats[9] = 1.0
 
-    # 10..12: Location & Target
+    # 10..12: Target in play (CABT AreaType: 4 is the Active Spot, 5 the bench)
     in_play_area = option.get("inPlayArea")
-    in_play_index = option.get("inPlayIndex", 0)
     if in_play_area == 4:
-        if in_play_index == 0:
-            feats[10] = 1.0  # active
-        else:
-            feats[11] = 1.0  # bench
+        feats[10] = 1.0
+    elif in_play_area == 5:
+        feats[11] = 1.0
 
     if option.get("targetArea") is not None:
         feats[12] = 1.0

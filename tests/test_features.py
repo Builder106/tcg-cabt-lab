@@ -107,10 +107,11 @@ def test_extract_option_features_types() -> None:
     assert vec_att[13] == 1.0  # is first option
 
     # Bench option
-    bench_opt = {"type": 8, "inPlayArea": 4, "inPlayIndex": 1}
+    bench_opt = {"type": 8, "inPlayArea": 5, "inPlayIndex": 1}
     vec_bench = extract_option_features(bench_opt, index=1, total_options=3)
-    assert vec_bench[2] == 1.0  # is bench/evolve
-    assert vec_bench[11] == 1.0  # inPlayArea == 4 and inPlayIndex > 0 (bench)
+    assert vec_bench[2] == 1.0  # ATTACH
+    assert vec_bench[10] == 0.0
+    assert vec_bench[11] == 1.0  # inPlayArea 5 is the bench
 
     # Pass option
     pass_opt = {"type": 14}
