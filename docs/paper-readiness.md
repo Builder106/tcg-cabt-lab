@@ -41,6 +41,8 @@ The items are ordered by their effect on whether the paper would survive review.
 
 Items 2 to 5 are done. The remaining work for Option A is items 1 and 6 to 10: roughly two to three weeks of part-time work.
 
+Update, 15 November 2026: the novelty search ([docs/paper/novelty-search.md](paper/novelty-search.md)) found that Option A's null result is fixed by the design. `HeuristicAgent` scores options only from features the student already receives and never reads the game state, so the demonstration opponent cannot change what the student learns. Item 1 now also needs a choice between a state-dependent teacher, a methods framing and adding RL from play. The search note sets out all three.
+
 ## 4. Venue options
 
 All pages were accessed on 14 November 2026. "Not stated" means the page I read did not say. I did not estimate any deadline that has not been announced.
