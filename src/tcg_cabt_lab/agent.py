@@ -93,7 +93,14 @@ class FirstAgent:
 
 
 class HeuristicAgent:
-    """Transparent rule-based heuristic agent prioritizing attacks and board development."""
+    """Rule-based agent that ranks options by their type alone.
+
+    It never reads the board. Scores follow CABT's OptionType values: ATTACK by damage, then
+    ATTACH (5000), EVOLVE (4500 onto the Active, else 4000), PLAY (3000), then YES, NO, CARD,
+    ABILITY and RETREAT (2000), with END last. Earlier comments named type 8 "bench or
+    evolve" and type 9 "attach energy"; CABT defines 8 as ATTACH and 9 as EVOLVE. The scores
+    are unchanged so earlier results reproduce.
+    """
 
     def __init__(self, deck: Sequence[int] | None = None) -> None:
         self.deck = validate_deck(deck) if deck is not None else list(REFERENCE_DECK)
@@ -114,26 +121,26 @@ class HeuristicAgent:
                 damage = int(self.attacks.get(attack_id, {}).get("damage", 0))
             return 10000 + damage
 
-        # Priority 2: Bench or evolve Pokemon (type 8)
+        # Priority 2: ATTACH a card from the hand (type 8)
         if opt_type == 8:
             return 5000
 
-        # Priority 3: Attach Energy (type 9)
+        # Priority 3: EVOLVE, preferring the Active Spot (type 9)
         if opt_type == 9:
             in_play_area = option.get("inPlayArea", 0)
-            # Prefer active Pokemon (inPlayArea == 4, inPlayIndex == 0)
+            # Prefer the Active Spot (inPlayArea 4)
             in_play_index = option.get("inPlayIndex", 0)
             return 4500 if (in_play_area == 4 and in_play_index == 0) else 4000
 
-        # Priority 4: Play Trainers (type 7)
+        # Priority 4: PLAY a card from the hand (type 7)
         if opt_type == 7:
             return 3000
 
-        # Priority 5: Specific in-game selections (targeting, switching, retrieval)
+        # Priority 5: YES, NO, CARD, ABILITY, RETREAT (types 1, 2, 3, 10, 12)
         if opt_type in (1, 2, 3, 10, 12):
             return 2000
 
-        # Priority 6: Pass or End Turn (type 14)
+        # Priority 6: END the turn (type 14)
         if opt_type == 14:
             return 10
 
