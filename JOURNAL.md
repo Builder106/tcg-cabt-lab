@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-15: Board-reading teacher and CABT option types #decision
+
+The novelty search showed the first scaled study could not find an effect. `HeuristicAgent` never reads the board, and the student's features hold every input it uses, so any set of demonstrations teaches the whole rule. `BoardAgent` replaces it as the teacher for a second study, frozen in `experiments/board-teacher.json` before its seeds were run. The CABT API docs also showed that the code had option types 8 and 9 swapped (8 is ATTACH, 9 is EVOLVE) and treated 7 as Trainers only (it is PLAY, any card from the hand). `HeuristicAgent` changed in comments only, so earlier runs reproduce. The feature encoder's bench flag checked area 4 and never fired; it now checks area 5, the bench. Checkpoints trained before this see different inputs on bench-target options, and earlier reports were computed with the old encoder. In a 3-seed pilot (seeds 901 to 903, not part of the study), students reached 72.5% to 77.5% validation accuracy against the new teacher and agreed with it on 52% to 67% of held-out decisions.
+
 ## 2026-11-14: Scaled study reports equivalence #milestone
 
 The frozen plan ran with 30 new training seeds per arm and 120 held-out games per checkpoint. Delta (diverse minus fixed) is -1.22 points, 95% seed-level interval [-3.78, +1.33], 90% interval [-3.40, +0.90], so the pools are equivalent within the preregistered plus or minus 5 points. The +6.95 points in the 3-seed rerun did not replicate. Students match the teacher on at least 99.8% of held-out decisions and score about as well as it (teacher baseline 56.67%), so the study measures how little the demonstration opponent changes a near-exact copy. The run used the committed code from a build directory, because verify-on-vm refused to start at 7% free disk.

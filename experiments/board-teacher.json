@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "status": "frozen",
+  "frozen_on": "2026-11-15",
+  "question": "When the teacher's choices depend on the board, does collecting its demonstrations against a diverse opponent pool change a cloned compact CABT policy's win rate on held-out deck families?",
+  "plan_document": "docs/analysis-plan-board.md",
+  "design": {
+    "teacher": "board",
+    "variants": ["fixed-opponent-pool", "diverse-opponent-pool"],
+    "training_seeds": [
+      2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,
+      2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020,
+      2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030
+    ],
+    "training_steps": 400,
+    "samples_per_checkpoint": 2000,
+    "training_families": ["water-kyogre", "grass-bulbasaur", "lightning-pikachu"],
+    "test_families": ["psychic-mewtwo", "colorless-snorlax"],
+    "opponents": ["heuristic", "first", "random"],
+    "eval_seeds": [11, 29, 47, 101, 202],
+    "pairs_per_seed": 2,
+    "baselines": ["board", "heuristic", "first", "random"]
+  },
+  "analysis": {
+    "unit": "training seed",
+    "checkpoint_score": "equally weighted mean of the checkpoint's win rates on the two held-out deck families; a draw counts half",
+    "primary_estimate": "mean checkpoint score of diverse-opponent-pool minus that of fixed-opponent-pool",
+    "interval": "percentile cluster bootstrap that resamples training seeds within each variant",
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 20261115,
+    "equivalence_margin": 0.05,
+    "difference_rule": "a difference is reported when the 95% interval excludes zero",
+    "equivalence_rule": "equivalence is reported when the 90% interval lies inside plus or minus the margin",
+    "inconclusive_rule": "if neither rule holds, the result is reported as inconclusive",
+    "secondary": [
+      "teacher agreement: share of held-out decisions with more than one option where the student's first choice matches the BoardAgent teacher, per checkpoint",
+      "baselines: board (the teacher), heuristic, first and random agents scored under the same protocol, with Wilson 95% intervals over games",
+      "per-deck and per-opponent win rates, descriptive only"
+    ]
+  },
+  "outputs": {
+    "checkpoints_dir": "experiments/board/checkpoints",
+    "report": "experiments/board/report.json",
+    "replays": null
+  }
+}
