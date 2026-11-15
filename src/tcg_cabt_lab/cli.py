@@ -406,6 +406,7 @@ def _cmd_experiment(args: argparse.Namespace) -> int:
     eval_seeds: list[int] = list(DEFAULT_EVAL_SEEDS)
     pairs_per_seed = 1
     baselines: list[str] = []
+    teacher = "heuristic"
     margin: float | None = None
     resamples, bootstrap_seed = 10_000, 0
     if args.config is not None:
@@ -426,6 +427,7 @@ def _cmd_experiment(args: argparse.Namespace) -> int:
         eval_seeds = [int(s) for s in design["eval_seeds"]]
         pairs_per_seed = int(design["pairs_per_seed"])
         baselines = list(design["baselines"])
+        teacher = str(design.get("teacher", "heuristic"))
         margin = float(analysis["equivalence_margin"])
         resamples = int(analysis["bootstrap_resamples"])
         bootstrap_seed = int(analysis["bootstrap_seed"])
@@ -447,6 +449,7 @@ def _cmd_experiment(args: argparse.Namespace) -> int:
             training_steps=args.train_steps,
             target_samples=args.samples_per_run,
             training_families=training_families,
+            teacher=teacher,
         )
     print("Step 2: Evaluating checkpoints on held-out deck families...")
     report = run_controlled_experiment(

@@ -10,7 +10,7 @@ from typing import Any
 
 import numpy as np
 
-from tcg_cabt_lab.agent import FirstAgent, HeuristicAgent, RandomAgent
+from tcg_cabt_lab.agent import FirstAgent, RandomAgent
 from tcg_cabt_lab.catalog import (
     EXPECTED_ATTACK_SHA256,
     EXPECTED_CATALOG_SHA256,
@@ -29,6 +29,7 @@ from tcg_cabt_lab.stats import checkpoint_score, seed_level_analysis
 from tcg_cabt_lab.tournament import compute_wilson_interval, run_paired_match
 from tcg_cabt_lab.training import (
     FINAL_TEST_FAMILIES,
+    TEACHERS,
     TRAINING_FAMILIES,
     train_policy,
 )
@@ -46,10 +47,11 @@ EVAL_SEED_ROLE = (
 
 def get_opponent_factory(
     opponent_type: str,
-) -> Callable[[Sequence[int] | None], HeuristicAgent | FirstAgent | RandomAgent]:
+) -> Callable[[Sequence[int] | None], Callable[..., list[int]]]:
     """Return an agent factory for the specified baseline opponent type."""
-    if opponent_type == "heuristic":
-        return lambda deck: HeuristicAgent(deck=deck)
+    if opponent_type in TEACHERS:
+        teacher = TEACHERS[opponent_type]
+        return lambda deck: teacher(deck=deck)
     elif opponent_type == "first":
         return lambda deck: FirstAgent(deck=deck)
     elif opponent_type == "random":
@@ -64,6 +66,7 @@ def run_training_suite(
     training_steps: int = 400,
     target_samples: int = 2000,
     training_families: Sequence[str] = TRAINING_FAMILIES,
+    teacher: str = "heuristic",
 ) -> dict[str, Any]:
     """Train checkpoints across variants and seeds, saving them to output_dir."""
     out_path = Path(output_dir)
@@ -80,6 +83,7 @@ def run_training_suite(
                 training_steps=training_steps,
                 target_samples=target_samples,
                 training_families=training_families,
+                teacher=teacher,
             )
             ckpt = create_checkpoint(
                 policy=policy,
@@ -87,7 +91,7 @@ def run_training_suite(
                 seed=s,
                 training_steps=training_steps,
                 training_deck_families=training_families,
-                extra_metadata=meta,
+                extra_metadata={**meta, "teacher": teacher},
             )
             ckpt_filename = f"{var}-seed-{s}.json"
             ckpt_path = out_path / ckpt_filename
@@ -267,13 +271,15 @@ def evaluate_checkpoint_on_heldout(
 ) -> dict[str, Any]:
     """Evaluate a policy checkpoint on frozen held-out deck families.
 
-    Each decision is also checked against the HeuristicAgent teacher the policy imitated.
+    Each decision is also checked against the teacher the policy imitated, named by the
+    checkpoint's provenance (`HeuristicAgent` for checkpoints that predate the field).
     """
     ckpt_dict = load_checkpoint(checkpoint_path)
     provenance = ckpt_dict.get("provenance", {})
+    teacher = TEACHERS[provenance.get("teacher", "heuristic")]
 
     def policy_factory(deck: Sequence[int] | None = None) -> PolicyAgent:
-        return PolicyAgent(ckpt_dict, deck=deck, reference=HeuristicAgent())
+        return PolicyAgent(ckpt_dict, deck=deck, reference=teacher())
 
     label = {
         "id": f"{provenance.get('variant')}-s{provenance.get('seed')}",
@@ -431,6 +437,13 @@ def run_controlled_experiment(
             "eval_seeds": list(eval_seeds),
             "pairs_per_seed": pairs_per_seed,
             "baselines": list(baselines),
+            "teachers": sorted(
+                {
+                    str(e["provenance"].get("teacher", "heuristic"))
+                    for evals in variant_evals.values()
+                    for e in evals
+                }
+            ),
             "pairing": "matched deck pair and seed with reversed player assignments",
             "eval_seed_role": EVAL_SEED_ROLE,
             "confidence_level": 0.95,

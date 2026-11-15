@@ -1,7 +1,12 @@
 """Tests for controlled experiment runner and ablation report synthesis."""
 
 from pathlib import Path
+from typing import Any
 
+import pytest
+
+from tcg_cabt_lab import training
+from tcg_cabt_lab.board import BoardAgent
 from tcg_cabt_lab.deck import REFERENCE_DECK
 from tcg_cabt_lab.experiment import (
     evaluate_checkpoint_on_heldout,
@@ -12,10 +17,41 @@ from tcg_cabt_lab.policy import CompactPolicy, create_checkpoint, save_checkpoin
 
 
 def test_get_opponent_factory() -> None:
-    for name in ["heuristic", "first", "random"]:
+    for name in ["heuristic", "board", "first", "random"]:
         factory = get_opponent_factory(name)
         agent = factory(list(REFERENCE_DECK))
         assert callable(agent)
+    assert isinstance(get_opponent_factory("board")(None), BoardAgent)
+
+
+def test_agreement_reference_is_the_checkpoint_teacher(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    built: list[BoardAgent] = []
+
+    class CountingBoard(BoardAgent):
+        def __init__(self, *args: Any, **kwargs: Any) -> None:  # noqa: ANN401
+            super().__init__(*args, **kwargs)
+            built.append(self)
+
+    monkeypatch.setitem(training.TEACHERS, "board", CountingBoard)
+    ckpt = create_checkpoint(
+        policy=CompactPolicy(input_dim=88, hidden_dim=32, seed=5),
+        variant="fixed-opponent-pool",
+        seed=5,
+        training_steps=10,
+        training_deck_families=["water-kyogre"],
+        extra_metadata={"teacher": "board"},
+    )
+    ckpt_path = tmp_path / "board-ckpt.json"
+    save_checkpoint(ckpt, ckpt_path)
+    evaluate_checkpoint_on_heldout(
+        checkpoint_path=ckpt_path,
+        test_families=["psychic-mewtwo"],
+        opponents=["first"],
+        eval_seeds=[11],
+    )
+    assert len(built) == 2  # one reference per game in the seat-reversed pair
 
 
 def test_evaluate_checkpoint_heldout(tmp_path: Path) -> None:

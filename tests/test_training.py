@@ -7,6 +7,7 @@ import pytest
 
 from tcg_cabt_lab import training
 from tcg_cabt_lab.agent import HeuristicAgent
+from tcg_cabt_lab.board import BoardAgent
 from tcg_cabt_lab.manifest import get_deck_family
 from tcg_cabt_lab.training import DecisionExample, collect_training_dataset, train_policy
 
@@ -41,6 +42,33 @@ def test_teacher_plays_every_training_deck(monkeypatch: pytest.MonkeyPatch) -> N
 
     expected = {tuple(get_deck_family(fam)["deck"]) for fam in families}
     assert {tuple(deck) for deck in teacher_decks} == expected
+
+
+def test_records_the_named_teacher(monkeypatch: pytest.MonkeyPatch) -> None:
+    teachers: list[type] = []
+
+    def fake_collect(
+        agent_p0: Callable[..., list[int]],
+        agent_p1: Callable[..., list[int]],
+        attacks: Mapping[int, object] | None = None,
+    ) -> list[DecisionExample]:
+        teachers.append(type(agent_p0))
+        return [
+            DecisionExample(
+                candidate_matrix=np.zeros((2, 88), dtype=np.float32),
+                target_index=0,
+                num_candidates=2,
+            )
+        ]
+
+    monkeypatch.setattr(training, "collect_game_decisions", fake_collect)
+    collect_training_dataset(
+        variant="diverse-opponent-pool", seed=3, target_samples=5, teacher="board"
+    )
+    assert set(teachers) == {BoardAgent}
+
+    with pytest.raises(ValueError, match="Unknown teacher"):
+        collect_training_dataset(variant="fixed-opponent-pool", seed=3, teacher="nobody")
 
 
 def test_training_loss_reduction() -> None:

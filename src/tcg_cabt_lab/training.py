@@ -10,6 +10,7 @@ import numpy as np
 
 from tcg_cabt_lab.agent import FirstAgent, HeuristicAgent, RandomAgent, sanitize_observation
 from tcg_cabt_lab.battle import _normalize_agent
+from tcg_cabt_lab.board import BoardAgent
 from tcg_cabt_lab.catalog import get_attack_by_id
 from tcg_cabt_lab.features import extract_candidate_matrix
 from tcg_cabt_lab.manifest import get_deck_family
@@ -18,6 +19,10 @@ from tcg_cabt_lab.policy import CompactPolicy
 TRAINING_FAMILIES = ["water-kyogre", "grass-bulbasaur", "lightning-pikachu"]
 TUNING_FAMILIES = ["fire-ponyta"]
 FINAL_TEST_FAMILIES = ["psychic-mewtwo", "colorless-snorlax"]
+TEACHERS: dict[str, Callable[..., Callable[..., list[int]]]] = {
+    "heuristic": HeuristicAgent,
+    "board": BoardAgent,
+}
 
 
 @dataclass
@@ -105,6 +110,7 @@ def collect_training_dataset(
     seed: int,
     target_samples: int = 2500,
     training_families: Sequence[str] = TRAINING_FAMILIES,
+    teacher: str = "heuristic",
 ) -> list[DecisionExample]:
     """Collect decision examples under the specified opponent pool variant.
 
@@ -114,10 +120,13 @@ def collect_training_dataset(
         seed: Random seed governing opponent selection and deck pairings.
         target_samples: Target count of decision examples.
         training_families: Deck families available for training.
+        teacher: Name of the agent whose decisions are recorded (a key of TEACHERS).
 
     Returns:
         List of collected DecisionExample instances.
     """
+    if teacher not in TEACHERS:
+        raise ValueError(f"Unknown teacher: {teacher}")
     rng = random.Random(seed)
     attacks = get_attack_by_id()
     dataset: list[DecisionExample] = []
@@ -127,7 +136,7 @@ def collect_training_dataset(
     while len(dataset) < target_samples:
         deck_p0 = rng.choice(decks)
         deck_p1 = rng.choice(decks)
-        teacher = HeuristicAgent(deck=deck_p0)
+        demonstrator = TEACHERS[teacher](deck=deck_p0)
 
         opp: Callable[..., list[int]]
         if variant == "fixed-opponent-pool":
@@ -144,7 +153,7 @@ def collect_training_dataset(
             raise ValueError(f"Unknown variant: {variant}")
 
         game_examples = collect_game_decisions(
-            agent_p0=teacher,
+            agent_p0=demonstrator,
             agent_p1=opp,
             attacks=attacks,
         )
@@ -163,6 +172,7 @@ def train_policy(
     target_samples: int = 2500,
     training_families: Sequence[str] = TRAINING_FAMILIES,
     dataset: list[DecisionExample] | None = None,
+    teacher: str = "heuristic",
 ) -> tuple[CompactPolicy, TrainingMetadata]:
     """Train a CompactPolicy on collected decisions using Adam gradient descent.
 
@@ -175,6 +185,7 @@ def train_policy(
         l2_reg: Weight decay regularization strength.
         target_samples: Number of training decisions to collect.
         training_families: Permitted deck family names.
+        teacher: Name of the agent to imitate (a key of TEACHERS).
 
     Returns:
         Tuple of (trained_policy, training_metadata).
@@ -189,6 +200,7 @@ def train_policy(
             seed=seed,
             target_samples=target_samples,
             training_families=training_families,
+            teacher=teacher,
         )
 
     # 2. Split into train and validation (80/20)
