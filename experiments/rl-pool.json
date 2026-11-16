@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "status": "frozen",
+  "frozen_on": "2026-11-16",
+  "question": "When a compact CABT policy learns from play, does the opponent pool it plays against change its win rate on held-out deck families?",
+  "plan_document": "docs/analysis-plan-rl.md",
+  "design": {
+    "variants": ["fixed-opponent-pool", "diverse-opponent-pool"],
+    "training_seeds": [
+      2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,
+      2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020,
+      2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030
+    ],
+    "rl": {
+      "games": 400,
+      "games_per_update": 8,
+      "learning_rate": 0.003,
+      "init_checkpoint": "experiments/board/checkpoints/fixed-opponent-pool-seed-{seed}.json"
+    },
+    "workers": 4,
+    "training_families": ["water-kyogre", "grass-bulbasaur", "lightning-pikachu"],
+    "test_families": ["psychic-mewtwo", "colorless-snorlax"],
+    "opponents": ["heuristic", "first", "random"],
+    "eval_seeds": [11, 29, 47, 101, 202],
+    "pairs_per_seed": 2,
+    "baselines": ["board", "heuristic", "first", "random"]
+  },
+  "analysis": {
+    "unit": "training seed",
+    "checkpoint_score": "equally weighted mean of the checkpoint's win rates on the two held-out deck families; a draw counts half",
+    "primary_estimate": "mean checkpoint score of diverse-opponent-pool minus that of fixed-opponent-pool",
+    "interval": "percentile cluster bootstrap that resamples training seeds within each variant",
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 20261116,
+    "equivalence_margin": 0.05,
+    "difference_rule": "a difference is reported when the 95% interval excludes zero",
+    "equivalence_rule": "equivalence is reported when the 90% interval lies inside plus or minus the margin",
+    "inconclusive_rule": "if neither rule holds, the result is reported as inconclusive",
+    "secondary": [
+      "change from the starting checkpoint: each checkpoint's score minus the score of the imitation checkpoint of the same seed in experiments/board/report.json (fixed-opponent-pool), per variant, descriptive",
+      "training score in the first and last quarter of the training games, per checkpoint, descriptive",
+      "baselines: board, heuristic, first and random agents scored under the same protocol, with Wilson 95% intervals over games",
+      "per-deck and per-opponent win rates, descriptive only"
+    ]
+  },
+  "outputs": {
+    "checkpoints_dir": "experiments/rl/checkpoints",
+    "report": "experiments/rl/report.json",
+    "replays": null
+  }
+}
