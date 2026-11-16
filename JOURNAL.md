@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-16: Paper gaps filled #milestone
+
+The paper now has a per-deck and per-opponent table, an end-reason audit, the pilot caveat for the learning-from-play study, and a conclusion on what a stronger study needs. The audit is a separate 600-game run, since the 30-seed reports store no replays: 266 of 300 colorless-snorlax games ended with a player having no Pokémon left (median 12 turns), and 205 of 300 psychic-mewtwo games ended by deck-out (median 57 turns). Only 34 and 89 games per deck ended by taking all prize cards. The wider literature search found no controlled test of the training opponent for imitation, and added VGC-Bench for context. Hoover et al. appeared in print in March 2020, so its year changed. The CoG call for papers confirms double-blind review, IEEE two-column, up to 8 pages including references, and is silent on preprints. The one open marker is the anonymized artifact link. The paper is 5 pages.
+
 ## 2026-11-16: Paper skeleton #milestone
 
 `docs/paper/` holds a four-page IEEEtran skeleton for CoG 2027 that reports the three studies. `make_results.py` writes every number, table and figure series from the three reports, so the text has no typed results. Bibliography authors use only the forms verified in `related-work.md`; a first draft of `refs.bib` had full first names filled in from memory, and they were replaced with the verified initials before the build. Compilation runs on the VM with `TEXINPUTS` pointing at the vendored IEEE files, since the Mac lacks pgfplots and IEEEtran. Open items are marked `\todo` in the text and listed in `docs/paper/README.md`.

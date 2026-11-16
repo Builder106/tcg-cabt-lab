@@ -49,6 +49,8 @@ Update, 16 November 2026 (later): the learning-signal question was tested in a t
 
 Update, 16 November 2026 (paper): a four-page skeleton is in [paper/](paper/), built from the three reports by `paper/make_results.py`. Work item 8 is started, not done. Open items are the `\todo` markers in `paper/main.tex`, end reasons and a per-deck table for the 30-seed studies, a wider literature search before any novelty claim, the CoG preprint question to the program chairs, and an anonymized artifact link.
 
+Update, 16 November 2026 (paper gaps): the per-deck table, the end-reason audit (a separate 600-game run, see `experiments/board/end-reasons-audit.json`), the wider search and the pilot caveat are done. The paper is 5 pages against a limit of 8. Still open: the anonymized artifact link, the CoG preprint question to the program chairs, and a Wesleyan faculty read.
+
 ## 4. Venue options
 
 All pages were accessed on 14 November 2026. "Not stated" means the page I read did not say. I did not estimate any deadline that has not been announced.
