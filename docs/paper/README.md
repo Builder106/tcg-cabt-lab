@@ -27,8 +27,8 @@ Rasterize and look at every page before trusting a clean log.
 
 ## Before submission
 
-- Replace every `\todo` (search `main.tex` for `TODO`) and `refs.bib` TODO comments.
-- Widen the literature search, then keep, soften or drop the novelty sentence in the introduction.
-- Use an anonymized link for the artifact. Check that no file or metadata names the authors.
-- Ask the CoG program chairs about the preprint policy under double-blind review (portal opens 27 November 2026).
-- Confirm the template against the CoG 2027 author instructions.
+- Replace every `\todo` (search `main.tex` for `TODO`). The remaining one is the anonymized artifact link.
+- The novelty sentence in the introduction is limited to arXiv and the 2026 competition write-ups (see `novelty-search.md`). Widen the search if time allows.
+- Check that no file or metadata names the authors.
+- Ask the CoG program chairs about the preprint policy under double-blind review (portal opens 27 November 2026). The call for papers says double-blind, IEEE two-column, up to 8 pages with references and appendices included, Microsoft CMT, and is silent on preprints.
+- `refs.bib` page numbers for NeurIPS, NIPS and AAAI papers come only from Semantic Scholar and are left out. Add them from the proceedings if the template needs them.

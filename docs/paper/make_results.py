@@ -45,6 +45,7 @@ def main() -> None:
     macros: list[str] = []
     rows: list[str] = []
     baseline_rows: list[str] = []
+    split_rows: list[str] = []
     csv = ["study,arm,seed,score,x"]
     means = ["study,arm,mean,x"]
 
@@ -90,6 +91,21 @@ def main() -> None:
                 rates = summary[ARMS[i]]["teacher_agreement_by_seed"]
                 macro(f"{key}Agree{arm}Mean", pct(statistics.mean(rates), 1))
 
+        for i, arm_name in enumerate(("fixed", "diverse")):
+            decks = summary[ARMS[i]]["deck_family_means"]
+            opps = summary[ARMS[i]]["opponent_means"]
+            split_rows.append(
+                f"{key} & {arm_name} & {pct(decks['psychic-mewtwo'], 1)} "
+                f"& {pct(decks['colorless-snorlax'], 1)} & {pct(opps['heuristic'], 1)} "
+                f"& {pct(opps['first'], 1)} & {pct(opps['random'], 1)} \\\\"
+            )
+        deck_gap = statistics.mean(
+            summary[arm]["deck_family_means"]["colorless-snorlax"]
+            - summary[arm]["deck_family_means"]["psychic-mewtwo"]
+            for arm in ARMS
+        )
+        macro(f"{key}DeckGap", pct(deck_gap, 1))
+
         cells = []
         for agent in AGENTS:
             base = report["baseline_evaluations"].get(agent)
@@ -104,6 +120,19 @@ def main() -> None:
     macro("SDMin", pct(min(sds), 1))
     macro("SDMax", pct(max(sds), 1))
     macro("MaxBound", pct(max(bounds)))
+    macro("MaxDelta", pct(max(abs(r["seed_level_analysis"]["delta"]) for r in reports)))
+
+    # End reasons from the separate audit (the 30-seed reports store no replays)
+    audit = json.loads(Path("experiments/board/end-reasons-audit.json").read_text(encoding="utf-8"))
+    snorlax, mewtwo = audit["by_deck"]["colorless-snorlax"], audit["by_deck"]["psychic-mewtwo"]
+    assert snorlax["games"] == mewtwo["games"]
+    macro("AuditGames", str(snorlax["games"]))
+    macro("AuditSnorlaxNoPokemon", str(snorlax["end_reasons"]["no-pokemon"]))
+    macro("AuditSnorlaxPrizes", str(snorlax["end_reasons"]["prizes"]))
+    macro("AuditSnorlaxMedian", f"{snorlax['median_turns']:.0f}")
+    macro("AuditMewtwoDeckOut", str(mewtwo["end_reasons"]["deck-out"]))
+    macro("AuditMewtwoPrizes", str(mewtwo["end_reasons"]["prizes"]))
+    macro("AuditMewtwoMedian", f"{mewtwo['median_turns']:.0f}")
 
     # Study C: change from the starting checkpoint (the imitation checkpoints of study B)
     board = json.loads(Path(STUDIES["B"]).read_text(encoding="utf-8"))
@@ -135,7 +164,16 @@ def main() -> None:
         "\\begin{tabular}{@{}lrrrr@{}}\n\\toprule\n"
         "Study & Board & Heuristic & First & Random \\\\\n\\midrule\n"
     )
+    split_head = (
+        "\\begin{tabular}{@{}llrrrrr@{}}\n\\toprule\n"
+        " & & \\multicolumn{2}{c}{Held-out deck} & \\multicolumn{3}{c}{Opponent} \\\\\n"
+        "\\cmidrule(lr){3-4}\\cmidrule(lr){5-7}\n"
+        "Study & Arm & Mewtwo & Snorlax & Heuristic & First & Random \\\\\n\\midrule\n"
+    )
     tail = "\\bottomrule\n\\end{tabular}\n"
+    (OUT / "split-table.tex").write_text(
+        split_head + "\n".join(split_rows) + "\n" + tail, encoding="utf-8"
+    )
     (OUT / "results-table.tex").write_text(
         results_head + "\n".join(rows) + "\n" + tail, encoding="utf-8"
     )

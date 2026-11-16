@@ -57,6 +57,15 @@ The claim "varying the demonstration opponent does not change a cloned policy" a
 
 The toy-deck limitation stays under every option. 157 of 180 Snorlax games end with no Pokémon left. Any rerun should consider at least one competition-style deck, subject to the CABT and Kaggle terms.
 
+## Wider search (16 November 2026)
+
+I repeated the search with broader phrasing: arXiv abstract queries combining opponent diversity, unseen opponents, behavior cloning, imitation, self-play and populations with card games, Hearthstone and Pokémon, and one web search for the same question. None returned a controlled test of the demonstration or training opponent for imitation. New items:
+
+- VGC-Bench ([arXiv:2506.10326](https://arxiv.org/abs/2506.10326), AAMAS 2026) covers the competitive Pokémon video game, not the card game. It has behavior cloning and self-play baselines, and reports that as the number of team configurations grows, the best single-team algorithm does worse and is more exploitable but generalizes better to unseen teams. It is cited in the paper.
+- StarCraft+ ([arXiv:2512.16444](https://arxiv.org/abs/2512.16444)) benchmarks multi-agent RL against single and mixed adversaries. Its abstract states no result on opponent diversity, so a web-search summary claiming one is unverified and the paper does not cite it.
+
+The paper's novelty sentence is limited to what was searched: arXiv and the public 2026 competition write-ups. The search is still not exhaustive, and it did not cover proceedings that are missing from arXiv.
+
 ## Sources
 
 arXiv records (abstracts read on 15 November 2026): [1703.09327](https://arxiv.org/abs/1703.09327), [2306.02437](https://arxiv.org/abs/2306.02437), [2410.18647](https://arxiv.org/abs/2410.18647), [2111.04714](https://arxiv.org/abs/2111.04714), [2402.18617](https://arxiv.org/abs/2402.18617), [1910.05789](https://arxiv.org/abs/1910.05789), [2404.16689](https://arxiv.org/abs/2404.16689), [2609.06816](https://arxiv.org/abs/2609.06816), [1808.04794](https://arxiv.org/abs/1808.04794), [2603.12145](https://arxiv.org/abs/2603.12145).
