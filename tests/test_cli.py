@@ -210,6 +210,7 @@ def test_cli_experiment_runs_frozen_plan(tmp_path: Path) -> None:
 def test_cli_experiment_trains_from_play(tmp_path: Path) -> None:
     plan = json.loads(Path("experiments/opponent-pool-scaled.json").read_text(encoding="utf-8"))
     plan["status"] = "frozen"
+    del plan["design"]["training_steps"], plan["design"]["samples_per_checkpoint"]
     plan["design"].update(
         training_seeds=[1, 2],
         rl={"games": 2, "games_per_update": 2, "learning_rate": 0.003},

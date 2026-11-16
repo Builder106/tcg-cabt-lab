@@ -437,8 +437,8 @@ def _cmd_experiment(args: argparse.Namespace) -> int:
         margin = float(analysis["equivalence_margin"])
         resamples = int(analysis["bootstrap_resamples"])
         bootstrap_seed = int(analysis["bootstrap_seed"])
-        args.train_steps = int(design["training_steps"])
-        args.samples_per_run = int(design["samples_per_checkpoint"])
+        args.train_steps = int(design.get("training_steps", args.train_steps))
+        args.samples_per_run = int(design.get("samples_per_checkpoint", args.samples_per_run))
         args.checkpoints_dir = Path(outputs["checkpoints_dir"])
         args.report_out = Path(outputs["report"])
         args.replays = Path(outputs["replays"]) if outputs.get("replays") else None
