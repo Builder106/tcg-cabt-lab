@@ -1,0 +1,26 @@
+{
+  "note": "Separate audit, not the study games: the 30-seed reports store no replays. Students are study B checkpoints for seeds 2001 and 2002 (both arms); the teacher is BoardAgent. 120 games each.",
+  "by_deck": {
+    "psychic-mewtwo": {
+      "games": 300,
+      "end_reasons": {
+        "deck-out": 205,
+        "prizes": 89,
+        "no-pokemon": 6
+      },
+      "median_turns": 57.0,
+      "turns_min": 11,
+      "turns_max": 78
+    },
+    "colorless-snorlax": {
+      "games": 300,
+      "end_reasons": {
+        "no-pokemon": 266,
+        "prizes": 34
+      },
+      "median_turns": 12.0,
+      "turns_min": 4,
+      "turns_max": 47
+    }
+  }
+}
