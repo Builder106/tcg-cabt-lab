@@ -45,6 +45,8 @@ Update, 15 November 2026: the novelty search ([docs/paper/novelty-search.md](pap
 
 Update, 16 November 2026: the state-dependent teacher option was taken. In the preregistered board-teacher study (30 seeds per arm, [analysis-plan-board.md](analysis-plan-board.md)), students agree with the teacher on only 52% to 69% of held-out decisions, yet the delta is +1.40 points (95% interval [-0.67, +3.58], 90% interval [-0.33, +3.21]), equivalent within plus or minus 5 points. The null is no longer an artifact of copying the teacher, so the paper can state it as a result about imitation. What remains: toy decks and mirror matches, a margin a reviewer may contest, and the fact that the pool changes only the teacher's opponent, not a learning signal.
 
+Update, 16 November 2026 (later): the learning-signal question was tested in a third preregistered study ([analysis-plan-rl.md](analysis-plan-rl.md)): REINFORCE for 400 games from the imitation checkpoints, 30 seeds per arm. The delta is -1.60 points (95% interval [-3.69, +0.61], 90% interval [-3.40, +0.25]), equivalent within plus or minus 5 points. RL moved the policies by about the evaluation noise (+0.6 and -1.0 points on average, training scores flat), so this is evidence of no effect at a 400-game budget, not of no effect. A reviewer will ask for a larger budget. The paper can say that across three designs the pool never moved held-out play, and must state the budget limit next to the RL result.
+
 ## 4. Venue options
 
 All pages were accessed on 14 November 2026. "Not stated" means the page I read did not say. I did not estimate any deadline that has not been announced.

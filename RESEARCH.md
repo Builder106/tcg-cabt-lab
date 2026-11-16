@@ -36,6 +36,17 @@ A review of the code showed that the study above could not find an effect: `Heur
 - Deck effects: Snorlax 80.4% and 81.4%, Mewtwo 49.9% and 51.7% (fixed, diverse). Both are mirror matches on simplified decks (see the limits in [docs/paper-readiness.md](docs/paper-readiness.md)).
 - Note: this study also uses the corrected bench flag in the feature encoder (JOURNAL, 15 November), so its students are not directly comparable with the earlier checkpoints.
 
+**Learning-from-play study (16 November 2026, plan frozen before the run)**:
+The policy plays its opponent pool and learns from win, draw or loss (REINFORCE, 400 games, 50 updates, learning rate 0.003). Each checkpoint starts from the imitation checkpoint of the same seed in the board-teacher study, so both arms share a start and the pool is the only difference. It uses the same 30 seeds (2001 to 2030) and protocol. The plan is [docs/analysis-plan-rl.md](docs/analysis-plan-rl.md), and the report is `experiments/rl/report.json`.
+- Mean checkpoint score, fixed pool: 65.76% (std 3.84 points across seeds). Diverse pool: 64.17% (std 4.87).
+- Delta (diverse minus fixed): -1.60 points, 95% interval [-3.69, +0.61]. The interval includes zero, so no difference is reported.
+- The 90% interval is [-3.40, +0.25], inside the preregistered margin of plus or minus 5 points, so the arms are reported as equivalent within that margin.
+- RL changed little. The starting checkpoints averaged 65.18%. Per-seed change after RL: +0.6 points (fixed, 17 of 30 seeds up) and -1.0 (diverse, 11 of 30 up), with a standard deviation of 5.1 and 5.9 points. A 120-game score alone has a standard error near 4.5 points, so the per-seed changes are about what evaluation noise produces. The mean training score did not rise either: 58.0% to 57.9% (fixed) and 69.4% to 69.7% (diverse), first to last quarter. The two pools' training scores differ because the opponents differ.
+- So the equivalence here is weak evidence about the pool. Both arms barely left the shared start, and a 400-game budget may be too small for RL to matter. The result supports "no effect at this budget", not "no effect".
+- The pilot's gain did not carry over. On the tuning deck, with four seeds and 60 games per checkpoint, learning rate 0.003 gained +11.7 and +5.0 points. On the held-out decks, with 30 seeds and 120 games, the gain is about zero. The pilot was too small to select a rate reliably.
+- Baselines under the same protocol (120 games each, Wilson 95%): `BoardAgent` 75.00% [66.56, 81.89], `HeuristicAgent` 57.08% [48.14, 65.58], `FirstAgent` 45.42% [36.79, 54.33], `RandomAgent` 50.42% [41.60, 59.21]. These differ from the board-teacher study's baselines by up to 8 points for the same agents (for example `FirstAgent` 52.08%), which shows how noisy 120 games are.
+- Deck effects: Snorlax 81.0% and 78.6%, Mewtwo 50.5% and 49.7% (fixed, diverse).
+
 ## Environment and information boundary
 
 Use a pinned CABT distribution and record its package version, source revision when available, and card-catalog hash. The project integrates `kaggle-environments==1.33.0` with the 1,431-card catalog pinned at SHA-256 `7fd6c45fcdc2913a1fe19ddb67c01aa9b204718cb760be7582cf4fcc3513de9c`. Environment simulation runs on native Linux ARM64, Linux x86_64, and macOS binaries. Note that while agent decision policies accept deterministic seeds, the engine's internal state transitions (deck shuffles, coin flips, prize cards) are initialized via `std::random_device`.
