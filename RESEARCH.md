@@ -26,6 +26,16 @@ A seed-level reanalysis treats each training seed as one observation, with a clu
 - Baselines under the same protocol (120 games each, Wilson 95%): teacher 56.67% [47.73, 65.19], `FirstAgent` 39.58% [31.29, 48.53], `RandomAgent` 41.67% [33.24, 50.61]. Both student arms score about the same as their teacher, and above the two simpler agents.
 - Training decks and held-out decks are unchanged from the 14 November rerun, so deck effects carry over: Snorlax 63.7% and 63.1%, Mewtwo 48.3% and 46.5% (fixed, diverse).
 
+**Board-teacher study (15 November 2026, plan frozen before the run)**:
+A review of the code showed that the study above could not find an effect: `HeuristicAgent` scores options by type and damage alone, the student's features hold those inputs, and so any demonstrations teach the whole rule. The follow-up changes only the teacher, to `BoardAgent`, whose choices depend on HP, energy, bench size and knockout chances. It uses 30 new seeds per arm (2001 to 2030) and the same budget, decks and protocol. The plan is [docs/analysis-plan-board.md](docs/analysis-plan-board.md), and the report is `experiments/board/report.json`.
+- Mean checkpoint score, fixed pool: 65.18% (std 3.75 points across seeds). Diverse pool: 66.58% (std 4.70).
+- Delta (diverse minus fixed): +1.40 points, 95% interval [-0.67, +3.58]. The interval includes zero, so no difference is reported.
+- The 90% interval is [-0.33, +3.21], inside the preregistered margin of plus or minus 5 points, so the arms are reported as equivalent within that margin.
+- Teacher agreement: on held-out decisions with more than one option, the students' first choice matched `BoardAgent` on 52% to 69% of decisions (fixed mean 60.8%, diverse 61.8%). The students no longer copy the teacher, yet the demonstration opponent still does not move their play.
+- Baselines under the same protocol (120 games each, Wilson 95%): `BoardAgent` 74.58% [66.11, 81.53], `HeuristicAgent` 58.33% [49.39, 66.76], `FirstAgent` 52.08% [43.22, 60.82], `RandomAgent` 53.75% [44.85, 62.42]. Both student arms sit between the teacher and the other three agents. The teacher is 8 to 9 points stronger than either student arm.
+- Deck effects: Snorlax 80.4% and 81.4%, Mewtwo 49.9% and 51.7% (fixed, diverse). Both are mirror matches on simplified decks (see the limits in [docs/paper-readiness.md](docs/paper-readiness.md)).
+- Note: this study also uses the corrected bench flag in the feature encoder (JOURNAL, 15 November), so its students are not directly comparable with the earlier checkpoints.
+
 ## Environment and information boundary
 
 Use a pinned CABT distribution and record its package version, source revision when available, and card-catalog hash. The project integrates `kaggle-environments==1.33.0` with the 1,431-card catalog pinned at SHA-256 `7fd6c45fcdc2913a1fe19ddb67c01aa9b204718cb760be7582cf4fcc3513de9c`. Environment simulation runs on native Linux ARM64, Linux x86_64, and macOS binaries. Note that while agent decision policies accept deterministic seeds, the engine's internal state transitions (deck shuffles, coin flips, prize cards) are initialized via `std::random_device`.

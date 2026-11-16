@@ -43,6 +43,8 @@ Items 2 to 5 are done. The remaining work for Option A is items 1 and 6 to 10: r
 
 Update, 15 November 2026: the novelty search ([docs/paper/novelty-search.md](paper/novelty-search.md)) found that Option A's null result is fixed by the design. `HeuristicAgent` scores options only from features the student already receives and never reads the game state, so the demonstration opponent cannot change what the student learns. Item 1 now also needs a choice between a state-dependent teacher, a methods framing and adding RL from play. The search note sets out all three.
 
+Update, 16 November 2026: the state-dependent teacher option was taken. In the preregistered board-teacher study (30 seeds per arm, [analysis-plan-board.md](analysis-plan-board.md)), students agree with the teacher on only 52% to 69% of held-out decisions, yet the delta is +1.40 points (95% interval [-0.67, +3.58], 90% interval [-0.33, +3.21]), equivalent within plus or minus 5 points. The null is no longer an artifact of copying the teacher, so the paper can state it as a result about imitation. What remains: toy decks and mirror matches, a margin a reviewer may contest, and the fact that the pool changes only the teacher's opponent, not a learning signal.
+
 ## 4. Venue options
 
 All pages were accessed on 14 November 2026. "Not stated" means the page I read did not say. I did not estimate any deadline that has not been announced.
