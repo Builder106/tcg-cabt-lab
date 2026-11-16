@@ -105,6 +105,26 @@ def collect_game_decisions(
     return examples
 
 
+def training_opponent(
+    variant: str, rng: random.Random, deck: Sequence[int]
+) -> Callable[..., list[int]]:
+    """Pick the opponent one training game faces under an opponent-pool variant.
+
+    'fixed-opponent-pool' always returns FirstAgent. 'diverse-opponent-pool' draws
+    HeuristicAgent, FirstAgent or RandomAgent at random.
+    """
+    if variant == "fixed-opponent-pool":
+        return FirstAgent(deck=deck)
+    if variant == "diverse-opponent-pool":
+        choice = rng.choice(["heuristic", "first", "random"])
+        if choice == "heuristic":
+            return HeuristicAgent(deck=deck)
+        if choice == "first":
+            return FirstAgent(deck=deck)
+        return RandomAgent(seed=rng.randint(1, 100000), deck=deck)
+    raise ValueError(f"Unknown variant: {variant}")
+
+
 def collect_training_dataset(
     variant: str,
     seed: int,
@@ -138,19 +158,7 @@ def collect_training_dataset(
         deck_p1 = rng.choice(decks)
         demonstrator = TEACHERS[teacher](deck=deck_p0)
 
-        opp: Callable[..., list[int]]
-        if variant == "fixed-opponent-pool":
-            opp = FirstAgent(deck=deck_p1)
-        elif variant == "diverse-opponent-pool":
-            opp_choice = rng.choice(["heuristic", "first", "random"])
-            if opp_choice == "heuristic":
-                opp = HeuristicAgent(deck=deck_p1)
-            elif opp_choice == "first":
-                opp = FirstAgent(deck=deck_p1)
-            else:
-                opp = RandomAgent(seed=rng.randint(1, 100000), deck=deck_p1)
-        else:
-            raise ValueError(f"Unknown variant: {variant}")
+        opp = training_opponent(variant, rng, deck_p1)
 
         game_examples = collect_game_decisions(
             agent_p0=demonstrator,
