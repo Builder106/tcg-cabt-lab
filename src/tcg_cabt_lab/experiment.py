@@ -273,13 +273,15 @@ def evaluate_checkpoint_on_heldout(
 
     Each decision is also checked against the teacher the policy imitated, named by the
     checkpoint's provenance (`HeuristicAgent` for checkpoints that predate the field).
+    Policies trained from play have no teacher and report no agreement.
     """
     ckpt_dict = load_checkpoint(checkpoint_path)
     provenance = ckpt_dict.get("provenance", {})
-    teacher = TEACHERS[provenance.get("teacher", "heuristic")]
+    teacher_name = provenance.get("teacher", "heuristic")
 
     def policy_factory(deck: Sequence[int] | None = None) -> PolicyAgent:
-        return PolicyAgent(ckpt_dict, deck=deck, reference=teacher())
+        reference = TEACHERS[teacher_name]() if teacher_name is not None else None
+        return PolicyAgent(ckpt_dict, deck=deck, reference=reference)
 
     label = {
         "id": f"{provenance.get('variant')}-s{provenance.get('seed')}",
@@ -440,6 +442,14 @@ def run_controlled_experiment(
             "teachers": sorted(
                 {
                     str(e["provenance"].get("teacher", "heuristic"))
+                    for evals in variant_evals.values()
+                    for e in evals
+                    if e["provenance"].get("teacher", "heuristic") is not None
+                }
+            ),
+            "learners": sorted(
+                {
+                    str(e["provenance"].get("learner", "imitation"))
                     for evals in variant_evals.values()
                     for e in evals
                 }

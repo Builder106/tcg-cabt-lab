@@ -138,3 +138,23 @@ def test_run_controlled_experiment_report(tmp_path: Path) -> None:
     assert "summary_by_variant" in ablation
     assert "win_rate_delta_diverse_vs_fixed" in ablation
     assert "delta_confidence_interval_95" in ablation
+
+
+def test_policies_trained_from_play_report_no_teacher_agreement(tmp_path: Path) -> None:
+    ckpt = create_checkpoint(
+        policy=CompactPolicy(input_dim=88, hidden_dim=32, seed=6),
+        variant="fixed-opponent-pool",
+        seed=6,
+        training_steps=10,
+        training_deck_families=["water-kyogre"],
+        extra_metadata={"learner": "reinforce", "teacher": None},
+    )
+    ckpt_path = tmp_path / "rl-ckpt.json"
+    save_checkpoint(ckpt, ckpt_path)
+    result = evaluate_checkpoint_on_heldout(
+        checkpoint_path=ckpt_path,
+        test_families=["psychic-mewtwo"],
+        opponents=["first"],
+        eval_seeds=[11],
+    )
+    assert "teacher_agreement" not in result

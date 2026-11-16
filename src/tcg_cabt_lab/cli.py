@@ -26,6 +26,7 @@ from tcg_cabt_lab.experiment import (
 from tcg_cabt_lab.features import measure_representation_profile
 from tcg_cabt_lab.manifest import SPLIT_ASSIGNMENTS, verify_split_disjointness
 from tcg_cabt_lab.policy import create_checkpoint, save_checkpoint
+from tcg_cabt_lab.rl import RLConfig, run_rl_suite
 from tcg_cabt_lab.stats import checkpoint_score, seed_level_analysis
 from tcg_cabt_lab.tournament import run_pilot_tournament, run_tournament
 from tcg_cabt_lab.training import FINAL_TEST_FAMILIES, TRAINING_FAMILIES, train_policy
@@ -407,6 +408,8 @@ def _cmd_experiment(args: argparse.Namespace) -> int:
     pairs_per_seed = 1
     baselines: list[str] = []
     teacher = "heuristic"
+    rl_config: RLConfig | None = None
+    workers = 1
     margin: float | None = None
     resamples, bootstrap_seed = 10_000, 0
     if args.config is not None:
@@ -428,6 +431,9 @@ def _cmd_experiment(args: argparse.Namespace) -> int:
         pairs_per_seed = int(design["pairs_per_seed"])
         baselines = list(design["baselines"])
         teacher = str(design.get("teacher", "heuristic"))
+        if "rl" in design:
+            rl_config = RLConfig(**design["rl"])
+        workers = int(design.get("workers", 1))
         margin = float(analysis["equivalence_margin"])
         resamples = int(analysis["bootstrap_resamples"])
         bootstrap_seed = int(analysis["bootstrap_seed"])
@@ -440,6 +446,16 @@ def _cmd_experiment(args: argparse.Namespace) -> int:
     print("Executing controlled ML experiment...")
     if args.skip_training:
         print(f"Step 1: Reusing existing checkpoints in {args.checkpoints_dir}")
+    elif rl_config is not None:
+        print(f"Step 1: Training from play in {args.checkpoints_dir}...")
+        run_rl_suite(
+            output_dir=args.checkpoints_dir,
+            training_seeds=seeds,
+            variants=variants,
+            config=rl_config,
+            training_families=training_families,
+            workers=workers,
+        )
     else:
         print(f"Step 1: Training checkpoints in {args.checkpoints_dir}...")
         run_training_suite(

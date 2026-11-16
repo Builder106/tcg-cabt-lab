@@ -205,3 +205,35 @@ def test_cli_experiment_runs_frozen_plan(tmp_path: Path) -> None:
     assert report["seed_level_analysis"]["bootstrap"] == {"resamples": 100, "seed": 20261114}
     assert set(report["baseline_evaluations"]) == {"first"}
     assert len(list((tmp_path / "checkpoints").glob("*.json"))) == 4
+
+
+def test_cli_experiment_trains_from_play(tmp_path: Path) -> None:
+    plan = json.loads(Path("experiments/opponent-pool-scaled.json").read_text(encoding="utf-8"))
+    plan["status"] = "frozen"
+    plan["design"].update(
+        training_seeds=[1, 2],
+        rl={"games": 2, "games_per_update": 2, "learning_rate": 0.003},
+        workers=1,
+        training_families=["water-kyogre"],
+        test_families=["psychic-mewtwo"],
+        opponents=["first"],
+        eval_seeds=[11],
+        pairs_per_seed=1,
+        baselines=[],
+    )
+    plan["analysis"]["bootstrap_resamples"] = 100
+    plan["outputs"] = {
+        "checkpoints_dir": str(tmp_path / "checkpoints"),
+        "report": str(tmp_path / "report.json"),
+        "replays": None,
+    }
+    config = tmp_path / "plan.json"
+    config.write_text(json.dumps(plan), encoding="utf-8")
+
+    assert main(["experiment", "--config", str(config)]) == 0
+    report = json.loads((tmp_path / "report.json").read_text(encoding="utf-8"))
+    study = report["study_configuration"]
+    assert study["learners"] == ["reinforce"]
+    assert study["teachers"] == []
+    summary = report["ablation_results"]["summary_by_variant"]
+    assert all("teacher_agreement_by_seed" not in s for s in summary.values())
