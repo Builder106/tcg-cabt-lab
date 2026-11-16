@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-16: Paper skeleton #milestone
+
+`docs/paper/` holds a four-page IEEEtran skeleton for CoG 2027 that reports the three studies. `make_results.py` writes every number, table and figure series from the three reports, so the text has no typed results. Bibliography authors use only the forms verified in `related-work.md`; a first draft of `refs.bib` had full first names filled in from memory, and they were replaced with the verified initials before the build. Compilation runs on the VM with `TEXINPUTS` pointing at the vendored IEEE files, since the Mac lacks pgfplots and IEEEtran. Open items are marked `\todo` in the text and listed in `docs/paper/README.md`.
+
 ## 2026-11-16: Learning-from-play study reports equivalence, weakly #milestone
 
 The frozen RL plan ran with the board-teacher study's 30 seeds per arm. Delta (diverse minus fixed) is -1.60 points, 95% seed-level interval [-3.69, +0.61], 90% interval [-3.40, +0.25], so the pools are equivalent within the preregistered plus or minus 5 points. RL barely changed the policies: mean change from the starting checkpoint is +0.6 (fixed) and -1.0 points (diverse), with a spread of 5 to 6 points that matches the evaluation noise of a 120-game score, and the training scores stay flat. The pilot gain on the tuning deck (+11.7 and +5.0) did not carry over, so the pilot's choice of learning rate was unreliable. The finding is therefore no effect at a 400-game budget. A larger budget, a higher learning rate or a longer run would be a new, separately frozen study. Report: `experiments/rl/report.json`.

@@ -47,6 +47,8 @@ Update, 16 November 2026: the state-dependent teacher option was taken. In the p
 
 Update, 16 November 2026 (later): the learning-signal question was tested in a third preregistered study ([analysis-plan-rl.md](analysis-plan-rl.md)): REINFORCE for 400 games from the imitation checkpoints, 30 seeds per arm. The delta is -1.60 points (95% interval [-3.69, +0.61], 90% interval [-3.40, +0.25]), equivalent within plus or minus 5 points. RL moved the policies by about the evaluation noise (+0.6 and -1.0 points on average, training scores flat), so this is evidence of no effect at a 400-game budget, not of no effect. A reviewer will ask for a larger budget. The paper can say that across three designs the pool never moved held-out play, and must state the budget limit next to the RL result.
 
+Update, 16 November 2026 (paper): a four-page skeleton is in [paper/](paper/), built from the three reports by `paper/make_results.py`. Work item 8 is started, not done. Open items are the `\todo` markers in `paper/main.tex`, end reasons and a per-deck table for the 30-seed studies, a wider literature search before any novelty claim, the CoG preprint question to the program chairs, and an anonymized artifact link.
+
 ## 4. Venue options
 
 All pages were accessed on 14 November 2026. "Not stated" means the page I read did not say. I did not estimate any deadline that has not been announced.
