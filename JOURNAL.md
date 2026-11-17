@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-17: Long learning-from-play study reports equivalence, narrowly #milestone
+
+The frozen long plan ran with 30 new seeds per arm, 2,000 games per checkpoint from random weights at learning rate 0.03. Delta (diverse minus fixed) is +0.15 points, 95% seed-level interval [-5.04, +5.29], 90% interval [-4.29, +4.51], so the pools are equivalent within the preregistered plus or minus 5 points, with little room. The seed spread was 10.8 and 10.6 points, below the 15 I had feared in the plan. The policies learned (training score up from 44.7% to 49.9% fixed and from 54.5% to 63.2% diverse, in 25 of 30 seeds per arm) but score 54% on held-out decks, below the imitation students at 65% to 67% and near `HeuristicAgent`. Exploratory: the arms differ by deck in opposite directions (-6.4 on Mewtwo, +6.8 on Snorlax, both intervals including zero) and cancel in the primary score. Report: `experiments/rl-long/report.json`.
+
 ## 2026-11-17: Long learning-from-play run, frozen after a failed pilot #decision
 
 An 800-game pilot from the imitation start (two seeds per arm, tuning deck) showed no learning at any rate: the rise in training score was -1.75, -0.4 and -4.75 points at 0.003, 0.01 and 0.03, and the tuning-deck score fell by 4.2, 17.9 and 10.8 points. My declared fallback was 0.01, the worst rate. I asked and the user chose to start from random weights at 0.03, the only pilot setting in which training scores rose. `experiments/rl-long.json` freezes 2,000 games per checkpoint, seeds 4001 to 4030. The change was made after the pilot and before any study game. The plan states that 30 seeds probably cannot show equivalence within plus or minus 5 points if the seed spread is near 15 points.

@@ -51,6 +51,8 @@ Update, 16 November 2026 (paper): a four-page skeleton is in [paper/](paper/), b
 
 Update, 16 November 2026 (paper gaps): the per-deck table, the end-reason audit (a separate 600-game run, see `experiments/board/end-reasons-audit.json`), the wider search and the pilot caveat are done. The paper is 5 pages against a limit of 8. Still open: the anonymized artifact link, the CoG preprint question to the program chairs, and a Wesleyan faculty read.
 
+Update, 17 November 2026 (long run): the 2,000-game study from random weights ([analysis-plan-rl-long.md](analysis-plan-rl-long.md)) answers the budget question the 400-game study left open. The policies learned (training scores up in 25 of 30 seeds per arm), and the delta is +0.15 points (95% interval [-5.04, +5.29], 90% interval [-4.29, +4.51]), equivalent within plus or minus 5 points but with little room. The paper should now report four studies and state that no budget tested is near the millions of games the Kaggle entries used.
+
 ## 4. Venue options
 
 All pages were accessed on 14 November 2026. "Not stated" means the page I read did not say. I did not estimate any deadline that has not been announced.
