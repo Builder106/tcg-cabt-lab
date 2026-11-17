@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-17: Paper reports four studies #milestone
+
+`docs/paper/` now covers the long learning-from-play study as study D: a table row, a figure group, a results paragraph and updated abstract, discussion, limitations and conclusion. Exploratory per-deck gaps for study D come from a 10,000-resample bootstrap in `make_results.py` (seed 1), so the paper and `RESEARCH.md` quote the same bounds. The paper cites the 20th-place Kaggle write-up for its roughly 20 million training games. Figure tick labels changed to fix and div, since study D collided with the old D label. The paper is 5 pages.
+
 ## 2026-11-17: Long learning-from-play study reports equivalence, narrowly #milestone
 
 The frozen long plan ran with 30 new seeds per arm, 2,000 games per checkpoint from random weights at learning rate 0.03. Delta (diverse minus fixed) is +0.15 points, 95% seed-level interval [-5.04, +5.29], 90% interval [-4.29, +4.51], so the pools are equivalent within the preregistered plus or minus 5 points, with little room. The seed spread was 10.8 and 10.6 points, below the 15 I had feared in the plan. The policies learned (training score up from 44.7% to 49.9% fixed and from 54.5% to 63.2% diverse, in 25 of 30 seeds per arm) but score 54% on held-out decks, below the imitation students at 65% to 67% and near `HeuristicAgent`. Exploratory: the arms differ by deck in opposite directions (-6.4 on Mewtwo, +6.8 on Snorlax, both intervals including zero) and cancel in the primary score. Report: `experiments/rl-long/report.json`.

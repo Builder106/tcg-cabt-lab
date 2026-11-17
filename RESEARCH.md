@@ -55,7 +55,7 @@ The policy starts from random weights, plays its pool for 2,000 games (250 updat
 - The policies learned. The mean training score rose from 44.7% to 49.9% (fixed) and from 54.5% to 63.2% (diverse), first to last quarter of the 2,000 games, and rose in 25 of 30 seeds in each arm. The two pools' training scores differ because the opponents differ.
 - Learned policies are weaker than imitation students. Held-out scores of 53.9% and 54.1% compare with 65.2% and 66.6% for the board-teacher imitation students, and sit near `HeuristicAgent`.
 - Baselines under the same protocol (120 games each, Wilson 95%): `BoardAgent` 70.42% [61.72, 77.85], `HeuristicAgent` 53.75% [44.85, 62.42], `FirstAgent` 49.17% [40.39, 58.00], `RandomAgent` 44.17% [35.60, 53.10].
-- Exploratory, not preregistered: by deck, the fixed arm scores 54.3% on Mewtwo and 53.6% on Snorlax, and the diverse arm 47.8% and 60.3%. The diverse-minus-fixed gaps are -6.4 points on Mewtwo (95% interval [-14.2, +1.2]) and +6.8 on Snorlax ([-2.2, +15.6]), with opposite signs and both intervals including zero. They cancel in the primary score. Whether the pool changes which deck a learned policy plays better would need a study built to test it.
+- Exploratory, not preregistered: by deck, the fixed arm scores 54.3% on Mewtwo and 53.6% on Snorlax, and the diverse arm 47.8% and 60.3%. The diverse-minus-fixed gaps are -6.4 points on Mewtwo (95% interval [-13.9, +1.2]) and +6.8 on Snorlax ([-2.2, +15.7]), with opposite signs and both intervals including zero. They cancel in the primary score. Whether the pool changes which deck a learned policy plays better would need a study built to test it.
 
 ## Environment and information boundary
 
