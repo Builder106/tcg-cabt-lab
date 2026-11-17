@@ -22,7 +22,7 @@
 
 \begin{document}
 
-\title{Does the Training Opponent Matter? Three Preregistered Studies of a Compact Pok\'emon Card Game Policy}
+\title{Does the Training Opponent Matter? Four Preregistered Studies of a Compact Pok\'emon Card Game Policy}
 
 \author{\IEEEauthorblockN{Anonymous Authors}
 \IEEEauthorblockA{Submitted for double-blind review}}
@@ -30,7 +30,7 @@
 \maketitle
 
 \begin{abstract}
-Agents for collectible card games are often trained against a single opponent, and a more varied set of opponents is expected to generalize better to unseen decks. We test this for a 2,881-parameter option-scoring policy in the Pok\'emon Trading Card Game environment CABT, on deck families held out from training. Three preregistered studies, each with 30 training seeds per arm and 7,200 held-out games, compare a fixed opponent pool with a diverse one. In two studies the policy imitates a rule-based teacher whose demonstrations are collected against each pool. In the third it learns from its own wins and losses. The difference in held-out win rate is \ADelta, \BDelta{} and \CDelta{} points, and the 90\% interval of each difference lies inside the preregistered margin of five points. The first study could not have found an effect: the student copied its teacher on at least \AAgreeMin\% of held-out decisions. With a teacher that reads the board, agreement falls to about 61\% and the pools remain equivalent. In the learning-from-play study, 400 games moved the policies by about the size of evaluation noise, so that result bounds the effect at a small budget only.
+Agents for collectible card games are often trained against a single opponent, and a more varied set of opponents is expected to generalize better to unseen decks. We test this for a 2,881-parameter option-scoring policy in the Pok\'emon Trading Card Game environment CABT, on deck families held out from training. Four preregistered studies, each with 30 training seeds per arm and 7,200 held-out games, compare a fixed opponent pool with a diverse one. In two studies the policy imitates a rule-based teacher whose demonstrations are collected against each pool. In the other two it learns from its own wins and losses. The difference in held-out win rate is \ADelta, \BDelta, \CDelta{} and \DDelta{} points, and the 90\% interval of each difference lies inside the preregistered margin of five points. The first study could not have found an effect: the student copied its teacher on at least \AAgreeMin\% of held-out decisions. With a teacher that reads the board, agreement falls to about 61\% and the pools remain equivalent. Learning from play moved the policies by about the size of evaluation noise at 400 games and learned clearly at 2,000 games from random weights, where the margin is met only just. Both budgets are far below those of competition entries.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -46,8 +46,8 @@ We ask one question: does the set of opponents used during training change a com
 We make three contributions.
 \begin{enumerate}
   \item A preregistered protocol for small studies in CABT: the plan is frozen before the run, the training seed is the unit of analysis, intervals come from a cluster bootstrap, and a margin of five points is fixed in advance so that a null result can be stated with a bound.
-  \item Three controlled comparisons, each with 30 seeds per arm, that find the fixed and diverse pools equivalent within that margin.
-  \item An account of why the first comparison was forced, and a second teacher that removes the cause. We also state where the third comparison is weak.
+  \item Four controlled comparisons, each with 30 seeds per arm, that find the fixed and diverse pools equivalent within that margin.
+  \item An account of why the first comparison was forced, and a second teacher that removes the cause. We also state where the learning-from-play comparisons are limited.
 \end{enumerate}
 We searched arXiv and the public write-ups of the 2026 competition and found no earlier controlled test of this question, for imitation learning or for card games.
 
@@ -55,7 +55,7 @@ We searched arXiv and the public write-ups of the 2026 competition and found no 
 
 \textbf{Card games as a testbed.} Collectible card games combine hidden information with a branching factor that changes with the game state and is often large. Hoover et al.\ \cite{Hoover19} note that these games are relatively understudied in AI research despite their popularity, and lay out the challenges Hearthstone poses. For a competition-level agent, Xi et al.\ \cite{Xi23} describe an end-to-end policy and an optimistic smooth fictitious play method for Legends of Code and Magic, and report winning both the official LoCM 1.5 track and the bonus LoCM 1.2 track of the COG 2022 competition. The Pok\'emon Trading Card Game has received less attention. PTCG-Bench \cite{Hua26} evaluates large language model agents on it. The 2026 Kaggle Pok\'emon TCG AI Battle, run on the same CABT engine, produced public write-ups from many learned agents. Several top entries trained by reinforcement learning from self-play or against a league of frozen opponents \cite{Kaggle7th,Kaggle6th}. One team distilled a gradient-boosted teacher into a network and notes that the teacher's games widen the training states but inherit the teacher's weaknesses \cite{Kaggle24th}. Another reports that every hand-written rule or mechanical teacher it tested cost win rate \cite{Kaggle7th}. We study a different agent class, a 2,881-parameter option scorer that runs in well under a millisecond, and we test the opponent pool directly.
 
-\textbf{Opponent diversity and generalization.} Lanctot et al.\ \cite{Lanctot17} show that policies learned by independent reinforcement learning can overfit to the policies of the other agents seen in training, and propose best responses to mixtures of policies. Strouse et al.\ \cite{Strouse21} argue that a diverse set of training partners is the crux of generalizing to new partners in cooperative play. Both train by reinforcement learning from play, which is our third study. In the first two, the opponent affects only which states the demonstrations visit. For generalization more broadly, Cobbe et al.\ \cite{Cobbe19} separate training and test sets of procedurally generated environments, and Kirk et al.\ \cite{Kirk23} survey zero-shot generalization. In the competitive Pok\'emon video game, VGC-Bench \cite{Angliss26} provides behavior cloning and self-play baselines and reports that, as the number of team configurations grows, the best single-team algorithm does worse and is more exploitable but generalizes better to unseen teams. We follow the practice of keeping the test deck families out of training, with a disjointness check between the splits.
+\textbf{Opponent diversity and generalization.} Lanctot et al.\ \cite{Lanctot17} show that policies learned by independent reinforcement learning can overfit to the policies of the other agents seen in training, and propose best responses to mixtures of policies. Strouse et al.\ \cite{Strouse21} argue that a diverse set of training partners is the crux of generalizing to new partners in cooperative play. Both train by reinforcement learning from play, as our studies C and D do. In the first two, the opponent affects only which states the demonstrations visit. For generalization more broadly, Cobbe et al.\ \cite{Cobbe19} separate training and test sets of procedurally generated environments, and Kirk et al.\ \cite{Kirk23} survey zero-shot generalization. In the competitive Pok\'emon video game, VGC-Bench \cite{Angliss26} provides behavior cloning and self-play baselines and reports that, as the number of team configurations grows, the best single-team algorithm does worse and is more exploitable but generalizes better to unseen teams. We follow the practice of keeping the test deck families out of training, with a disjointness check between the splits.
 
 \textbf{Imitation under distribution shift.} The learner's own mistakes lead it to states the demonstrator did not visit, which breaks the assumption of identically distributed data. Ross et al.\ \cite{Ross11} describe this compounding of errors and propose DAgger, which gathers trajectories with the current learned policy. DART \cite{Laskey17} instead injects noise into the supervisor while it demonstrates, so that the demonstrations cover recoveries. Belkhale et al.\ \cite{Belkhale23} formalize data quality through distribution shift and show that state diversity is not always beneficial and that its effect depends on action divergence and transition diversity. Our first two studies vary the demonstration states in a similar way, through the opponent, and the teacher agreement we report measures how close the learner stays to the demonstrator.
 
@@ -82,7 +82,7 @@ We searched arXiv and the public write-ups of the 2026 competition and found no 
   \node[box, right=0.38cm of t] (d) {States and\\teacher choices};
   \node[box, right=0.38cm of d] (s) {Student,\\cross-entropy};
   \draw[arr] (p1)--(t); \draw[arr] (t)--(d); \draw[arr] (d)--(s);
-  \node[font=\footnotesize\itshape, anchor=west] (lb) at (0,-0.15) {(b) Learning from play, study C};
+  \node[font=\footnotesize\itshape, anchor=west] (lb) at (0,-0.15) {(b) Learning from play, studies C and D};
   \node[box] (p2) at (0.85,-0.9) {Opponent\\pool};
   \node[box, right=0.38cm of p2] (l) {Learner\\plays};
   \node[box, right=0.38cm of l] (o) {Win, draw\\or loss};
@@ -95,27 +95,29 @@ We searched arXiv and the public write-ups of the 2026 competition and found no 
 
 \section{Studies and statistics}
 
-Table~\ref{tab:design} lists the three studies. Each has a plan frozen before its run, in machine-readable form that the runner refuses to execute unless it is marked frozen. Both arms of a study share the architecture, budget, decks and evaluation, so the pool is the only difference.
+Table~\ref{tab:design} lists the four studies. Each has a plan frozen before its run, in machine-readable form that the runner refuses to execute unless it is marked frozen. Both arms of a study share the architecture, budget, decks and evaluation, so the pool is the only difference.
 
 \begin{table}[t]
-\caption{The three studies. Each has 30 training seeds per arm.}
+\caption{The four studies. Each has 30 training seeds per arm.}
 \label{tab:design}
 \centering
 \small
-\begin{tabular}{@{}llll@{}}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lllll@{}}
 \toprule
- & Learner & Teacher & Budget per checkpoint \\
+ & Learner & Teacher & Start & Budget per checkpoint \\
 \midrule
-A & imitation & heuristic & 2,000 decisions, 400 steps \\
-B & imitation & board & 2,000 decisions, 400 steps \\
-C & REINFORCE & none & 400 games, 50 updates \\
+A & imitation & heuristic & random & 2,000 decisions, 400 steps \\
+B & imitation & board & random & 2,000 decisions, 400 steps \\
+C & REINFORCE & none & study B & 400 games, 50 updates \\
+D & REINFORCE & none & random & 2,000 games, 250 updates \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \textbf{Imitation (A and B).} The teacher plays one of three training decks against the pool, and its first choice at each decision with more than one option becomes a training example. Each checkpoint trains on 2,000 decisions (1,600 for training and 400 for validation) for 400 Adam steps.
 
-\textbf{Learning from play (C).} The policy samples each choice from the softmax of its option scores, plays a full game against the pool from a random seat and deck, and receives $+1$, $0$ or $-1$ for a win, draw or loss. REINFORCE updates it after every batch of 8 games with the batch mean outcome as the baseline and Adam at learning rate 0.003, for 400 games. Both arms start from the board-teacher checkpoint of the same seed, so the pool is again the only difference. A pilot chose the learning rate from 0.001, 0.003 and 0.01. It used four seeds outside the study and scored 60 games per checkpoint on the tuning deck. At 0.003 the pilot gained 11.7 points (fixed pool) and 5.0 (diverse pool) over the starting checkpoints, and the other two rates gained about nothing. On the held-out decks the gain did not carry over (Section~\ref{sec:results}), so the pilot was too small to select a rate reliably.
+\textbf{Learning from play (C and D).} The policy samples each choice from the softmax of its option scores, plays a full game against the pool from a random seat and deck, and receives $+1$, $0$ or $-1$ for a win, draw or loss. REINFORCE updates it after every batch of 8 games with the batch mean outcome as the baseline and Adam at learning rate 0.003, for 400 games. Both arms start from the board-teacher checkpoint of the same seed, so the pool is again the only difference. A pilot chose the learning rate from 0.001, 0.003 and 0.01. It used four seeds outside the study and scored 60 games per checkpoint on the tuning deck. At 0.003 the pilot gained 11.7 points (fixed pool) and 5.0 (diverse pool) over the starting checkpoints, and the other two rates gained about nothing. On the held-out decks the gain did not carry over (Section~\ref{sec:results}), so the pilot was too small to select a rate reliably. Study D gives learning more room: the policy starts from random weights and plays 2,000 games (250 updates) at learning rate 0.03. An 800-game pilot from the imitation start (two seeds per arm) had found no learning at any of the three rates, and a pilot from random weights was the only one in which training scores rose, at 0.03. The plan for D records that the design changed after the pilots and before any study game.
 
 \textbf{Evaluation.} Each checkpoint plays 120 held-out games: 2 decks $\times$ 3 opponents $\times$ 5 evaluation seeds $\times$ 2 pairs, with seats reversed inside each pair. A draw counts as half a win. The checkpoint score is the mean of its win rates on the two held-out decks.
 
@@ -132,13 +134,13 @@ C & REINFORCE & none & 400 games, 50 updates \\
 \input{generated/results-table.tex}
 \end{table*}
 
-Table~\ref{tab:results} gives the preregistered result. In all three studies the 95\% interval includes zero and the 90\% interval lies inside the margin, so the pools are equivalent within five points. Fig.~\ref{fig:seeds} shows every seed. The standard deviation across seeds inside one arm is \SDMin{} to \SDMax{} points, larger than every difference.
+Table~\ref{tab:results} gives the preregistered result. In all four studies the 95\% interval includes zero and the 90\% interval lies inside the margin, so the pools are equivalent within five points. Fig.~\ref{fig:seeds} shows every seed. The standard deviation across seeds inside one arm is \SDMin{} to \SDMax{} points, larger than every difference.
 
 \begin{figure}[t]
 \centering
 \begin{tikzpicture}
-\begin{axis}[width=\columnwidth, height=5.2cm, ymin=40, ymax=80, xmin=0.3, xmax=8.7,
-  xtick={1,2,4,5,7,8}, xticklabels={F,D,F,D,F,D},
+\begin{axis}[width=\columnwidth, height=5.2cm, ymin=40, ymax=80, xmin=0.3, xmax=11.7,
+  xtick={1,2,4,5,7,8,10,11}, xticklabels={fix,div,fix,div,fix,div,fix,div},
   ylabel={Held-out win rate (\%)}, ylabel style={font=\footnotesize},
   tick label style={font=\footnotesize}, ymajorgrids, grid style={black!12}, clip=true]
   \addplot[only marks, mark=o, mark size=1.1pt, draw=black!70] table[col sep=comma, x=x, y=score] {generated/seed-scores-fixed.csv};
@@ -147,9 +149,10 @@ Table~\ref{tab:results} gives the preregistered result. In all three studies the
   \node[font=\footnotesize] at (axis cs:1.5,41.8) {A};
   \node[font=\footnotesize] at (axis cs:4.5,41.8) {B};
   \node[font=\footnotesize] at (axis cs:7.5,41.8) {C};
+  \node[font=\footnotesize] at (axis cs:10.5,41.8) {D};
 \end{axis}
 \end{tikzpicture}
-\caption{Held-out win rate of every checkpoint. F is the fixed pool (open circles), D the diverse pool (filled triangles), and the bar is the arm mean. A and B imitate a heuristic and a board-reading teacher, and C learns from play. Points are spread sideways by seed order only.}
+\caption{Held-out win rate of every checkpoint. Fix is the fixed pool (open circles), div the diverse pool (filled triangles), and the bar is the arm mean. A and B imitate a heuristic and a board-reading teacher, and C and D learn from play (C from the imitation checkpoints, D from random weights). Points are spread sideways by seed order only.}
 \label{fig:seeds}
 \end{figure}
 
@@ -157,19 +160,22 @@ Table~\ref{tab:results} gives the preregistered result. In all three studies the
 
 \textbf{Study B.} With the board-reading teacher the students agree with it on \BAgreeMin\% to \BAgreeMax\% of held-out decisions (mean \BAgreeFixedMean\% for the fixed arm and \BAgreeDiverseMean\% for the diverse arm). They no longer copy the teacher, and the pools are still equivalent: the difference is \BDelta{} points with a 95\% interval of [\BCIlow, \BCIhigh]. This is the main result of the paper.
 
-\textbf{Study C.} Learning from play moved the policies very little. Against the checkpoint each seed started from (mean score \StartMean\%), the change was \CChangeFixed{} points for the fixed arm (\CUpFixed{} of 30 seeds up) and \CChangeDiverse{} for the diverse arm (\CUpDiverse{} of 30), with a standard deviation of \CChangeFixedSD{} and \CChangeDiverseSD{} points. A 120-game score alone has a standard error near 4.5 points, so these changes are about the size of evaluation noise. The mean training score also stayed flat, from \CTrainFirstFixed\% to \CTrainLastFixed\% for the fixed arm and \CTrainFirstDiverse\% to \CTrainLastDiverse\% for the diverse arm. The equivalence in C is therefore weak evidence about the pool. It shows no effect at a budget of 400 games, and does not show that learning from play is unaffected by its opponents.
+\textbf{Study C.} Learning from play moved the policies very little. Against the checkpoint each seed started from (mean score \StartMean\%), the change was \CChangeFixed{} points for the fixed arm (\CUpFixed{} of 30 seeds up) and \CChangeDiverse{} for the diverse arm (\CUpDiverse{} of 30), with a standard deviation of \CChangeFixedSD{} and \CChangeDiverseSD{} points. A 120-game score alone has a standard error near 4.5 points, so these changes are about the size of evaluation noise. The mean training score also stayed flat, from \CTrainFirstFixed\% to \CTrainLastFixed\% for the fixed arm and \CTrainFirstDiverse\% to \CTrainLastDiverse\% for the diverse arm. The equivalence in C is therefore weak evidence about the pool. It shows no effect at a budget of 400 games, and does not show that learning from play is unaffected by its opponents. Study D gives learning more room.
 
-\textbf{Decks and opponents.} Table~\ref{tab:split} splits the win rates by held-out deck and by evaluation opponent. The deck matters far more than the pool. Averaged over the two arms, the colorless-snorlax deck scores \ADeckGap, \BDeckGap{} and \CDeckGap{} points above psychic-mewtwo in studies A, B and C, against pool differences of at most \MaxDelta{} points. With two held-out decks, a deck effect cannot be separated from deck-specific play, and we do not model it.
+\textbf{Study D.} With 2,000 games from random weights the policies learned. The mean training score rose from \DTrainFirstFixed\% to \DTrainLastFixed\% for the fixed arm and from \DTrainFirstDiverse\% to \DTrainLastDiverse\% for the diverse arm, and it rose in \DUpFixed{} and \DUpDiverse{} of 30 seeds. The held-out scores, \DFixedMean\% and \DDiverseMean\%, are below the imitation students of study B and close to the heuristic. The seed-to-seed spread is about 10.6 points, more than twice that of the imitation studies. The 90\% interval, [\DNinetyLow, \DNinetyHigh], lies inside the margin with little room, and a margin below 4.5 points would have left the result inconclusive. As an unplanned observation, the arms differ by deck in opposite directions: \DMewtwoGap{} points on psychic-mewtwo (95\% interval [\DMewtwoGapLow, \DMewtwoGapHigh]) and \DSnorlaxGap{} on colorless-snorlax ([\DSnorlaxGapLow, \DSnorlaxGapHigh]). Both intervals include zero, and the two gaps cancel in the primary score.
+
+\textbf{Decks and opponents.} Table~\ref{tab:split} splits the win rates by held-out deck and by evaluation opponent. The deck matters far more than the pool. Averaged over the two arms, the colorless-snorlax deck scores \ADeckGap, \BDeckGap, \CDeckGap{} and \DDeckGap{} points above psychic-mewtwo in studies A to D, against pool differences of at most \MaxDelta{} points. With two held-out decks, a deck effect cannot be separated from deck-specific play, and we do not model it.
 
 \begin{table}[t]
 \caption{Mean win rate (\%) by held-out deck and by evaluation opponent, over 30 seeds per arm.}
 \label{tab:split}
 \centering
 \small
+\setlength{\tabcolsep}{3.5pt}
 \input{generated/split-table.tex}
 \end{table}
 
-\textbf{Baselines.} Table~\ref{tab:baselines} gives four reference agents under the same 120-game protocol. Win rates for the same agent differ by up to 8 points between studies, which shows how noisy 120 games are. Students in studies B and C score between the board teacher and the other three agents.
+\textbf{Baselines.} Table~\ref{tab:baselines} gives four reference agents under the same 120-game protocol. Win rates for the same agent differ by up to 8 points between studies, which shows how noisy 120 games are. Students in studies B and C score between the board teacher and the other three agents, and the learned policies of study D score near the heuristic.
 
 \begin{table}[t]
 \caption{Win rate (\%) of reference agents on the held-out decks, 120 games each, same protocol as the students. Study A did not include the board agent.}
@@ -181,23 +187,23 @@ Table~\ref{tab:results} gives the preregistered result. In all three studies the
 
 \section{Discussion}
 
-The pool did not change held-out play in any of the three designs, within five points. We see three readings, and the data do not separate them. First, in imitation the pool changes only which states the teacher visits, and the teacher's choice is a function of the state, so a student that fits the teacher well on any reasonable sample of states ends up close to the same function. Second, in learning from play, 400 games may be too few for the opponent to matter. Third, the evaluation opponents are the same three agent types as the diverse pool, so the diverse pool is not out of distribution at test time. The comparison asks about unseen decks only.
+The pool did not change held-out play in any of the four designs, within five points. We see three readings, and the data do not separate them. First, in imitation the pool changes only which states the teacher visits, and the teacher's choice is a function of the state, so a student that fits the teacher well on any reasonable sample of states ends up close to the same function. Second, in learning from play, the budget may be too small for the opponent to matter. Study D raised it fivefold, from random weights, and found the same, but 2,000 games is far below the roughly 20 million used by one competition entry \cite{Kaggle20th}. Third, the evaluation opponents are the same three agent types as the diverse pool, so the diverse pool is not out of distribution at test time. The comparison asks about unseen decks only.
 
-\textbf{Study history.} The studies were not our first runs. Earlier three-seed runs of study A gave differences of $-3.88$ (not logged), $-0.55$ and $+6.95$ points. The last came after we fixed a defect in which the teacher always played the water-kyogre deck whatever the training deck. The 30-seed run gave \ADelta{} points. The seed-level analysis and the preregistered plans followed from that spread. Study A also used a feature encoder whose bench flag never fired, which we corrected before studies B and C. The pilots for study C used seeds outside the study.
+\textbf{Study history.} The studies were not our first runs. Earlier three-seed runs of study A gave differences of $-3.88$ (not logged), $-0.55$ and $+6.95$ points. The last came after we fixed a defect in which the teacher always played the water-kyogre deck whatever the training deck. The 30-seed run gave \ADelta{} points. The seed-level analysis and the preregistered plans followed from that spread. Study A also used a feature encoder whose bench flag never fired, which we corrected before studies B and C. The pilots for studies C and D used seeds outside the studies.
 
 \section{Limitations}
 
 \begin{itemize}
   \item The decks are simplified and every held-out game is a mirror match. The 30-seed reports do not store replays, so we measured end reasons in a separate audit of 600 games: four study B checkpoints (seeds 2001 and 2002, both arms) and the board teacher, 120 games each, which gives \AuditGames{} games per deck. On colorless-snorlax, \AuditSnorlaxNoPokemon{} of \AuditGames{} games ended with a player having no Pok\'emon left, with a median of \AuditSnorlaxMedian{} turns. On psychic-mewtwo, \AuditMewtwoDeckOut{} ended by deck-out, with a median of \AuditMewtwoMedian{} turns. Only \AuditSnorlaxPrizes{} and \AuditMewtwoPrizes{} games on the two decks ended by taking all prize cards, the usual way to win, so most games end by another route.
-  \item The margin of five points is a judgment, and a reviewer may prefer another. The 95\% intervals rule out differences larger than \MaxBound{} points in all three studies, and say nothing about smaller ones.
-  \item Study C used a small budget and a learning rate chosen on four seeds and one deck, and both arms started from an imitation checkpoint. It does not speak to learning from scratch or to a larger budget.
-  \item One architecture and one environment were used, with three simple opponents. Nothing here is evidence about population training at the scale of the Kaggle entries.
+  \item The margin of five points is a judgment, and a reviewer may prefer another. The 95\% intervals rule out differences larger than \MaxBound{} points in all four studies, and say nothing about smaller ones. In study D the 90\% interval fits inside the margin with little room.
+  \item Studies C and D used small budgets and learning rates chosen in pilots of two to four seeds on one deck. Study C started both arms from an imitation checkpoint, and study D learned from random weights and reached only about the strength of the heuristic. Neither speaks to a budget in the millions of games.
+  \item One architecture and one environment were used, with three simple opponents. Nothing here is evidence about population training at the scale of the competition entries.
   \item The study measures win rate against three fixed agents. It does not measure exploitability or play against humans.
 \end{itemize}
 
 \section{Conclusion}
 
-Across three preregistered designs, training against a diverse opponent pool did not change a compact policy's win rate on unseen decks by more than about five points. The first design could not have shown an effect, the second removes that cause, and the third is limited by its small budget. A stronger test of learning from play needs thousands of games per checkpoint and a learning rate chosen on more seeds than our pilot used.
+Across four preregistered designs, training against a diverse opponent pool did not change a compact policy's win rate on unseen decks by more than about five points. The first design could not have shown an effect, the second removes that cause, the third is limited by a small budget, and the fourth lets learning from random weights run for 2,000 games and still finds no effect, though only just inside the margin. A stronger test of learning from play needs far more games per checkpoint than we could run.
 
 \textbf{Reproducibility.} Plans, reports, checkpoints and code are available at \todo{anonymized link for review; public link after acceptance}. The CABT engine cannot replay games from seeds, so the per-game records in the reports are the record of every game.
 

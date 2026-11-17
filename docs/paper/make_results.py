@@ -5,6 +5,7 @@ Uses only the standard library. Every number in the paper's results comes from h
 """
 
 import json
+import random
 import statistics
 from pathlib import Path
 
@@ -13,10 +14,20 @@ STUDIES = {
     "A": "experiments/scaled/report.json",
     "B": "experiments/board/report.json",
     "C": "experiments/rl/report.json",
+    "D": "experiments/rl-long/report.json",
 }
 ARMS = ("fixed-opponent-pool", "diverse-opponent-pool")
 AGENTS = ("board", "heuristic", "first", "random")
-X_POSITION = {("A", 0): 1, ("A", 1): 2, ("B", 0): 4, ("B", 1): 5, ("C", 0): 7, ("C", 1): 8}
+X_POSITION = {
+    ("A", 0): 1,
+    ("A", 1): 2,
+    ("B", 0): 4,
+    ("B", 1): 5,
+    ("C", 0): 7,
+    ("C", 1): 8,
+    ("D", 0): 10,
+    ("D", 1): 11,
+}
 
 
 def pct(value: float, places: int = 2) -> str:
@@ -152,6 +163,33 @@ def main() -> None:
         macro(f"CTrainFirst{arm}", pct(first, 1))
         macro(f"CTrainLast{arm}", pct(last, 1))
     macro("StartMean", pct(statistics.mean(start.values())))
+
+    # Study D: learning from random weights. Training scores, and exploratory per-deck gaps
+    long_run = json.loads(Path(STUDIES["D"]).read_text(encoding="utf-8"))
+    for i, arm in enumerate(("Fixed", "Diverse")):
+        evals = long_run["checkpoint_evaluations"][ARMS[i]]
+        firsts = [e["provenance"]["training_score_first_quarter"] for e in evals]
+        lasts = [e["provenance"]["training_score_last_quarter"] for e in evals]
+        macro(f"DTrainFirst{arm}", pct(statistics.mean(firsts), 1))
+        macro(f"DTrainLast{arm}", pct(statistics.mean(lasts), 1))
+        macro(f"DUp{arm}", str(sum(b > a for a, b in zip(firsts, lasts, strict=True))))
+    rng = random.Random(1)
+    for deck, name in (("psychic-mewtwo", "Mewtwo"), ("colorless-snorlax", "Snorlax")):
+        by_arm = [
+            [
+                e["family_breakdown"][deck]["wins"] / e["family_breakdown"][deck]["total_games"]
+                for e in long_run["checkpoint_evaluations"][arm]
+            ]
+            for arm in ARMS
+        ]
+        gaps = sorted(
+            statistics.mean(rng.choices(by_arm[1], k=30))
+            - statistics.mean(rng.choices(by_arm[0], k=30))
+            for _ in range(10_000)
+        )
+        macro(f"D{name}Gap", signed(statistics.mean(by_arm[1]) - statistics.mean(by_arm[0]), 1))
+        macro(f"D{name}GapLow", signed(gaps[250], 1))
+        macro(f"D{name}GapHigh", signed(gaps[9750], 1))
 
     (OUT / "numbers.tex").write_text("\n".join(macros) + "\n", encoding="utf-8")
     # Write whole tabular environments: booktabs rules break when rows are input before the end
