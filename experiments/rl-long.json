@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "status": "frozen",
+  "frozen_on": "2026-11-17",
+  "question": "When a compact CABT policy learns from play from random weights with a larger budget, does the opponent pool it plays against change its win rate on held-out deck families?",
+  "plan_document": "docs/analysis-plan-rl-long.md",
+  "design": {
+    "variants": ["fixed-opponent-pool", "diverse-opponent-pool"],
+    "training_seeds": [
+      4001, 4002, 4003, 4004, 4005, 4006, 4007, 4008, 4009, 4010,
+      4011, 4012, 4013, 4014, 4015, 4016, 4017, 4018, 4019, 4020,
+      4021, 4022, 4023, 4024, 4025, 4026, 4027, 4028, 4029, 4030
+    ],
+    "rl": {
+      "games": 2000,
+      "games_per_update": 8,
+      "learning_rate": 0.03,
+      "init_checkpoint": null
+    },
+    "workers": 4,
+    "training_families": ["water-kyogre", "grass-bulbasaur", "lightning-pikachu"],
+    "test_families": ["psychic-mewtwo", "colorless-snorlax"],
+    "opponents": ["heuristic", "first", "random"],
+    "eval_seeds": [11, 29, 47, 101, 202],
+    "pairs_per_seed": 2,
+    "baselines": ["board", "heuristic", "first", "random"]
+  },
+  "analysis": {
+    "unit": "training seed",
+    "checkpoint_score": "equally weighted mean of the checkpoint's win rates on the two held-out deck families; a draw counts half",
+    "primary_estimate": "mean checkpoint score of diverse-opponent-pool minus that of fixed-opponent-pool",
+    "interval": "percentile cluster bootstrap that resamples training seeds within each variant",
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 20261117,
+    "equivalence_margin": 0.05,
+    "difference_rule": "a difference is reported when the 95% interval excludes zero",
+    "equivalence_rule": "equivalence is reported when the 90% interval lies inside plus or minus the margin",
+    "inconclusive_rule": "if neither rule holds, the result is reported as inconclusive",
+    "secondary": [
+      "training score in the first and last quarter of the 2,000 training games, per checkpoint, descriptive",
+      "comparison with the imitation students of the board-teacher study (experiments/board/report.json), descriptive",
+      "baselines: board, heuristic, first and random agents scored under the same protocol, with Wilson 95% intervals over games",
+      "per-deck and per-opponent win rates, descriptive only"
+    ]
+  },
+  "outputs": {
+    "checkpoints_dir": "experiments/rl-long/checkpoints",
+    "report": "experiments/rl-long/report.json",
+    "replays": null
+  }
+}

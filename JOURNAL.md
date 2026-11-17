@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-17: Long learning-from-play run, frozen after a failed pilot #decision
+
+An 800-game pilot from the imitation start (two seeds per arm, tuning deck) showed no learning at any rate: the rise in training score was -1.75, -0.4 and -4.75 points at 0.003, 0.01 and 0.03, and the tuning-deck score fell by 4.2, 17.9 and 10.8 points. My declared fallback was 0.01, the worst rate. I asked and the user chose to start from random weights at 0.03, the only pilot setting in which training scores rose. `experiments/rl-long.json` freezes 2,000 games per checkpoint, seeds 4001 to 4030. The change was made after the pilot and before any study game. The plan states that 30 seeds probably cannot show equivalence within plus or minus 5 points if the seed spread is near 15 points.
+
 ## 2026-11-16: Paper gaps filled #milestone
 
 The paper now has a per-deck and per-opponent table, an end-reason audit, the pilot caveat for the learning-from-play study, and a conclusion on what a stronger study needs. The audit is a separate 600-game run, since the 30-seed reports store no replays: 266 of 300 colorless-snorlax games ended with a player having no Pokémon left (median 12 turns), and 205 of 300 psychic-mewtwo games ended by deck-out (median 57 turns). Only 34 and 89 games per deck ended by taking all prize cards. The wider literature search found no controlled test of the training opponent for imitation, and added VGC-Bench for context. Hoover et al. appeared in print in March 2020, so its year changed. The CoG call for papers confirms double-blind review, IEEE two-column, up to 8 pages including references, and is silent on preprints. The one open marker is the anonymized artifact link. The paper is 5 pages.
