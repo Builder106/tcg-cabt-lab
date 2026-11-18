@@ -68,7 +68,7 @@ jobs:
         run: npm ci
       - name: Audit showcase dependencies
         working-directory: web
-        run: npm audit --audit-level=high
+        run: node scripts/audit.mjs
       - name: Check Astro project
         working-directory: web
         run: npm run check
