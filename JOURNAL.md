@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-18: Preprint policy answered #decision
+
+The CoG organizers replied by email that IEEE's preprint policy applies to CoG papers and that posting a preprint is allowed, with the policy details to be checked. They also said a submission is a single PDF with no attachments, and that a URL in a footnote is fine. The paper now points to the anonymized repository in a footnote, still a placeholder until the link exists. The IEEE Author Center rules for conference preprints (statement on the first screen, replacement after acceptance) are in `docs/paper/README.md`. The anonymized submission must not link to the preprint.
+
 ## 2026-11-17: Paper reports four studies #milestone
 
 `docs/paper/` now covers the long learning-from-play study as study D: a table row, a figure group, a results paragraph and updated abstract, discussion, limitations and conclusion. Exploratory per-deck gaps for study D come from a 10,000-resample bootstrap in `make_results.py` (seed 1), so the paper and `RESEARCH.md` quote the same bounds. The paper cites the 20th-place Kaggle write-up for its roughly 20 million training games. Figure tick labels changed to fix and div, since study D collided with the old D label. The paper is 5 pages.
