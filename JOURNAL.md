@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-19: Zenodo ruled out for the preprint #decision
+
+IEEE author support replied that Zenodo is not an approved preprint site for a paper submitted to an IEEE conference. The preprint will go on TechRxiv, which IEEE names in its policies, or arXiv. The Publications Board manual (June 2026, section 8.1.9) keeps the approved-server list with IEEE and does not name Zenodo. Zenodo suits a code and data archive after review, since that is not an IEEE article.
+
 ## 2026-11-18: Preprint policy answered #decision
 
 The CoG organizers replied by email that IEEE's preprint policy applies to CoG papers and that posting a preprint is allowed, with the policy details to be checked. They also said a submission is a single PDF with no attachments, and that a URL in a footnote is fine. The paper now points to the anonymized repository in a footnote, still a placeholder until the link exists. The IEEE Author Center rules for conference preprints (statement on the first screen, replacement after acceptance) are in `docs/paper/README.md`. The anonymized submission must not link to the preprint.
