@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-19: TechRxiv closed, arXiv hard #decision
+
+TechRxiv shows a notice that it is moving to a new platform and that submissions are temporarily closed, with no reopening date. arXiv has not endorsed new authors by institutional email since 21 January 2026, so a first-time author needs a personal endorsement, and its content policy lists undergraduate research as typically not accepted. IEEE allows a preprint on an author's own or employer's website, so that is the route with no gatekeeper.
+
 ## 2026-11-19: Zenodo ruled out for the preprint #decision
 
 IEEE author support replied that Zenodo is not an approved preprint site for a paper submitted to an IEEE conference. The preprint will go on TechRxiv, which IEEE names in its policies, or arXiv. The Publications Board manual (June 2026, section 8.1.9) keeps the approved-server list with IEEE and does not name Zenodo. Zenodo suits a code and data archive after review, since that is not an IEEE article.
