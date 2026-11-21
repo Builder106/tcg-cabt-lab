@@ -1,5 +1,9 @@
 # Journal
 
+## 2026-11-21: No hosted link for reviewers #decision
+
+Hosting an anonymous copy of the code failed on two hosts. OSF stopped creating projects on 16 November 2026 and makes existing ones read-only on 19 February 2027. A Zenodo draft with an Anonymous author still embeds the owner's profile (full name, affiliation, username) in its preview page HTML, which an API-only check had missed, so the draft was deleted. The submission now promises a release after the review period instead of a link, which removes its last `\todo`. The anonymized bundle stays on the author's machine for the release. If a host is tried again, scan the full page HTML a stranger gets.
+
 ## 2026-11-19: TechRxiv closed, arXiv hard #decision
 
 TechRxiv shows a notice that it is moving to a new platform and that submissions are temporarily closed, with no reopening date. arXiv has not endorsed new authors by institutional email since 21 January 2026, so a first-time author needs a personal endorsement, and its content policy lists undergraduate research as typically not accepted. IEEE allows a preprint on an author's own or employer's website, so that is the route with no gatekeeper.
